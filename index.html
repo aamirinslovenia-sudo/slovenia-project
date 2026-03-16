@@ -11,14 +11,14 @@
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
         .modal { transition: opacity 0.25s ease; }
         body.modal-active { overflow: hidden; }
-        .batch-card { 
-            background: rgba(30, 41, 59, 0.7); 
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
         .glass {
             background: rgba(30, 41, 59, 0.8);
             backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .batch-card { 
+            background: rgba(30, 41, 59, 0.7); 
+            backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
     </style>
@@ -84,7 +84,7 @@
                 </div>
 
                 <div class="mt-6 flex flex-col gap-3">
-                    <a id="m-whatsapp" href="#" target="_blank" class="w-full bg-emerald-600 text-white py-4 rounded-xl font-black text-center text-xs uppercase tracking-widest shadow-lg shadow-emerald-900/20">WhatsApp Worker</a>
+                    <a href="https://wa.me/38670556744" target="_blank" class="w-full bg-emerald-600 text-white py-4 rounded-xl font-black text-center text-xs uppercase tracking-widest hover:bg-emerald-500 transition-all shadow-lg shadow-emerald-900/20">Contact Admin (WhatsApp)</a>
                     <button onclick="toggleModal()" class="w-full bg-slate-700 text-white py-4 rounded-xl font-black text-xs uppercase tracking-widest">Return to Dashboard</button>
                 </div>
             </div>
@@ -102,24 +102,24 @@
         }
 
         const workerData = [
-            { batch: "1st Batch", name: "Shahriyar Khan", role: "Multi Welder", phone: "920000000000", passport: "KH4148432", visa: "IR-10310080212", visaLink: "shahriyar.pdf", photo: "shahriyar.jpeg", finger: "16-11-2025", interview: "N/A", entry: "20-11-2025" },
-            { batch: "1st Batch", name: "Muhammad Ali Rashid", role: "Multi Welder", phone: "920000000000", passport: "KC9847072", visa: "IR-10310080211", visaLink: "ali_rashid.pdf", photo: "ali_rashid.jpeg", finger: "16-11-2025", interview: "N/A", entry: "20-11-2025" },
-            { batch: "1st Batch", name: "Hamid Naeem", role: "Multi Welder", phone: "920000000000", passport: "DK9959992", visa: "IR-10310080213", visaLink: "hamid.pdf", photo: "hamid.jpeg", finger: "16-11-2025", interview: "17-08-2026", entry: "20-11-2025" },
-            { batch: "1st Batch", name: "Mhammad Faizan Ali Shah", role: "Multi Welder", phone: "920000000000", passport: "YD5151181", visa: "IR-10310080214", visaLink: "faizan.pdf", photo: "faizan.jpeg", finger: "16-11-2025", interview: "N/A", entry: "20-11-2025" },
-            { batch: "1st Batch", name: "Muhammad Uzair", role: "Multi Welder", phone: "920000000000", passport: "AB2899693", visa: "IR-10310080210", visaLink: "uzair.pdf", photo: "uzair.jpeg", finger: "16-11-2025", interview: "N/A", entry: "20-11-2025" },
-            { batch: "2nd Batch", name: "Sajjad Khan", role: "Multi Welder", phone: "920000000000", passport: "MC4100303", visa: "IR-10310084591", visaLink: "sajjad_k.pdf", photo: "", finger: "12-01-2026", interview: "N/A", entry: "15-01-2026" },
-            { batch: "2nd Batch", name: "Asim Amin", role: "Multi Welder", phone: "920000000000", passport: "BX1205984", visa: "IR-10310084593", visaLink: "asim.pdf", photo: "", finger: "12-01-2026", interview: "28-06-2026", entry: "15-01-2026" },
-            { batch: "2nd Batch", name: "Muhammad Safeer", role: "Multi Welder", phone: "920000000000", passport: "BH5529073", visa: "IR-10310084592", visaLink: "safeer.pdf", photo: "", finger: "12-01-2026", interview: "N/A", entry: "15-01-2026" },
-            { batch: "2nd Batch", name: "Muhammad Sulaman", role: "Multi Welder", phone: "920000000000", passport: "BB5756615", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "04-05-2026", entry: "TBD" },
-            { batch: "3rd Batch", name: "Muhammad Nasir Jamil", role: "Engineer", phone: "920000000000", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" },
-            { batch: "3rd Batch", name: "Asad Sajjad", role: "Multi Welder", phone: "920000000000", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" },
-            { batch: "3rd Batch", name: "Sajjad Ali", role: "Multi Welder", phone: "920000000000", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" },
-            { batch: "3rd Batch", name: "Imran Akram", role: "Multi Welder", phone: "920000000000", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" },
-            { batch: "3rd Batch", name: "Muhammad Zohaib", role: "Pipefitter", phone: "920000000000", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" },
-            { batch: "4th Batch", name: "Muhammad Maaz", role: "Multi Welder", phone: "920000000000", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" },
-            { batch: "4th Batch", name: "Muhammad Mansoor", role: "Multi Welder", phone: "920000000000", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" },
-            { batch: "5th Batch", name: "Zaheer Ahmad", role: "Multi Welder", phone: "920000000000", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" },
-            { batch: "5th Batch", name: "Muhammad Qaiser", role: "Multi Welder", phone: "920000000000", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" }
+            { batch: "1st Batch", name: "Shahriyar Khan", role: "Multi Welder", passport: "KH4148432", visa: "IR-10310080212", visaLink: "shahriyar.pdf", photo: "shahriyar.jpeg", finger: "16-11-2025", interview: "N/A", entry: "20-11-2025" },
+            { batch: "1st Batch", name: "Muhammad Ali Rashid", role: "Multi Welder", passport: "KC9847072", visa: "IR-10310080211", visaLink: "ali_rash_id.pdf", photo: "ali_rashid.jpeg", finger: "16-11-2025", interview: "N/A", entry: "20-11-2025" },
+            { batch: "1st Batch", name: "Hamid Naeem", role: "Multi Welder", passport: "DK9959992", visa: "IR-10310080213", visaLink: "hamid.pdf", photo: "hamid.jpeg", finger: "16-11-2025", interview: "17-08-2026", entry: "20-11-2025" },
+            { batch: "1st Batch", name: "Mhammad Faizan Ali Shah", role: "Multi Welder", passport: "YD5151181", visa: "IR-10310080214", visaLink: "faizan.pdf", photo: "faizan.jpeg", finger: "16-11-2025", interview: "N/A", entry: "20-11-2025" },
+            { batch: "1st Batch", name: "Muhammad Uzair", role: "Multi Welder", passport: "AB2899693", visa: "IR-10310080210", visaLink: "uzair.pdf", photo: "uzair.jpeg", finger: "16-11-2025", interview: "N/A", entry: "20-11-2025" },
+            { batch: "2nd Batch", name: "Sajjad Khan", role: "Multi Welder", passport: "MC4100303", visa: "IR-10310084591", visaLink: "sajjad_k.pdf", photo: "", finger: "12-01-2026", interview: "N/A", entry: "15-01-2026" },
+            { batch: "2nd Batch", name: "Asim Amin", role: "Multi Welder", passport: "BX1205984", visa: "IR-10310084593", visaLink: "asim.pdf", photo: "", finger: "12-01-2026", interview: "28-06-2026", entry: "15-01-2026" },
+            { batch: "2nd Batch", name: "Muhammad Safeer", role: "Multi Welder", passport: "BH5529073", visa: "IR-10310084592", visaLink: "safeer.pdf", photo: "", finger: "12-01-2026", interview: "N/A", entry: "15-01-2026" },
+            { batch: "2nd Batch", name: "Muhammad Sulaman", role: "Multi Welder", passport: "BB5756615", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "04-05-2026", entry: "TBD" },
+            { batch: "3rd Batch", name: "Muhammad Nasir Jamil", role: "Engineer", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" },
+            { batch: "3rd Batch", name: "Asad Sajjad", role: "Multi Welder", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" },
+            { batch: "3rd Batch", name: "Sajjad Ali", role: "Multi Welder", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" },
+            { batch: "3rd Batch", name: "Imran Akram", role: "Multi Welder", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" },
+            { batch: "3rd Batch", name: "Muhammad Zohaib", role: "Pipefitter", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" },
+            { batch: "4th Batch", name: "Muhammad Maaz", role: "Multi Welder", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" },
+            { batch: "4th Batch", name: "Muhammad Mansoor", role: "Multi Welder", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" },
+            { batch: "5th Batch", name: "Zaheer Ahmad", role: "Multi Welder", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" },
+            { batch: "5th Batch", name: "Muhammad Qaiser", role: "Multi Welder", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" }
         ];
 
         function toggleModal(workerIndex = null) {
@@ -133,7 +133,6 @@
                 document.getElementById('m-interview').innerText = w.interview || "TBD";
                 document.getElementById('m-entry').innerText = w.entry || "TBD";
                 document.getElementById('m-photo').src = w.photo ? (w.photo + "?t=" + new Date().getTime()) : ('https://ui-avatars.com/api/?name=' + encodeURIComponent(w.name) + '&background=334155&color=fff');
-                document.getElementById('m-whatsapp').href = "https://wa.me/" + w.phone;
                 
                 const visaBox = document.getElementById('m-visa-box');
                 if (w.visa !== "Pending" && w.visaLink !== "#") {
