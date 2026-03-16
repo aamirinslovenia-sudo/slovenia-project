@@ -33,6 +33,17 @@
     </div>
 
     <div id="main-app" class="hidden max-w-7xl mx-auto p-4 md:p-8">
+        
+        <div class="flex items-center gap-3 mb-8 bg-blue-500/5 border border-blue-500/10 p-4 rounded-2xl">
+            <span class="relative flex h-3 w-3">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+            </span>
+            <p class="text-xs font-semibold text-slate-300 uppercase tracking-widest">
+                Welcome, Director. Tracking the deployment of your specialized workforce.
+            </p>
+        </div>
+
         <header class="mb-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pb-10 border-b border-slate-800/50">
             <div>
                 <div class="flex items-center gap-3 mb-2">
@@ -120,87 +131,4 @@
             { batch: "3rd Batch", name: "Sajjad Ali", role: "Multi Welder", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" },
             { batch: "3rd Batch", name: "Imran Akram", role: "Multi Welder", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" },
             { batch: "3rd Batch", name: "Muhammad Zohaib", role: "Pipefitter", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" },
-            { batch: "4th Batch", name: "Muhammad Maaz", role: "Multi Welder", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" },
-            { batch: "4th Batch", name: "Muhammad Mansoor", role: "Multi Welder", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" },
-            { batch: "5th Batch", name: "Zaheer Ahmad", role: "Industrial Electrician", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" },
-            { batch: "5th Batch", name: "Muhammad Qaiser", role: "Industrial Electrician", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" }
-        ];
-
-        function updateStats() {
-            const total = workerData.length;
-            const ready = workerData.filter(w => w.finger !== "TBD" && w.finger !== "N/A" && w.interview !== "TBD" && w.interview !== "N/A").length;
-            document.getElementById('stat-total').innerText = total;
-            document.getElementById('stat-ready').innerText = ready;
-            document.getElementById('stat-process').innerText = total - ready;
-            document.getElementById('stat-date').innerText = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-        }
-
-        function toggleModal(workerIndex = null) {
-            const modal = document.getElementById('workerModal');
-            if (workerIndex !== null) {
-                const w = workerData[workerIndex];
-                document.getElementById('m-name').innerText = w.name;
-                document.getElementById('m-role-display').innerText = w.role;
-                document.getElementById('m-passport').innerText = w.passport || "TBD";
-                document.getElementById('m-finger').innerText = w.finger || "TBD";
-                document.getElementById('m-interview').innerText = w.interview || "TBD";
-                document.getElementById('m-photo').src = w.photo ? (w.photo + "?t=" + new Date().getTime()) : ('https://ui-avatars.com/api/?name=' + encodeURIComponent(w.name) + '&background=334155&color=fff');
-                
-                // PROGRESS CALCULATION
-                let score = 25; // Base (Documentation)
-                document.getElementById('dot-1').className = "progress-dot bg-blue-500";
-                
-                if(w.visa !== "Pending") { score += 25; document.getElementById('dot-2').className = "progress-dot bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"; }
-                else { document.getElementById('dot-2').className = "progress-dot bg-slate-700"; }
-                
-                if(w.interview !== "TBD" && w.interview !== "N/A") { score += 25; document.getElementById('dot-3').className = "progress-dot bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"; }
-                else { document.getElementById('dot-3').className = "progress-dot bg-slate-700"; }
-                
-                if(w.finger !== "TBD" && w.finger !== "N/A") { score += 25; document.getElementById('dot-4').className = "progress-dot bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"; }
-                else { document.getElementById('dot-4').className = "progress-dot bg-slate-700"; }
-
-                const bar = document.getElementById('m-progress-bar');
-                bar.style.width = score + "%";
-                bar.className = score === 100 ? "h-full bg-emerald-500 transition-all duration-1000 ease-out" : "h-full bg-blue-600 transition-all duration-1000 ease-out";
-                document.getElementById('m-percent').innerText = score + "%";
-                document.getElementById('m-percent').className = score === 100 ? "text-[9px] font-bold text-emerald-400 uppercase tracking-widest" : "text-[9px] font-bold text-blue-400 uppercase tracking-widest";
-
-                const visaBox = document.getElementById('m-visa-box');
-                visaBox.innerHTML = (w.visa !== "Pending" && w.visaLink !== "#") ? `<a href="${w.visaLink}" target="_blank" class="underline decoration-blue-500/50 hover:text-white cursor-pointer">${w.visa}</a>` : w.visa;
-            }
-            modal.classList.toggle('opacity-0');
-            modal.classList.toggle('pointer-events-none');
-            document.body.classList.toggle('modal-active');
-        }
-
-        function filterWorkers() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            document.querySelectorAll('.worker-item').forEach(item => {
-                const name = item.getAttribute('data-name').toLowerCase();
-                item.style.display = name.includes(query) ? 'flex' : 'none';
-            });
-        }
-
-        const grid = document.getElementById('batch-grid');
-        const batches = workerData.reduce((acc, w) => { (acc[w.batch] = acc[w.batch] || []).push(w); return acc; }, {});
-
-        Object.entries(batches).forEach(([batchName, members]) => {
-            const block = document.createElement('div');
-            block.className = "mb-10";
-            const listItems = members.map((m) => {
-                const idx = workerData.findIndex(w => w.name === m.name);
-                let sText = "Process", sClass = "border-amber-500/30 text-amber-500 bg-amber-500/5";
-                if (m.finger !== "TBD" && m.finger !== "N/A" && m.interview !== "TBD" && m.interview !== "N/A") { sText = "Ready / Entry", sClass = "border-emerald-500/30 text-emerald-500 bg-emerald-500/5"; }
-                else if (m.finger !== "TBD" && m.finger !== "N/A") { sText = "Finger Done", sClass = "border-blue-500/30 text-blue-400 bg-blue-500/5"; }
-                else if (m.interview !== "TBD" && m.interview !== "N/A") { sText = "Int. Waiting", sClass = "border-purple-500/30 text-purple-400 bg-purple-500/5"; }
-                return `<div onclick="toggleModal(${idx})" data-name="${m.name}" class="worker-item flex justify-between items-center p-6 bg-slate-900/30 border border-slate-800/50 rounded-2xl mb-3 hover:bg-slate-800/50 cursor-pointer transition-all group">
-                    <div><span class="text-white font-bold group-hover:text-blue-400 transition-colors">${m.name}</span><p class="text-[9px] text-slate-500 font-bold uppercase mt-1 tracking-widest">${m.role}</p></div>
-                    <span class="px-2 py-1 rounded border ${sClass} uppercase text-[9px] font-bold">${sText}</span>
-                </div>`;
-            }).join('');
-            block.innerHTML = `<h2 class="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mb-4 ml-2">${batchName}</h2><div>${listItems}</div>`;
-            grid.appendChild(block);
-        });
-    </script>
-</body>
-</html>
+            { batch: "4th Batch", name: "Muhammad Ma
