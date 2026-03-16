@@ -94,16 +94,20 @@
             { batch: "2nd Batch", name: "Muhammad Safeer", passport: "BH5529073", dob: "28-01-1993", visa: "IR-10310084592", visaLink: "safeer.pdf", photo: "", finger: "12-01-2026", entry: "15-01-2026" },
             { batch: "2nd Batch", name: "Muhammad Sulaman", passport: "BB5756615", dob: "05-01-1984", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", entry: "TBD" },
             
-            // BATCH 3, 4, 5 (Placeholder Data)
+            // BATCH 3
             { batch: "3rd Batch", name: "Muhammad Nasir Jamil", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", entry: "TBD" },
             { batch: "3rd Batch", name: "Asad Sajjad", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", entry: "TBD" },
-            { batch: "3rd Batch", name: "Sajjad Ali", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", finger: "TBD", entry: "TBD" },
-            { batch: "3rd Batch", name: "Imran Akram", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", finger: "TBD", entry: "TBD" },
-            { batch: "3rd Batch", name: "Muhammad Zohaib", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", finger: "TBD", entry: "TBD" },
-            { batch: "4th Batch", name: "Muhammad Maaz", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", finger: "TBD", entry: "TBD" },
-            { batch: "4th Batch", name: "Muhammad Mansoor", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", finger: "TBD", entry: "TBD" },
-            { batch: "5th Batch", name: "Zaheer Ahmad", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", finger: "TBD", entry: "TBD" },
-            { batch: "5th Batch", name: "Muhammad Qaiser", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", finger: "TBD", entry: "TBD" }
+            { batch: "3rd Batch", name: "Sajjad Ali", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", entry: "TBD" },
+            { batch: "3rd Batch", name: "Imran Akram", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", entry: "TBD" },
+            { batch: "3rd Batch", name: "Muhammad Zohaib", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", entry: "TBD" },
+            
+            // BATCH 4
+            { batch: "4th Batch", name: "Muhammad Maaz", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", entry: "TBD" },
+            { batch: "4th Batch", name: "Muhammad Mansoor", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", entry: "TBD" },
+            
+            // BATCH 5
+            { batch: "5th Batch", name: "Zaheer Ahmad", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", entry: "TBD" },
+            { batch: "5th Batch", name: "Muhammad Qaiser", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", entry: "TBD" }
         ];
 
         function toggleModal(workerIndex = null) {
@@ -119,7 +123,6 @@
                 document.getElementById('m-finger').innerText = w.finger;
                 document.getElementById('m-entry').innerText = w.entry;
                 
-                // Photo Logic with Refresh hack
                 const photoEl = document.getElementById('m-photo');
                 if (w.photo) {
                     photoEl.src = w.photo + "?t=" + new Date().getTime();
@@ -138,3 +141,40 @@
             modal.classList.toggle('opacity-0');
             modal.classList.toggle('pointer-events-none');
             body.classList.toggle('modal-active');
+        }
+
+        const batches = workerData.reduce((acc, worker) => {
+            acc[worker.batch] = acc[worker.batch] || [];
+            acc[worker.batch].push(worker);
+            return acc;
+        }, {});
+
+        const grid = document.getElementById('batch-grid');
+
+        Object.entries(batches).forEach(([batchName, members]) => {
+            const block = document.createElement('div');
+            block.className = "batch-card rounded-2xl overflow-hidden shadow-2xl";
+            
+            const listItems = members.map((m) => {
+                const idx = workerData.findIndex(w => w.name === m.name && w.batch === m.batch);
+                return `
+                <div onclick="toggleModal(${idx})" class="flex justify-between items-center p-5 border-b border-slate-700/50 last:border-0 hover:bg-slate-700/40 cursor-pointer group transition-all">
+                    <div>
+                        <span class="text-white font-bold group-hover:text-blue-400 transition-colors">${m.name}</span>
+                        <p class="text-[10px] text-slate-500 font-mono uppercase mt-1">${m.passport !== 'TBD' ? m.passport : 'Documentation Pending'}</p>
+                    </div>
+                </div>`;
+            }).join('');
+
+            block.innerHTML = `
+                <div class="bg-slate-800/80 px-5 py-4 flex justify-between items-center border-b border-slate-700">
+                    <h2 class="font-black text-blue-400 text-xs tracking-widest uppercase">${batchName}</h2>
+                    <span class="text-[10px] font-bold text-slate-500 bg-slate-900 px-3 py-1 rounded-full border border-slate-700">${members.length}</span>
+                </div>
+                <div>${listItems}</div>
+            `;
+            grid.appendChild(block);
+        });
+    </script>
+</body>
+</html>
