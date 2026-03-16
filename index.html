@@ -16,12 +16,11 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        #login-screen { background: #0f172a; z-index: 9999; }
     </style>
 </head>
 <body class="bg-[#0f172a] p-6 font-sans text-slate-200">
 
-    <div id="login-screen" class="fixed inset-0 flex items-center justify-center p-6">
+    <div id="login-screen" class="fixed inset-0 flex items-center justify-center p-6 z-[9999] bg-[#0f172a]">
         <div class="bg-[#1e293b] p-8 rounded-3xl border border-slate-700 shadow-2xl w-full max-w-sm text-center">
             <h2 class="text-2xl font-black text-white mb-2 uppercase">MM Hidrotech</h2>
             <p class="text-slate-400 text-sm mb-6">Enter Password to Access Database</p>
@@ -32,15 +31,15 @@
     </div>
 
     <div id="main-app" class="hidden max-w-7xl mx-auto">
-        <header class="mb-6 flex flex-col md:flex-row justify-between items-center bg-[#1e293b] p-8 rounded-2xl border border-slate-700 shadow-2xl gap-4">
+        <header class="mb-10 flex flex-col md:flex-row justify-between items-center bg-[#1e293b] p-8 rounded-2xl border border-slate-700 shadow-2xl gap-6">
             <div>
                 <h1 class="text-3xl font-black text-white tracking-tight uppercase">Slovenia Project</h1>
-                <p class="text-blue-400 font-bold text-sm tracking-widest">MANPOWER DEPLOYMENT</p>
+                <p class="text-blue-400 font-bold text-sm tracking-widest uppercase">MM HIDROTECH D.O.O. | MANPOWER DEPLOYMENT</p>
             </div>
             
-            <div class="relative w-full md:w-64">
-                <input type="text" id="searchInput" onkeyup="filterWorkers()" placeholder="Search worker name..." class="w-full bg-[#0f172a] border border-slate-700 p-3 pl-10 rounded-xl text-sm focus:border-blue-500 outline-none">
-                <span class="absolute left-3 top-3.5 opacity-30">🔍</span>
+            <div class="relative w-full md:w-80">
+                <input type="text" id="searchInput" onkeyup="filterWorkers()" placeholder="Search worker name..." class="w-full bg-[#0f172a] border border-slate-700 p-4 pl-12 rounded-2xl text-sm focus:border-blue-500 outline-none transition-all">
+                <span class="absolute left-4 top-4.5 text-xl opacity-30">🔍</span>
             </div>
         </header>
 
@@ -51,33 +50,35 @@
         <div class="modal-overlay absolute w-full h-full bg-black opacity-80" onclick="toggleModal()"></div>
         <div class="modal-container bg-[#1e293b] w-11/12 md:max-w-md mx-auto rounded-3xl shadow-2xl z-50 overflow-y-auto border border-slate-700 max-h-[90vh]">
             <div class="modal-content py-6 text-left px-8">
-                
-                <div class="flex justify-between items-start mb-4 text-center">
-                    <div class="flex flex-col items-center flex-1">
-                        <img id="m-photo" src="" class="w-28 h-28 rounded-full object-cover border-4 border-blue-500 shadow-lg mb-3">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex flex-col items-center flex-1 text-center">
+                        <img id="m-photo" src="" class="w-28 h-28 rounded-full object-cover border-4 border-blue-500 shadow-lg mb-3" alt="Worker Photo">
                         <p class="text-2xl font-black text-white leading-tight" id="m-name"></p>
-                        <p class="text-[10px] font-bold text-blue-400 uppercase tracking-widest mt-1" id="m-role-display"></p>
+                        <div class="flex items-center justify-center gap-2 mt-1">
+                             <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+                             <p class="text-[10px] font-bold text-blue-400 uppercase tracking-widest" id="m-role-display"></p>
+                        </div>
                     </div>
-                    <button onclick="toggleModal()" class="text-3xl text-slate-500 leading-none">&times;</button>
+                    <button onclick="toggleModal()" class="text-3xl text-slate-500 hover:text-white leading-none">&times;</button>
                 </div>
                 
                 <div class="space-y-3 text-sm bg-[#0f172a] p-5 rounded-2xl border border-slate-800">
-                    <div class="flex justify-between items-center"><span class="text-slate-500 uppercase text-[10px] font-bold">Passport</span> <span class="font-mono font-bold text-white" id="m-passport"></span></div>
-                    <div class="flex justify-between items-center border-t border-slate-800/50 pt-2"><span class="text-slate-500 font-bold text-blue-300">Fingerprint</span> <span class="text-blue-200 font-bold" id="m-finger"></span></div>
-                    <div class="flex justify-between items-center border-t border-slate-800/50 pt-2"><span class="text-slate-500">Interview</span> <span class="text-slate-300" id="m-interview"></span></div>
-                    <div class="flex justify-between items-center border-t border-slate-800/50 pt-2"><span class="text-slate-500 uppercase text-[10px] font-bold text-emerald-400">Entry</span> <span class="text-emerald-400 font-black" id="m-entry"></span></div>
+                    <div class="flex justify-between items-center"><span class="text-slate-500 uppercase text-[10px] font-bold">Passport No</span> <span class="font-mono font-bold text-white text-base" id="m-passport"></span></div>
+                    <div class="flex justify-between items-center border-t border-slate-800/50 pt-2"><span class="text-slate-500 uppercase text-[10px] font-bold">Iran Visa Ref</span> <span id="m-visa" class="text-blue-400 font-bold"></span></div>
+                    <div class="flex justify-between items-center border-t border-slate-800/50 pt-2"><span class="text-slate-500 font-bold text-blue-300">Fingerprint Date</span> <span class="text-blue-200 font-bold" id="m-finger"></span></div>
+                    <div class="flex justify-between items-center border-t border-slate-800/50 pt-2"><span class="text-slate-500">Interview Date</span> <span class="text-slate-300" id="m-interview"></span></div>
+                    <div class="flex justify-between items-center border-t border-slate-800/50 pt-2"><span class="text-slate-500 uppercase text-[10px] font-bold text-emerald-400">Pakistan Entry</span> <span class="text-emerald-400 font-black text-lg" id="m-entry"></span></div>
                 </div>
 
-                <div class="mt-6 flex gap-2">
-                    <a id="m-whatsapp" href="#" target="_blank" class="flex-1 bg-emerald-600 text-white py-3 rounded-xl font-black text-center text-xs uppercase tracking-widest hover:bg-emerald-500 transition-all">WhatsApp</a>
-                    <button onclick="toggleModal()" class="flex-1 bg-slate-700 text-white py-3 rounded-xl font-black text-xs uppercase tracking-widest">Close</button>
+                <div class="mt-6 flex gap-3">
+                    <a id="m-whatsapp" href="#" target="_blank" class="flex-1 bg-emerald-600 text-white py-4 rounded-xl font-black text-center text-xs uppercase tracking-widest hover:bg-emerald-500 transition-all shadow-lg shadow-emerald-900/20">WhatsApp</a>
+                    <button onclick="toggleModal()" class="flex-1 bg-slate-700 text-white py-4 rounded-xl font-black text-xs uppercase tracking-widest">Close</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // PASSWORD LOGIC
         function checkPassword() {
             const pass = document.getElementById('pass-input').value;
             if(pass === "MM2026") {
@@ -89,12 +90,24 @@
         }
 
         const workerData = [
-            { batch: "1st Batch", name: "Shahriyar Khan", role: "Multi Welder", phone: "923123456789", passport: "KH4148432", dob: "19-02-1996", visa: "IR-10310080212", photo: "shahriyar.jpeg", finger: "16-11-2025", interview: "N/A", entry: "20-11-2025" },
-            { batch: "1st Batch", name: "Muhammad Ali Rashid", role: "Multi Welder", phone: "923123456789", passport: "KC9847072", dob: "14-07-2002", visa: "IR-10310080211", photo: "ali_rashid.jpeg", finger: "16-11-2025", interview: "N/A", entry: "20-11-2025" },
-            { batch: "1st Batch", name: "Hamid Naeem", role: "Multi Welder", phone: "923123456789", passport: "DK9959992", dob: "1991-01-05", visa: "IR-10310080213", photo: "hamid.jpeg", finger: "16-11-2025", interview: "17-08-2026", entry: "20-11-2025" },
-            { batch: "3rd Batch", name: "Muhammad Nasir Jamil", role: "Engineer", phone: "923123456789", passport: "TBD", dob: "TBD", visa: "Pending", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" },
-            { batch: "3rd Batch", name: "Muhammad Zohaib", role: "Pipefitter", phone: "923123456789", passport: "TBD", dob: "TBD", visa: "Pending", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" }
-            // ... Add remaining workers here using the same format
+            { batch: "1st Batch", name: "Shahriyar Khan", role: "Multi Welder", phone: "920000000000", passport: "KH4148432", dob: "19-02-1996", visa: "IR-10310080212", photo: "shahriyar.jpeg", finger: "16-11-2025", interview: "N/A", entry: "20-11-2025" },
+            { batch: "1st Batch", name: "Muhammad Ali Rashid", role: "Multi Welder", phone: "920000000000", passport: "KC9847072", dob: "14-07-2002", visa: "IR-10310080211", photo: "ali_rashid.jpeg", finger: "16-11-2025", interview: "N/A", entry: "20-11-2025" },
+            { batch: "1st Batch", name: "Hamid Naeem", role: "Multi Welder", phone: "920000000000", passport: "DK9959992", dob: "1991-01-05", visa: "IR-10310080213", photo: "hamid.jpeg", finger: "16-11-2025", interview: "17-08-2026", entry: "20-11-2025" },
+            { batch: "1st Batch", name: "Mhammad Faizan Ali Shah", role: "Multi Welder", phone: "920000000000", passport: "YD5151181", dob: "15-01-1992", visa: "IR-10310080214", photo: "faizan.jpeg", finger: "16-11-2025", interview: "N/A", entry: "20-11-2025" },
+            { batch: "1st Batch", name: "Muhammad Uzair", role: "Multi Welder", phone: "920000000000", passport: "AB2899693", dob: "17-10-1988", visa: "IR-10310080210", photo: "uzair.jpeg", finger: "16-11-2025", interview: "N/A", entry: "20-11-2025" },
+            { batch: "2nd Batch", name: "Sajjad Khan", role: "Multi Welder", phone: "920000000000", passport: "MC4100303", dob: "29-11-1987", visa: "IR-10310084591", photo: "", finger: "12-01-2026", interview: "N/A", entry: "15-01-2026" },
+            { batch: "2nd Batch", name: "Asim Amin", role: "Multi Welder", phone: "920000000000", passport: "BX1205984", dob: "1990-08-03", visa: "IR-10310084593", photo: "", finger: "12-01-2026", interview: "28-06-2026", entry: "15-01-2026" },
+            { batch: "2nd Batch", name: "Muhammad Safeer", role: "Multi Welder", phone: "920000000000", passport: "BH5529073", dob: "28-01-1993", visa: "IR-10310084592", photo: "", finger: "12-01-2026", interview: "N/A", entry: "15-01-2026" },
+            { batch: "2nd Batch", name: "Muhammad Sulaman", role: "Multi Welder", phone: "920000000000", passport: "BB5756615", dob: "05-01-1984", visa: "Pending", photo: "", finger: "TBD", interview: "04-05-2026", entry: "TBD" },
+            { batch: "3rd Batch", name: "Muhammad Nasir Jamil", role: "Engineer", phone: "920000000000", passport: "TBD", dob: "TBD", visa: "Pending", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" },
+            { batch: "3rd Batch", name: "Asad Sajjad", role: "Multi Welder", phone: "920000000000", passport: "TBD", dob: "TBD", visa: "Pending", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" },
+            { batch: "3rd Batch", name: "Sajjad Ali", role: "Multi Welder", phone: "920000000000", passport: "TBD", dob: "TBD", visa: "Pending", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" },
+            { batch: "3rd Batch", name: "Imran Akram", role: "Multi Welder", phone: "920000000000", passport: "TBD", dob: "TBD", visa: "Pending", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" },
+            { batch: "3rd Batch", name: "Muhammad Zohaib", role: "Pipefitter", phone: "920000000000", passport: "TBD", dob: "TBD", visa: "Pending", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" },
+            { batch: "4th Batch", name: "Muhammad Maaz", role: "Multi Welder", phone: "920000000000", passport: "TBD", dob: "TBD", visa: "Pending", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" },
+            { batch: "4th Batch", name: "Muhammad Mansoor", role: "Multi Welder", phone: "920000000000", passport: "TBD", dob: "TBD", visa: "Pending", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" },
+            { batch: "5th Batch", name: "Zaheer Ahmad", role: "Multi Welder", phone: "920000000000", passport: "TBD", dob: "TBD", visa: "Pending", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" },
+            { batch: "5th Batch", name: "Muhammad Qaiser", role: "Multi Welder", phone: "920000000000", passport: "TBD", dob: "TBD", visa: "Pending", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" }
         ];
 
         function toggleModal(workerIndex = null) {
@@ -107,20 +120,22 @@
                 document.getElementById('m-finger').innerText = w.finger || "TBD";
                 document.getElementById('m-interview').innerText = w.interview || "TBD";
                 document.getElementById('m-entry').innerText = w.entry || "TBD";
-                document.getElementById('m-photo').src = w.photo ? w.photo : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(w.name);
+                document.getElementById('m-photo').src = w.photo ? w.photo : ('https://ui-avatars.com/api/?name=' + encodeURIComponent(w.name) + '&background=334155&color=fff');
                 document.getElementById('m-whatsapp').href = "https://wa.me/" + w.phone;
+                
+                const visaBox = document.getElementById('m-visa');
+                visaBox.innerText = w.visa;
             }
             modal.classList.toggle('opacity-0');
             modal.classList.toggle('pointer-events-none');
         }
 
-        // SEARCH FILTER LOGIC
         function filterWorkers() {
             const query = document.getElementById('searchInput').value.toLowerCase();
-            const cards = document.querySelectorAll('.worker-item');
-            cards.forEach(card => {
-                const name = card.getAttribute('data-name').toLowerCase();
-                card.style.display = name.includes(query) ? 'flex' : 'none';
+            const items = document.querySelectorAll('.worker-item');
+            items.forEach(item => {
+                const name = item.getAttribute('data-name').toLowerCase();
+                item.style.display = name.includes(query) ? 'flex' : 'none';
             });
         }
 
@@ -129,14 +144,35 @@
 
         Object.entries(batches).forEach(([batchName, members]) => {
             const block = document.createElement('div');
-            block.className = "batch-card rounded-2xl overflow-hidden mb-6";
+            block.className = "batch-card rounded-2xl overflow-hidden mb-8";
+            
             const listItems = members.map((m) => {
                 const idx = workerData.findIndex(w => w.name === m.name);
-                return `<div onclick="toggleModal(${idx})" data-name="${m.name}" class="worker-item flex justify-between items-center p-5 border-b border-slate-700/50 hover:bg-slate-700/40 cursor-pointer">
-                    <div><span class="text-white font-bold">${m.name}</span><p class="text-[10px] text-blue-400 font-bold uppercase mt-1">${m.role}</p></div>
+                let statusText = "Process";
+                let statusClass = "border-amber-500/50 text-amber-500 bg-amber-500/10";
+                
+                if (m.finger !== "TBD" && m.finger !== "N/A" && m.interview !== "TBD" && m.interview !== "N/A") {
+                    statusText = "Finger Done / Int. Wait";
+                    statusClass = "border-emerald-500/50 text-emerald-400 bg-emerald-500/10";
+                } else if (m.finger !== "TBD" && m.finger !== "N/A") {
+                    statusText = "Fingerprint Done";
+                    statusClass = "border-blue-500/50 text-blue-400 bg-blue-500/10";
+                } else if (m.interview !== "TBD" && m.interview !== "N/A") {
+                    statusText = "Interview Waiting";
+                    statusClass = "border-purple-500/50 text-purple-400 bg-purple-500/10";
+                }
+
+                return `
+                <div onclick="toggleModal(${idx})" data-name="${m.name}" class="worker-item flex justify-between items-center p-5 border-b border-slate-700/50 last:border-0 hover:bg-slate-700/40 cursor-pointer transition-all">
+                    <div>
+                        <span class="text-white font-bold">${m.name}</span>
+                        <p class="text-[10px] text-blue-400/80 font-bold uppercase mt-1 tracking-widest">${m.role}</p>
+                    </div>
+                    <span class="px-2 py-1 text-[8px] font-black rounded border ${statusClass} uppercase tracking-tighter">${statusText}</span>
                 </div>`;
             }).join('');
-            block.innerHTML = `<div class="bg-slate-800/80 px-5 py-4 text-blue-400 font-black text-xs uppercase tracking-widest">${batchName}</div><div>${listItems}</div>`;
+
+            block.innerHTML = `<div class="bg-slate-800/80 px-5 py-4 flex justify-between items-center border-b border-slate-700"><h2 class="font-black text-blue-400 text-xs uppercase tracking-widest">${batchName}</h2></div><div>${listItems}</div>`;
             grid.appendChild(block);
         });
     </script>
