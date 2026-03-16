@@ -41,7 +41,7 @@
     </div>
 
     <div id="main-app" class="hidden max-w-7xl mx-auto p-6">
-        <header class="mb-10 flex flex-col md:flex-row justify-between items-center bg-[#1e293b] p-8 rounded-3xl border border-slate-700 shadow-2xl gap-6">
+        <header class="mb-6 flex flex-col md:flex-row justify-between items-center bg-[#1e293b] p-8 rounded-3xl border border-slate-700 shadow-2xl gap-6">
             <div>
                 <h1 class="text-3xl font-black text-white tracking-tight uppercase">Slovenia Project</h1>
                 <p class="text-blue-400 font-bold text-sm tracking-widest uppercase">MM HIDROTECH D.O.O. | MANPOWER DEPLOYMENT</p>
@@ -52,6 +52,25 @@
                 <span class="absolute left-4 top-4 text-xl opacity-30">🔍</span>
             </div>
         </header>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+            <div class="glass p-5 rounded-3xl border border-slate-700/50">
+                <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1">Total Fleet</p>
+                <h3 id="stat-total" class="text-2xl font-black text-white">0</h3>
+            </div>
+            <div class="glass p-5 rounded-3xl border border-slate-700/50">
+                <p class="text-emerald-500 text-[10px] font-bold uppercase tracking-widest mb-1">Ready/Done</p>
+                <h3 id="stat-ready" class="text-2xl font-black text-white">0</h3>
+            </div>
+            <div class="glass p-5 rounded-3xl border border-slate-700/50">
+                <p class="text-blue-500 text-[10px] font-bold uppercase tracking-widest mb-1">In Process</p>
+                <h3 id="stat-process" class="text-2xl font-black text-white">0</h3>
+            </div>
+            <div class="glass p-5 rounded-3xl border border-slate-700/50 text-right">
+                <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1">Last Update</p>
+                <p id="stat-date" class="text-xs font-bold text-slate-300 mt-2">--/--/--</p>
+            </div>
+        </div>
 
         <div id="batch-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
     </div>
@@ -95,6 +114,7 @@
             if(document.getElementById('pass-input').value === "MM2026") {
                 document.getElementById('login-screen').classList.add('hidden');
                 document.getElementById('main-app').classList.remove('hidden');
+                updateStats(); // Run stats when logged in
             } else {
                 document.getElementById('login-error').classList.remove('hidden');
             }
@@ -120,6 +140,19 @@
             { batch: "5th Batch", name: "Zaheer Ahmad", role: "Industrial Electrician", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" },
             { batch: "5th Batch", name: "Muhammad Qaiser", role: "Industrial Electrician", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" }
         ];
+
+        function updateStats() {
+            const total = workerData.length;
+            const ready = workerData.filter(w => 
+                w.finger !== "TBD" && w.finger !== "N/A" && w.interview !== "TBD" && w.interview !== "N/A"
+            ).length;
+            const inProcess = total - ready;
+            
+            document.getElementById('stat-total').innerText = total;
+            document.getElementById('stat-ready').innerText = ready;
+            document.getElementById('stat-process').innerText = inProcess;
+            document.getElementById('stat-date').innerText = new Date().toLocaleDateString('en-GB');
+        }
 
         function toggleModal(workerIndex = null) {
             const modal = document.getElementById('workerModal');
