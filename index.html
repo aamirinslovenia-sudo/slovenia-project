@@ -145,6 +145,19 @@
             
             const listItems = members.map((m) => {
                 const idx = workerData.findIndex(w => w.name === m.name && w.batch === m.batch);
+                
+                // --- NEW STATUS LOGIC ---
+                let statusText = "Process";
+                let statusClass = "border-amber-500/50 text-amber-500 bg-amber-500/10";
+                
+                if (m.finger !== "TBD" && m.finger !== "N/A") {
+                    statusText = "Fingerprint Done";
+                    statusClass = "border-blue-500/50 text-blue-400 bg-blue-500/10";
+                } else if (m.interview !== "TBD" && m.interview !== "N/A") {
+                    statusText = "Interview Waiting";
+                    statusClass = "border-purple-500/50 text-purple-400 bg-purple-500/10";
+                }
+
                 return `
                 <div onclick="toggleModal(${idx})" class="flex justify-between items-center p-5 border-b border-slate-700/50 last:border-0 hover:bg-slate-700/40 cursor-pointer group transition-all">
                     <div>
@@ -152,8 +165,8 @@
                         <p class="text-[10px] text-blue-400/80 font-bold tracking-widest uppercase mt-1">${m.role}</p>
                     </div>
                     <div class="flex items-center gap-3">
-                        <span class="px-2 py-1 text-[9px] font-black rounded border ${m.visa === 'Pending' ? 'border-amber-500/50 text-amber-500 bg-amber-500/10' : 'border-blue-500/50 text-blue-400 bg-blue-500/10'} uppercase tracking-tighter">
-                            ${m.visa === 'Pending' ? 'Process' : 'Fingerprint Done'}
+                        <span class="px-2 py-1 text-[9px] font-black rounded border ${statusClass} uppercase tracking-tighter">
+                            ${statusText}
                         </span>
                     </div>
                 </div>`;
