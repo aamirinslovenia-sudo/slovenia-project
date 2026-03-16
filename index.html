@@ -44,7 +44,7 @@
             <p class="text-slate-500 font-medium text-xs tracking-widest uppercase mb-8">Pakistan to Slovenia | MM Hidrotech Pipeline</p>
             
             <div class="relative max-w-md mx-auto group">
-                <input type="text" id="searchInput" onkeyup="filterWorkers()" placeholder="Search personnel database..." class="w-full bg-slate-900/40 border border-slate-800 p-4 pl-12 rounded-2xl text-sm focus:border-blue-500 outline-none transition-all">
+                <input type="text" id="searchInput" onkeyup="filterWorkers()" placeholder="Search by name, role, or DOB..." class="w-full bg-slate-900/40 border border-slate-800 p-4 pl-12 rounded-2xl text-sm focus:border-blue-500 outline-none transition-all">
                 <span class="absolute left-4 top-4 text-xl opacity-20">🔍</span>
             </div>
         </header>
@@ -53,7 +53,7 @@
             <div class="glass-card p-6 rounded-3xl"><p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-2">Total Personnel</p><h3 id="stat-total" class="text-2xl font-black text-white">0</h3></div>
             <div class="glass-card p-6 rounded-3xl border-l-2 border-l-emerald-500/50"><p class="text-emerald-500 text-[10px] font-bold uppercase tracking-widest mb-2">Ready for Deployment</p><h3 id="stat-ready" class="text-2xl font-black text-white">0</h3></div>
             <div class="glass-card p-6 rounded-3xl border-l-2 border-l-blue-500/50"><p class="text-blue-500 text-[10px] font-bold uppercase tracking-widest mb-2">Process Pipeline</p><h3 id="stat-process" class="text-2xl font-black text-white">0</h3></div>
-            <div class="glass-card p-6 rounded-3xl flex flex-col justify-center"><p class="text-slate-600 text-[9px] font-bold uppercase tracking-widest mb-1">Last System Sync</p><p id="stat-date" class="text-sm font-black text-slate-400">--/--/--</p></div>
+            <div class="glass-card p-6 rounded-3xl flex flex-col justify-center text-right"><p class="text-slate-600 text-[9px] font-bold uppercase tracking-widest mb-1 text-right">Last Sync</p><p id="stat-date" class="text-sm font-black text-slate-400">--/--/--</p></div>
         </div>
 
         <div id="batch-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
@@ -68,7 +68,7 @@
                 <p class="text-blue-400 text-[10px] font-bold uppercase tracking-widest mb-6" id="m-role-display"></p>
 
                 <div class="mb-8 px-4 text-left">
-                    <div class="flex justify-between mb-2 text-[9px] font-bold uppercase text-slate-500 tracking-widest"><span>Progress</span><span id="m-percent">0%</span></div>
+                    <div class="flex justify-between mb-2 text-[9px] font-bold uppercase text-slate-500 tracking-widest"><span>Progress Status</span><span id="m-percent">0%</span></div>
                     <div class="h-1.5 w-full bg-slate-800 rounded-full flex"><div id="m-progress-bar" class="h-full bg-blue-600 rounded-full transition-all duration-1000"></div></div>
                     <div class="flex justify-between mt-3">
                         <div class="flex flex-col items-center gap-1"><div id="dot-1" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-600 uppercase tracking-tighter">Docs</span></div>
@@ -79,12 +79,10 @@
                 </div>
 
                 <div class="space-y-3 mb-8 text-left">
+                    <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50 flex justify-between items-center"><span class="text-slate-500 text-[9px] font-black uppercase">Full Name</span><span class="text-white font-bold text-xs" id="m-full-name"></span></div>
+                    <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50 flex justify-between items-center"><span class="text-slate-500 text-[9px] font-black uppercase">Date of Birth</span><span class="text-white font-bold text-xs" id="m-dob"></span></div>
                     <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50 flex justify-between items-center"><span class="text-slate-500 text-[9px] font-black uppercase">Passport</span><span class="text-white font-mono font-bold text-xs" id="m-passport"></span></div>
                     <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50 flex justify-between items-center"><span class="text-slate-500 text-[9px] font-black uppercase">Visa Ref</span><span id="m-visa-box" class="text-blue-400 font-bold text-xs"></span></div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50"><span class="text-slate-500 text-[9px] font-black uppercase block mb-1">Fingerprint</span><span class="text-blue-200 font-bold text-xs" id="m-finger"></span></div>
-                        <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50"><span class="text-slate-500 text-[9px] font-black uppercase block mb-1">Interview</span><span class="text-slate-300 font-bold text-xs" id="m-interview"></span></div>
-                    </div>
                 </div>
                 <button onclick="toggleModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-white py-4 rounded-2xl font-bold text-xs uppercase tracking-widest">Back to Dashboard</button>
             </div>
@@ -93,24 +91,24 @@
 
     <script>
         const workerData = [
-            { batch: "1st Batch", name: "Shahriyar Khan", role: "Multi Welder", passport: "KH4148432", visa: "IR-10310080212", visaLink: "shahriyar.pdf", photo: "shahriyar.jpeg", finger: "16-11-2025", interview: "N/A" },
-            { batch: "1st Batch", name: "Muhammad Ali Rashid", role: "Multi Welder", passport: "KC9847072", visa: "IR-10310080211", visaLink: "ali_rashid.pdf", photo: "ali_rashid.jpeg", finger: "16-11-2025", interview: "N/A" },
-            { batch: "1st Batch", name: "Hamid Naeem", role: "Multi Welder", passport: "DK9959992", visa: "IR-10310080213", visaLink: "hamid.pdf", photo: "hamid.jpeg", finger: "16-11-2025", interview: "17-08-2026" },
-            { batch: "1st Batch", name: "Mhammad Faizan Ali Shah", role: "Multi Welder", passport: "YD5151181", visa: "IR-10310080214", visaLink: "faizan.pdf", photo: "faizan.jpeg", finger: "16-11-2025", interview: "N/A" },
-            { batch: "1st Batch", name: "Muhammad Uzair", role: "Multi Welder", passport: "AB2899693", visa: "IR-10310080210", visaLink: "uzair.pdf", photo: "uzair.jpeg", finger: "16-11-2025", interview: "N/A" },
-            { batch: "2nd Batch", name: "Sajjad Khan", role: "Multi Welder", passport: "MC4100303", visa: "IR-10310084591", visaLink: "sajjad_k.pdf", photo: "", finger: "12-01-2026", interview: "N/A" },
-            { batch: "2nd Batch", name: "Asim Amin", role: "Multi Welder", passport: "BX1205984", visa: "IR-10310084593", visaLink: "asim.pdf", photo: "", finger: "12-01-2026", interview: "28-06-2026" },
-            { batch: "2nd Batch", name: "Muhammad Safeer", role: "Multi Welder", passport: "BH5529073", visa: "IR-10310084592", visaLink: "safeer.pdf", photo: "", finger: "12-01-2026", interview: "N/A" },
-            { batch: "2nd Batch", name: "Muhammad Sulaman", role: "Multi Welder", passport: "BB5756615", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "04-05-2026" },
-            { batch: "3rd Batch", name: "Muhammad Nasir Jamil", role: "Engineer", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD" },
-            { batch: "3rd Batch", name: "Asad Sajjad", role: "Multi Welder", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD" },
-            { batch: "3rd Batch", name: "Sajjad Ali", role: "Multi Welder", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD" },
-            { batch: "3rd Batch", name: "Imran Akram", role: "Multi Welder", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD" },
-            { batch: "3rd Batch", name: "Muhammad Zohaib", role: "Pipefitter", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD" },
-            { batch: "4th Batch", name: "Muhammad Maaz", role: "Multi Welder", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD" },
-            { batch: "4th Batch", name: "Muhammad Mansoor", role: "Multi Welder", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD" },
-            { batch: "5th Batch", name: "Zaheer Ahmad", role: "Industrial Electrician", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD" },
-            { batch: "5th Batch", name: "Muhammad Qaiser", role: "Industrial Electrician", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD" }
+            { batch: "1st Batch", name: "Shahriyar Khan", dob: "12-05-1992", role: "Multi Welder", passport: "KH4148432", visa: "IR-10310080212", visaLink: "shahriyar.pdf", photo: "shahriyar.jpeg", finger: "16-11-2025", interview: "N/A" },
+            { batch: "1st Batch", name: "Muhammad Ali Rashid", dob: "04-09-1994", role: "Multi Welder", passport: "KC9847072", visa: "IR-10310080211", visaLink: "ali_rashid.pdf", photo: "ali_rashid.jpeg", finger: "16-11-2025", interview: "N/A" },
+            { batch: "1st Batch", name: "Hamid Naeem", dob: "15-02-1988", role: "Multi Welder", passport: "DK9959992", visa: "IR-10310080213", visaLink: "hamid.pdf", photo: "hamid.jpeg", finger: "16-11-2025", interview: "17-08-2026" },
+            { batch: "1st Batch", name: "Mhammad Faizan Ali Shah", dob: "21-11-1995", role: "Multi Welder", passport: "YD5151181", visa: "IR-10310080214", visaLink: "faizan.pdf", photo: "faizan.jpeg", finger: "16-11-2025", interview: "N/A" },
+            { batch: "1st Batch", name: "Muhammad Uzair", dob: "10-10-1993", role: "Multi Welder", passport: "AB2899693", visa: "IR-10310080210", visaLink: "uzair.pdf", photo: "uzair.jpeg", finger: "16-11-2025", interview: "N/A" },
+            { batch: "2nd Batch", name: "Sajjad Khan", dob: "TBD", role: "Multi Welder", passport: "MC4100303", visa: "IR-10310084591", visaLink: "sajjad_k.pdf", photo: "", finger: "12-01-2026", interview: "N/A" },
+            { batch: "2nd Batch", name: "Asim Amin", dob: "TBD", role: "Multi Welder", passport: "BX1205984", visa: "IR-10310084593", visaLink: "asim.pdf", photo: "", finger: "12-01-2026", interview: "28-06-2026" },
+            { batch: "2nd Batch", name: "Muhammad Safeer", dob: "TBD", role: "Multi Welder", passport: "BH5529073", visa: "IR-10310084592", visaLink: "safeer.pdf", photo: "", finger: "12-01-2026", interview: "N/A" },
+            { batch: "2nd Batch", name: "Muhammad Sulaman", dob: "TBD", role: "Multi Welder", passport: "BB5756615", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "04-05-2026" },
+            { batch: "3rd Batch", name: "Muhammad Nasir Jamil", dob: "TBD", role: "Engineer", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD" },
+            { batch: "3rd Batch", name: "Asad Sajjad", dob: "TBD", role: "Multi Welder", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD" },
+            { batch: "3rd Batch", name: "Sajjad Ali", dob: "TBD", role: "Multi Welder", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD" },
+            { batch: "3rd Batch", name: "Imran Akram", dob: "TBD", role: "Multi Welder", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD" },
+            { batch: "3rd Batch", name: "Muhammad Zohaib", dob: "TBD", role: "Pipefitter", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD" },
+            { batch: "4th Batch", name: "Muhammad Maaz", dob: "TBD", role: "Multi Welder", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD" },
+            { batch: "4th Batch", name: "Muhammad Mansoor", dob: "TBD", role: "Multi Welder", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD" },
+            { batch: "5th Batch", name: "Zaheer Ahmad", dob: "TBD", role: "Industrial Electrician", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD" },
+            { batch: "5th Batch", name: "Muhammad Qaiser", dob: "TBD", role: "Industrial Electrician", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD" }
         ];
 
         function checkPassword() {
@@ -136,6 +134,8 @@
             if (workerIndex !== null) {
                 const w = workerData[workerIndex];
                 document.getElementById('m-name').innerText = w.name;
+                document.getElementById('m-full-name').innerText = w.name;
+                document.getElementById('m-dob').innerText = w.dob || "TBD";
                 document.getElementById('m-role-display').innerText = w.role;
                 document.getElementById('m-passport').innerText = w.passport || "TBD";
                 document.getElementById('m-finger').innerText = w.finger || "TBD";
@@ -162,7 +162,9 @@
             const query = document.getElementById('searchInput').value.toLowerCase();
             document.querySelectorAll('.worker-item').forEach(item => {
                 const name = item.getAttribute('data-name').toLowerCase();
-                item.style.display = name.includes(query) ? 'flex' : 'none';
+                const dob = item.getAttribute('data-dob').toLowerCase();
+                const role = item.getAttribute('data-role').toLowerCase();
+                item.style.display = (name.includes(query) || dob.includes(query) || role.includes(query)) ? 'flex' : 'none';
             });
         }
 
@@ -179,7 +181,7 @@
                     if (m.finger !== "TBD" && m.finger !== "N/A" && m.interview !== "TBD" && m.interview !== "N/A") { sText = "Ready / Entry", sClass = "border-emerald-500/30 text-emerald-400 bg-emerald-500/5"; }
                     else if (m.finger !== "TBD" && m.finger !== "N/A") { sText = "Finger Done", sClass = "border-blue-500/30 text-blue-400 bg-blue-500/5"; }
                     else if (m.interview !== "TBD" && m.interview !== "N/A") { sText = "Int. Waiting", sClass = "border-purple-500/30 text-purple-400 bg-purple-500/5"; }
-                    return `<div onclick="toggleModal(${idx})" data-name="${m.name}" class="worker-item flex justify-between items-center p-6 bg-slate-900/30 border border-slate-800/50 rounded-2xl mb-3 hover:bg-slate-800/50 cursor-pointer transition-all">
+                    return `<div onclick="toggleModal(${idx})" data-name="${m.name}" data-dob="${m.dob}" data-role="${m.role}" class="worker-item flex justify-between items-center p-6 bg-slate-900/30 border border-slate-800/50 rounded-2xl mb-3 hover:bg-slate-800/50 cursor-pointer transition-all">
                         <div><span class="text-white font-bold">${m.name}</span><p class="text-[9px] text-slate-500 font-bold uppercase mt-1 tracking-widest">${m.role}</p></div>
                         <span class="px-2 py-1 rounded border ${sClass} uppercase text-[9px] font-bold">${sText}</span>
                     </div>`;
