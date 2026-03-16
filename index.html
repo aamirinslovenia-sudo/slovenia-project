@@ -56,17 +56,11 @@
                 <div class="space-y-3 text-sm bg-[#0f172a] p-5 rounded-2xl border border-slate-800">
                     <div class="flex justify-between items-center"><span class="text-slate-500 uppercase text-[10px] font-bold">Passport No</span> <span class="font-mono font-bold text-white text-base" id="m-passport"></span></div>
                     <div class="flex justify-between items-center border-t border-slate-800/50 pt-2"><span class="text-slate-500">Date of Birth</span> <span class="text-slate-300" id="m-dob"></span></div>
-                    <div class="flex justify-between items-center border-t border-slate-800/50 pt-2">
-                        <span class="text-slate-500 uppercase text-[10px] font-bold">Iran Visa Ref</span> 
-                        <span id="m-visa" class="text-blue-400 font-bold"></span>
-                    </div>
+                    <div class="flex justify-between items-center border-t border-slate-800/50 pt-2"><span class="text-slate-500 uppercase text-[10px] font-bold">Iran Visa Ref</span> <span id="m-visa" class="text-blue-400 font-bold"></span></div>
                     <div class="flex justify-between items-center border-t border-slate-800/50 pt-2"><span class="text-slate-500 font-bold text-blue-300">Fingerprint Date</span> <span class="text-blue-200 font-bold" id="m-finger"></span></div>
                     <div class="flex justify-between items-center border-t border-slate-800/50 pt-2"><span class="text-slate-500">Interview Date</span> <span class="text-slate-300" id="m-interview"></span></div>
                     <div class="flex justify-between items-center border-t border-slate-800/50 pt-2"><span class="text-slate-500">Exit Date</span> <span class="text-slate-300" id="m-exit"></span></div>
-                    <div class="flex justify-between items-center border-t border-slate-800/50 pt-2">
-                        <span class="text-slate-500 uppercase text-[10px] font-bold">Pakistan Entry</span> 
-                        <span class="text-emerald-400 font-black text-lg" id="m-entry"></span>
-                    </div>
+                    <div class="flex justify-between items-center border-t border-slate-800/50 pt-2"><span class="text-slate-500 uppercase text-[10px] font-bold font-black text-emerald-400">Pakistan Entry</span> <span class="text-emerald-400 font-black text-lg" id="m-entry"></span></div>
                 </div>
 
                 <div class="mt-6">
@@ -146,14 +140,20 @@
             const listItems = members.map((m) => {
                 const idx = workerData.findIndex(w => w.name === m.name && w.batch === m.batch);
                 
-                // --- NEW STATUS LOGIC ---
+                // --- SMART STATUS LOGIC ---
                 let statusText = "Process";
                 let statusClass = "border-amber-500/50 text-amber-500 bg-amber-500/10";
                 
-                if (m.finger !== "TBD" && m.finger !== "N/A") {
+                const hasFinger = m.finger !== "TBD" && m.finger !== "N/A";
+                const hasInterview = m.interview !== "TBD" && m.interview !== "N/A";
+
+                if (hasFinger && hasInterview) {
+                    statusText = "Finger Done / Int. Waiting";
+                    statusClass = "border-emerald-500/50 text-emerald-400 bg-emerald-500/10";
+                } else if (hasFinger) {
                     statusText = "Fingerprint Done";
                     statusClass = "border-blue-500/50 text-blue-400 bg-blue-500/10";
-                } else if (m.interview !== "TBD" && m.interview !== "N/A") {
+                } else if (hasInterview) {
                     statusText = "Interview Waiting";
                     statusClass = "border-purple-500/50 text-purple-400 bg-purple-500/10";
                 }
@@ -165,7 +165,7 @@
                         <p class="text-[10px] text-blue-400/80 font-bold tracking-widest uppercase mt-1">${m.role}</p>
                     </div>
                     <div class="flex items-center gap-3">
-                        <span class="px-2 py-1 text-[9px] font-black rounded border ${statusClass} uppercase tracking-tighter">
+                        <span class="px-2 py-1 text-[7px] md:text-[9px] font-black rounded border ${statusClass} uppercase tracking-tighter">
                             ${statusText}
                         </span>
                     </div>
