@@ -56,7 +56,10 @@
                 <div class="space-y-3 text-sm bg-[#0f172a] p-5 rounded-2xl border border-slate-800">
                     <div class="flex justify-between items-center"><span class="text-slate-500 uppercase text-[10px] font-bold">Passport No</span> <span class="font-mono font-bold text-white text-base" id="m-passport"></span></div>
                     <div class="flex justify-between items-center border-t border-slate-800/50 pt-2"><span class="text-slate-500">Date of Birth</span> <span class="text-slate-300" id="m-dob"></span></div>
-                    <div class="flex justify-between items-center border-t border-slate-800/50 pt-2"><span class="text-slate-500 uppercase text-[10px] font-bold">Iran Visa Ref</span> <span id="m-visa" class="text-blue-400 font-bold"></span></div>
+                    <div class="flex justify-between items-center border-t border-slate-800/50 pt-2">
+                        <span class="text-slate-500 uppercase text-[10px] font-bold">Iran Visa Ref</span> 
+                        <span id="m-visa" class="text-blue-400 font-bold"></span>
+                    </div>
                     <div class="flex justify-between items-center border-t border-slate-800/50 pt-2"><span class="text-slate-500 font-bold text-blue-300">Fingerprint Date</span> <span class="text-blue-200 font-bold" id="m-finger"></span></div>
                     <div class="flex justify-between items-center border-t border-slate-800/50 pt-2"><span class="text-slate-500">Interview Date</span> <span class="text-slate-300" id="m-interview"></span></div>
                     <div class="flex justify-between items-center border-t border-slate-800/50 pt-2"><span class="text-slate-500">Exit Date</span> <span class="text-slate-300" id="m-exit"></span></div>
@@ -75,7 +78,6 @@
 
     <script>
         const workerData = [
-            // Note: I added "role" to everyone. You can change "Multi Welder" to something else if needed.
             { batch: "1st Batch", name: "Shahriyar Khan", role: "Multi Welder", passport: "KH4148432", dob: "19-02-1996", visa: "IR-10310080212", visaLink: "shahriyar.pdf", photo: "shahriyar.jpeg", finger: "16-11-2025", interview: "N/A", exit: "13-11-2025", entry: "20-11-2025" },
             { batch: "1st Batch", name: "Muhammad Ali Rashid", role: "Multi Welder", passport: "KC9847072", dob: "14-07-2002", visa: "IR-10310080211", visaLink: "ali_rashid.pdf", photo: "ali_rashid.jpeg", finger: "16-11-2025", interview: "N/A", exit: "13-11-2025", entry: "20-11-2025" },
             { batch: "1st Batch", name: "Hamid Naeem", role: "Multi Welder", passport: "DK9959992", dob: "1991-01-05", visa: "IR-10310080213", visaLink: "hamid.pdf", photo: "hamid.jpeg", finger: "16-11-2025", interview: "17-08-2026", exit: "13-11-2025", entry: "20-11-2025" },
@@ -85,11 +87,11 @@
             { batch: "2nd Batch", name: "Asim Amin", role: "Multi Welder", passport: "BX1205984", dob: "1990-08-03", visa: "IR-10310084593", visaLink: "asim.pdf", photo: "", finger: "12-01-2026", interview: "28-06-2026", exit: "01-08-2026", entry: "15-01-2026" },
             { batch: "2nd Batch", name: "Muhammad Safeer", role: "Multi Welder", passport: "BH5529073", dob: "28-01-1993", visa: "IR-10310084592", visaLink: "safeer.pdf", photo: "", finger: "12-01-2026", interview: "N/A", exit: "01-08-2026", entry: "15-01-2026" },
             { batch: "2nd Batch", name: "Muhammad Sulaman", role: "Multi Welder", passport: "BB5756615", dob: "05-01-1984", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "04-05-2026", exit: "TBD", entry: "TBD" },
-            { batch: "3rd Batch", name: "Muhammad Nasir Jamil", role: "Multi Welder", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", exit: "TBD", entry: "TBD" },
+            { batch: "3rd Batch", name: "Muhammad Nasir Jamil", role: "Engineer", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", exit: "TBD", entry: "TBD" },
             { batch: "3rd Batch", name: "Asad Sajjad", role: "Multi Welder", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", exit: "TBD", entry: "TBD" },
             { batch: "3rd Batch", name: "Sajjad Ali", role: "Multi Welder", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", exit: "TBD", entry: "TBD" },
-            { batch: "3rd Batch", name: "Imran Akram", role: "Multi Welder", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", finger: "TBD", interview: "TBD", exit: "TBD", entry: "TBD" },
-            { batch: "3rd Batch", name: "Muhammad Zohaib", role: "Multi Welder", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", exit: "TBD", entry: "TBD" },
+            { batch: "3rd Batch", name: "Imran Akram", role: "Multi Welder", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", exit: "TBD", entry: "TBD" },
+            { batch: "3rd Batch", name: "Muhammad Zohaib", role: "Pipefitter", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", exit: "TBD", entry: "TBD" },
             { batch: "4th Batch", name: "Muhammad Maaz", role: "Multi Welder", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", exit: "TBD", entry: "TBD" },
             { batch: "4th Batch", name: "Muhammad Mansoor", role: "Multi Welder", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", exit: "TBD", entry: "TBD" },
             { batch: "5th Batch", name: "Zaheer Ahmad", role: "Multi Welder", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", exit: "TBD", entry: "TBD" },
