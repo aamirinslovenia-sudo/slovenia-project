@@ -59,9 +59,9 @@
         <div id="batch-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
     </div>
 
-    <div id="workerModal" class="modal opacity-0 pointer-events-none fixed inset-0 flex items-center justify-center z-50 transition-all duration-300">
-        <div class="modal-overlay absolute inset-0 bg-[#020617]/90 backdrop-blur-sm" onclick="toggleModal()"></div>
-        <div class="modal-container glass-card w-full max-w-lg mx-auto rounded-[40px] shadow-2xl z-50 border border-slate-700/50 max-h-[90vh] overflow-y-auto">
+    <div id="workerModal" class="modal opacity-0 pointer-events-none fixed inset-0 flex items-center justify-center z-[9999] transition-all duration-300">
+        <div class="modal-overlay absolute inset-0 bg-[#020617]/95 backdrop-blur-md" onclick="toggleModal()"></div>
+        <div class="modal-container glass-card w-full max-w-lg mx-auto rounded-[40px] shadow-2xl z-[10000] border border-slate-700/50 max-h-[90vh] overflow-y-auto">
             <div class="modal-content py-10 px-10 text-center">
                 <img id="m-photo" src="" class="w-32 h-32 rounded-full object-cover border-4 border-blue-600 mx-auto mb-4">
                 <h2 class="text-2xl font-extrabold text-white" id="m-name"></h2>
@@ -138,20 +138,17 @@
                 document.getElementById('m-dob').innerText = w.dob || "TBD";
                 document.getElementById('m-role-display').innerText = w.role;
                 document.getElementById('m-passport').innerText = w.passport || "TBD";
-                document.getElementById('m-finger').innerText = w.finger || "TBD";
-                document.getElementById('m-interview').innerText = w.interview || "TBD";
                 document.getElementById('m-photo').src = w.photo ? (w.photo + "?t=" + new Date().getTime()) : ('https://ui-avatars.com/api/?name=' + encodeURIComponent(w.name) + '&background=334155&color=fff');
                 
                 let score = 25; 
                 document.getElementById('dot-1').className = "progress-dot bg-blue-500";
-                if(w.visa !== "Pending") { score += 25; document.getElementById('dot-2').className = "progress-dot bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"; } else { document.getElementById('dot-2').className = "progress-dot bg-slate-700"; }
-                if(w.interview !== "TBD" && w.interview !== "N/A") { score += 25; document.getElementById('dot-3').className = "progress-dot bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"; } else { document.getElementById('dot-3').className = "progress-dot bg-slate-700"; }
-                if(w.finger !== "TBD" && w.finger !== "N/A") { score += 25; document.getElementById('dot-4').className = "progress-dot bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"; } else { document.getElementById('dot-4').className = "progress-dot bg-slate-700"; }
+                if(w.visa !== "Pending") { score += 25; document.getElementById('dot-2').className = "progress-dot bg-blue-500"; } else { document.getElementById('dot-2').className = "progress-dot bg-slate-700"; }
+                if(w.interview !== "TBD" && w.interview !== "N/A") { score += 25; document.getElementById('dot-3').className = "progress-dot bg-blue-500"; } else { document.getElementById('dot-3').className = "progress-dot bg-slate-700"; }
+                if(w.finger !== "TBD" && w.finger !== "N/A") { score += 25; document.getElementById('dot-4').className = "progress-dot bg-blue-500"; } else { document.getElementById('dot-4').className = "progress-dot bg-slate-700"; }
                 
                 document.getElementById('m-progress-bar').style.width = score + "%";
                 document.getElementById('m-percent').innerText = score + "%";
-                const visaBox = document.getElementById('m-visa-box');
-                visaBox.innerHTML = (w.visa !== "Pending" && w.visaLink !== "#") ? `<a href="${w.visaLink}" target="_blank" class="underline decoration-blue-500/50 hover:text-white">${w.visa}</a>` : w.visa;
+                document.getElementById('m-visa-box').innerHTML = (w.visa !== "Pending" && w.visaLink !== "#") ? `<a href="${w.visaLink}" target="_blank" class="underline text-blue-400">${w.visa}</a>` : w.visa;
             }
             modal.classList.toggle('opacity-0');
             modal.classList.toggle('pointer-events-none');
@@ -162,9 +159,7 @@
             const query = document.getElementById('searchInput').value.toLowerCase();
             document.querySelectorAll('.worker-item').forEach(item => {
                 const name = item.getAttribute('data-name').toLowerCase();
-                const dob = item.getAttribute('data-dob').toLowerCase();
-                const role = item.getAttribute('data-role').toLowerCase();
-                item.style.display = (name.includes(query) || dob.includes(query) || role.includes(query)) ? 'flex' : 'none';
+                item.style.display = name.includes(query) ? 'flex' : 'none';
             });
         }
 
@@ -172,6 +167,7 @@
             const grid = document.getElementById('batch-grid');
             grid.innerHTML = "";
             const batches = workerData.reduce((acc, w) => { (acc[w.batch] = acc[w.batch] || []).push(w); return acc; }, {});
+            
             Object.entries(batches).forEach(([batchName, members]) => {
                 const block = document.createElement('div');
                 block.className = "mb-10";
@@ -180,8 +176,7 @@
                     let sText = "Process", sClass = "border-amber-500/30 text-amber-500 bg-amber-500/5";
                     if (m.finger !== "TBD" && m.finger !== "N/A" && m.interview !== "TBD" && m.interview !== "N/A") { sText = "Ready / Entry", sClass = "border-emerald-500/30 text-emerald-400 bg-emerald-500/5"; }
                     else if (m.finger !== "TBD" && m.finger !== "N/A") { sText = "Finger Done", sClass = "border-blue-500/30 text-blue-400 bg-blue-500/5"; }
-                    else if (m.interview !== "TBD" && m.interview !== "N/A") { sText = "Int. Waiting", sClass = "border-purple-500/30 text-purple-400 bg-purple-500/5"; }
-                    return `<div onclick="toggleModal(${idx})" data-name="${m.name}" data-dob="${m.dob}" data-role="${m.role}" class="worker-item flex justify-between items-center p-6 bg-slate-900/30 border border-slate-800/50 rounded-2xl mb-3 hover:bg-slate-800/50 cursor-pointer transition-all">
+                    return `<div onclick="toggleModal(${idx})" data-name="${m.name}" class="worker-item flex justify-between items-center p-6 bg-slate-900/30 border border-slate-800/50 rounded-2xl mb-3 hover:bg-slate-800/50 cursor-pointer transition-all">
                         <div><span class="text-white font-bold">${m.name}</span><p class="text-[9px] text-slate-500 font-bold uppercase mt-1 tracking-widest">${m.role}</p></div>
                         <span class="px-2 py-1 rounded border ${sClass} uppercase text-[9px] font-bold">${sText}</span>
                     </div>`;
