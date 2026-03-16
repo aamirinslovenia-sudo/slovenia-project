@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MM Hidrotech | Pakistan Fleet Portal</title>
+    <title>MM Hidrotech | Fleet Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
@@ -40,20 +40,20 @@
                 <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
             </span>
             <p class="text-xs font-semibold text-slate-300 uppercase tracking-widest">
-                Welcome, Director. Tracking the deployment of your specialized workforce.
+                Welcome, Marko Ranilovic. Tracking the global deployment of your specialized workforce.
             </p>
         </div>
 
         <header class="mb-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pb-10 border-b border-slate-800/50">
             <div>
                 <div class="flex items-center gap-3 mb-2">
-                    <span class="bg-blue-600 text-white text-[10px] px-2 py-0.5 rounded font-black uppercase">Official</span>
+                    <span class="bg-blue-600 text-white text-[10px] px-2 py-0.5 rounded font-black uppercase">Official Portal</span>
                     <h1 class="text-4xl font-extrabold text-white tracking-tight">Slovenia Project</h1>
                 </div>
-                <p class="text-slate-500 font-semibold text-xs tracking-[0.2em] uppercase">Pakistan Deployment Portal</p>
+                <p class="text-slate-500 font-semibold text-xs tracking-[0.2em] uppercase">Pakistan Deployment Pipeline</p>
             </div>
             <div class="relative w-full md:w-96 group">
-                <input type="text" id="searchInput" onkeyup="filterWorkers()" placeholder="Search employee database..." class="w-full bg-slate-900/40 border border-slate-800 p-4 pl-12 rounded-2xl text-sm focus:border-blue-500 outline-none transition-all border-dashed">
+                <input type="text" id="searchInput" onkeyup="filterWorkers()" placeholder="Search employee database..." class="w-full bg-slate-900/40 border border-slate-800 p-4 pl-12 rounded-2xl text-sm focus:border-blue-500 outline-none transition-all">
                 <span class="absolute left-4 top-4 text-xl opacity-20">🔍</span>
             </div>
         </header>
@@ -101,7 +101,6 @@
     </div>
 
     <script>
-        // DATA OBJECT
         const workerData = [
             { batch: "1st Batch", name: "Shahriyar Khan", role: "Multi Welder", passport: "KH4148432", visa: "IR-10310080212", visaLink: "shahriyar.pdf", photo: "shahriyar.jpeg", finger: "16-11-2025", interview: "N/A", entry: "20-11-2025" },
             { batch: "1st Batch", name: "Muhammad Ali Rashid", role: "Multi Welder", passport: "KC9847072", visa: "IR-10310080211", visaLink: "ali_rashid.pdf", photo: "ali_rashid.jpeg", finger: "16-11-2025", interview: "N/A", entry: "20-11-2025" },
@@ -123,17 +122,13 @@
             { batch: "5th Batch", name: "Muhammad Qaiser", role: "Industrial Electrician", passport: "TBD", visa: "Pending", visaLink: "#", photo: "", finger: "TBD", interview: "TBD", entry: "TBD" }
         ];
 
-        // LOGIC FUNCTIONS
         function checkPassword() {
-            const input = document.getElementById('pass-input').value;
-            if(input === "MM2026") {
+            if(document.getElementById('pass-input').value === "MM2026") {
                 document.getElementById('login-screen').classList.add('hidden');
                 document.getElementById('main-app').classList.remove('hidden');
                 updateStats();
                 renderBatches();
-            } else {
-                document.getElementById('login-error').classList.remove('hidden');
-            }
+            } else { document.getElementById('login-error').classList.remove('hidden'); }
         }
 
         function updateStats() {
@@ -158,21 +153,13 @@
                 
                 let score = 25; 
                 document.getElementById('dot-1').className = "progress-dot bg-blue-500";
-                
-                if(w.visa !== "Pending") { score += 25; document.getElementById('dot-2').className = "progress-dot bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"; }
-                else { document.getElementById('dot-2').className = "progress-dot bg-slate-700"; }
-                
-                if(w.interview !== "TBD" && w.interview !== "N/A") { score += 25; document.getElementById('dot-3').className = "progress-dot bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"; }
-                else { document.getElementById('dot-3').className = "progress-dot bg-slate-700"; }
-                
-                if(w.finger !== "TBD" && w.finger !== "N/A") { score += 25; document.getElementById('dot-4').className = "progress-dot bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"; }
-                else { document.getElementById('dot-4').className = "progress-dot bg-slate-700"; }
-
+                if(w.visa !== "Pending") { score += 25; document.getElementById('dot-2').className = "progress-dot bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"; } else { document.getElementById('dot-2').className = "progress-dot bg-slate-700"; }
+                if(w.interview !== "TBD" && w.interview !== "N/A") { score += 25; document.getElementById('dot-3').className = "progress-dot bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"; } else { document.getElementById('dot-3').className = "progress-dot bg-slate-700"; }
+                if(w.finger !== "TBD" && w.finger !== "N/A") { score += 25; document.getElementById('dot-4').className = "progress-dot bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"; } else { document.getElementById('dot-4').className = "progress-dot bg-slate-700"; }
                 const bar = document.getElementById('m-progress-bar');
                 bar.style.width = score + "%";
                 bar.className = score === 100 ? "h-full bg-emerald-500 transition-all duration-1000" : "h-full bg-blue-600 transition-all duration-1000";
                 document.getElementById('m-percent').innerText = score + "%";
-
                 const visaBox = document.getElementById('m-visa-box');
                 visaBox.innerHTML = (w.visa !== "Pending" && w.visaLink !== "#") ? `<a href="${w.visaLink}" target="_blank" class="underline decoration-blue-500/50 hover:text-white cursor-pointer">${w.visa}</a>` : w.visa;
             }
@@ -192,7 +179,6 @@
             const grid = document.getElementById('batch-grid');
             grid.innerHTML = "";
             const batches = workerData.reduce((acc, w) => { (acc[w.batch] = acc[w.batch] || []).push(w); return acc; }, {});
-
             Object.entries(batches).forEach(([batchName, members]) => {
                 const block = document.createElement('div');
                 block.className = "mb-10";
