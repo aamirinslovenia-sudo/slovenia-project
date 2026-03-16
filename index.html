@@ -9,8 +9,10 @@
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        
         .modal { transition: opacity 0.25s ease; }
         body.modal-active { overflow: hidden; }
+        
         .batch-card { 
             background: rgba(30, 41, 59, 0.7); 
             backdrop-filter: blur(10px);
@@ -56,7 +58,10 @@
                 <div class="space-y-3 text-sm bg-[#0f172a] p-5 rounded-2xl border border-slate-800">
                     <div class="flex justify-between items-center"><span class="text-slate-500 uppercase text-[10px] font-bold">Passport No</span> <span class="font-mono font-bold text-white text-base" id="m-passport"></span></div>
                     <div class="flex justify-between items-center border-t border-slate-800/50 pt-2"><span class="text-slate-500">Date of Birth</span> <span class="text-slate-300" id="m-dob"></span></div>
-                    <div class="flex justify-between items-center border-t border-slate-800/50 pt-2"><span class="text-slate-500 uppercase text-[10px] font-bold">Iran Visa Ref</span> <span id="m-visa" class="text-blue-400 font-bold"></span></div>
+                    <div class="flex justify-between items-center border-t border-slate-800/50 pt-2">
+                        <span class="text-slate-500 uppercase text-[10px] font-bold">Iran Visa Ref</span> 
+                        <span id="m-visa" class="text-blue-400 font-bold"></span>
+                    </div>
                     <div class="flex justify-between items-center border-t border-slate-800/50 pt-2"><span class="text-slate-500 font-bold text-blue-300">Fingerprint Date</span> <span class="text-blue-200 font-bold" id="m-finger"></span></div>
                     <div class="flex justify-between items-center border-t border-slate-800/50 pt-2"><span class="text-slate-500">Interview Date</span> <span class="text-slate-300" id="m-interview"></span></div>
                     <div class="flex justify-between items-center border-t border-slate-800/50 pt-2"><span class="text-slate-500">Exit Date</span> <span class="text-slate-300" id="m-exit"></span></div>
@@ -76,7 +81,7 @@
     <script>
         const workerData = [
             { batch: "1st Batch", name: "Shahriyar Khan", passport: "KH4148432", dob: "19-02-1996", visa: "IR-10310080212", visaLink: "shahriyar.pdf", photo: "shahriyar.jpeg", finger: "16-11-2025", interview: "N/A", exit: "13-11-2025", entry: "20-11-2025" },
-            { batch: "1st Batch", name: "Muhammad Ali Rashid", passport: "KC9847072", dob: "14-07-2002", visa: "IR-10310080211", visaLink: "ali_rashid.pdf", photo: "", finger: "16-11-2025", interview: "N/A", exit: "13-11-2025", entry: "20-11-2025" },
+            { batch: "1st Batch", name: "Muhammad Ali Rashid", passport: "KC9847072", dob: "14-07-2002", visa: "IR-10310080211", visaLink: "ali_rashid.pdf", finger: "16-11-2025", interview: "N/A", exit: "13-11-2025", entry: "20-11-2025" },
             { batch: "1st Batch", name: "Hamid Naeem", passport: "DK9959992", dob: "1991-01-05", visa: "IR-10310080213", visaLink: "hamid.pdf", finger: "16-11-2025", interview: "17-08-2026", exit: "13-11-2025", entry: "20-11-2025" },
             { batch: "1st Batch", name: "Mhammad Faizan Ali Shah", passport: "YD5151181", dob: "15-01-1992", visa: "IR-10310080214", visaLink: "faizan.pdf", finger: "16-11-2025", interview: "N/A", exit: "13-11-2025", entry: "20-11-2025" },
             { batch: "1st Batch", name: "Muhammad Uzair", passport: "AB2899693", dob: "17-10-1988", visa: "IR-10310080210", visaLink: "uzair.pdf", finger: "16-11-2025", interview: "N/A", exit: "13-11-2025", entry: "20-11-2025" },
@@ -110,6 +115,7 @@
                 document.getElementById('m-exit').innerText = w.exit || "TBD";
                 document.getElementById('m-entry').innerText = w.entry || "TBD";
 
+                // Improved Photo Loading Logic
                 const photoEl = document.getElementById('m-photo');
                 if (photoEl) {
                     photoEl.src = w.photo ? (w.photo + "?t=" + new Date().getTime()) : ('https://ui-avatars.com/api/?name=' + encodeURIComponent(w.name) + '&background=334155&color=fff');
@@ -147,6 +153,11 @@
                     <div>
                         <span class="text-white font-bold group-hover:text-blue-400 transition-colors">${m.name}</span>
                         <p class="text-[10px] text-slate-500 font-mono tracking-wider uppercase mt-1">${m.passport !== 'TBD' ? m.passport : 'Documentation Pending'}</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="px-2 py-1 text-[9px] font-black rounded border ${m.visa === 'Pending' ? 'border-amber-500/50 text-amber-500 bg-amber-500/10' : 'border-blue-500/50 text-blue-400 bg-blue-500/10'} uppercase tracking-tighter">
+                            ${m.visa === 'Pending' ? 'Process' : 'Fingerprint Done'}
+                        </span>
                     </div>
                 </div>`;
             }).join('');
