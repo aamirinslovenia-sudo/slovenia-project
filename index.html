@@ -83,6 +83,10 @@
                     <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50 flex justify-between items-center"><span class="text-slate-500 text-[9px] font-black uppercase">Date of Birth</span><span class="text-white font-bold text-xs" id="m-dob"></span></div>
                     <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50 flex justify-between items-center"><span class="text-slate-500 text-[9px] font-black uppercase">Passport</span><span class="text-white font-mono font-bold text-xs" id="m-passport"></span></div>
                     <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50 flex justify-between items-center"><span class="text-slate-500 text-[9px] font-black uppercase">Visa Ref</span><span id="m-visa-box" class="text-blue-400 font-bold text-xs"></span></div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50"><span class="text-slate-500 text-[9px] font-black uppercase block mb-1">Interview</span><span class="text-white font-bold text-xs" id="m-interview"></span></div>
+                        <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50"><span class="text-slate-500 text-[9px] font-black uppercase block mb-1">Fingerprint</span><span class="text-blue-200 font-bold text-xs" id="m-finger"></span></div>
+                    </div>
                 </div>
                 <button onclick="toggleModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-white py-4 rounded-2xl font-bold text-xs uppercase tracking-widest">Back to Dashboard</button>
             </div>
@@ -138,13 +142,15 @@
                 document.getElementById('m-dob').innerText = w.dob || "TBD";
                 document.getElementById('m-role-display').innerText = w.role;
                 document.getElementById('m-passport').innerText = w.passport || "TBD";
+                document.getElementById('m-finger').innerText = w.finger || "TBD";
+                document.getElementById('m-interview').innerText = w.interview || "TBD";
                 document.getElementById('m-photo').src = w.photo ? (w.photo + "?t=" + new Date().getTime()) : ('https://ui-avatars.com/api/?name=' + encodeURIComponent(w.name) + '&background=334155&color=fff');
                 
                 let score = 25; 
                 document.getElementById('dot-1').className = "progress-dot bg-blue-500";
-                if(w.visa !== "Pending") { score += 25; document.getElementById('dot-2').className = "progress-dot bg-blue-500"; } else { document.getElementById('dot-2').className = "progress-dot bg-slate-700"; }
-                if(w.interview !== "TBD" && w.interview !== "N/A") { score += 25; document.getElementById('dot-3').className = "progress-dot bg-blue-500"; } else { document.getElementById('dot-3').className = "progress-dot bg-slate-700"; }
-                if(w.finger !== "TBD" && w.finger !== "N/A") { score += 25; document.getElementById('dot-4').className = "progress-dot bg-blue-500"; } else { document.getElementById('dot-4').className = "progress-dot bg-slate-700"; }
+                if(w.visa !== "Pending") { score += 25; document.getElementById('dot-2').className = "progress-dot bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"; } else { document.getElementById('dot-2').className = "progress-dot bg-slate-700"; }
+                if(w.interview !== "TBD" && w.interview !== "N/A") { score += 25; document.getElementById('dot-3').className = "progress-dot bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"; } else { document.getElementById('dot-3').className = "progress-dot bg-slate-700"; }
+                if(w.finger !== "TBD" && w.finger !== "N/A") { score += 25; document.getElementById('dot-4').className = "progress-dot bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"; } else { document.getElementById('dot-4').className = "progress-dot bg-slate-700"; }
                 
                 document.getElementById('m-progress-bar').style.width = score + "%";
                 document.getElementById('m-percent').innerText = score + "%";
@@ -167,7 +173,6 @@
             const grid = document.getElementById('batch-grid');
             grid.innerHTML = "";
             const batches = workerData.reduce((acc, w) => { (acc[w.batch] = acc[w.batch] || []).push(w); return acc; }, {});
-            
             Object.entries(batches).forEach(([batchName, members]) => {
                 const block = document.createElement('div');
                 block.className = "mb-10";
