@@ -9,10 +9,8 @@
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
-        
         .modal { transition: opacity 0.25s ease; }
         body.modal-active { overflow: hidden; }
-        
         .batch-card { 
             background: rgba(30, 41, 59, 0.7); 
             backdrop-filter: blur(10px);
@@ -42,6 +40,11 @@
         
         <div class="modal-container bg-[#1e293b] w-11/12 md:max-w-md mx-auto rounded-3xl shadow-2xl z-50 overflow-y-auto border border-slate-700">
             <div class="modal-content py-8 text-left px-10">
+                
+                <div class="flex flex-col items-center mb-6">
+                    <img id="m-photo" src="" class="w-24 h-24 rounded-full object-cover border-4 border-blue-500 shadow-lg" alt="Worker Photo">
+                </div>
+
                 <div class="flex justify-between items-start pb-6">
                     <div>
                         <p class="text-3xl font-black text-white" id="m-name"></p>
@@ -56,12 +59,10 @@
                 <div class="space-y-4 text-sm bg-[#0f172a] p-6 rounded-2xl border border-slate-800">
                     <div class="flex justify-between"><span class="text-slate-500 uppercase text-[10px] font-bold">Passport No</span> <span class="font-mono font-bold text-white text-base" id="m-passport"></span></div>
                     <div class="flex justify-between border-t border-slate-800 pt-3"><span class="text-slate-500">Date of Birth</span> <span class="text-slate-300" id="m-dob"></span></div>
-                    
                     <div class="flex justify-between border-t border-slate-800 pt-3">
                         <span class="text-slate-500 uppercase text-[10px] font-bold">Iran Visa Ref</span> 
                         <span id="m-visa" class="text-blue-400 font-bold"></span>
                     </div>
-                    
                     <div class="flex justify-between border-t border-slate-800 pt-3"><span class="text-slate-500 font-bold text-blue-300">Fingerprint Date</span> <span class="text-blue-200 font-bold" id="m-finger"></span></div>
                     <div class="flex justify-between border-t border-slate-800 pt-3"><span class="text-slate-500">Interview Date</span> <span class="text-slate-300" id="m-interview"></span></div>
                     <div class="flex justify-between border-t border-slate-800 pt-3"><span class="text-slate-500">Exit Date</span> <span class="text-slate-300" id="m-exit"></span></div>
@@ -80,20 +81,15 @@
 
     <script>
         const workerData = [
-            // BATCH 1 - Add your PDF filenames in visaLink
-          { batch: "1st Batch", name: "Shahriyar Khan", passport: "KH4148432", dob: "19-02-1996", visa: "IR-10310080212", visaLink: "shahriyar.pdf", photo: "shahriyar.jpeg", finger: "16-11-2025", entry: "20-11-2025" },
-{ batch: "1st Batch", name: "Muhammad Ali Rashid", passport: "KC9847072", dob: "14-07-2002", visa: "IR-10310080211", visaLink: "ali_rashid.pdf", finger: "16-11-2025", interview: "N/A", exit: "13-11-2025", entry: "20-11-2025" },
+            { batch: "1st Batch", name: "Shahriyar Khan", passport: "KH4148432", dob: "19-02-1996", visa: "IR-10310080212", visaLink: "shahriyar.pdf", photo: "shahriyar.jpeg", finger: "16-11-2025", entry: "20-11-2025" },
+            { batch: "1st Batch", name: "Muhammad Ali Rashid", passport: "KC9847072", dob: "14-07-2002", visa: "IR-10310080211", visaLink: "ali_rashid.pdf", finger: "16-11-2025", interview: "N/A", exit: "13-11-2025", entry: "20-11-2025" },
             { batch: "1st Batch", name: "Hamid Naeem", passport: "DK9959992", dob: "1991-01-05", visa: "IR-10310080213", visaLink: "hamid.pdf", finger: "16-11-2025", interview: "17-08-2026", exit: "13-11-2025", entry: "20-11-2025" },
             { batch: "1st Batch", name: "Mhammad Faizan Ali Shah", passport: "YD5151181", dob: "15-01-1992", visa: "IR-10310080214", visaLink: "faizan.pdf", finger: "16-11-2025", interview: "N/A", exit: "13-11-2025", entry: "20-11-2025" },
             { batch: "1st Batch", name: "Muhammad Uzair", passport: "AB2899693", dob: "17-10-1988", visa: "IR-10310080210", visaLink: "uzair.pdf", finger: "16-11-2025", interview: "N/A", exit: "13-11-2025", entry: "20-11-2025" },
-            
-            // BATCH 2
             { batch: "2nd Batch", name: "Sajjad Khan", passport: "MC4100303", dob: "29-11-1987", visa: "IR-10310084591", visaLink: "sajjad_k.pdf", finger: "12-01-2026", interview: "N/A", exit: "01-08-2026", entry: "15-01-2026" },
             { batch: "2nd Batch", name: "Asim Amin", passport: "BX1205984", dob: "1990-08-03", visa: "IR-10310084593", visaLink: "asim.pdf", finger: "12-01-2026", interview: "28-06-2026", exit: "01-08-2026", entry: "15-01-2026" },
             { batch: "2nd Batch", name: "Muhammad Safeer", passport: "BH5529073", dob: "28-01-1993", visa: "IR-10310084592", visaLink: "safeer.pdf", finger: "12-01-2026", interview: "N/A", exit: "01-08-2026", entry: "15-01-2026" },
             { batch: "2nd Batch", name: "Muhammad Sulaman", passport: "BB5756615", dob: "05-01-1984", visa: "Pending", visaLink: "#", finger: "TBD", interview: "04-05-2026", exit: "TBD", entry: "TBD" },
-            
-            // BATCH 3, 4, 5
             { batch: "3rd Batch", name: "Muhammad Nasir Jamil", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", finger: "TBD", interview: "TBD", exit: "TBD", entry: "TBD" },
             { batch: "3rd Batch", name: "Asad Sajjad", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", finger: "TBD", interview: "TBD", exit: "TBD", entry: "TBD" },
             { batch: "3rd Batch", name: "Sajjad Ali", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", finger: "TBD", interview: "TBD", exit: "TBD", entry: "TBD" },
@@ -113,11 +109,11 @@
                 const w = workerData[workerIndex];
                 document.getElementById('m-name').innerText = w.name;
 
-// This is the only code you need to add to show the photo
-const photoEl = document.getElementById('m-photo');
-if (photoEl) {
-    photoEl.src = w.photo ? w.photo : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(w.name);
-}
+                // Photo logic
+                const photoEl = document.getElementById('m-photo');
+                if (photoEl) {
+                    photoEl.src = w.photo ? w.photo + "?t=" + new Date().getTime() : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(w.name) + '&background=334155&color=fff';
+                }
 
                 document.getElementById('m-batch').innerText = w.batch;
                 document.getElementById('m-passport').innerText = w.passport || "TBD";
@@ -127,7 +123,6 @@ if (photoEl) {
                 document.getElementById('m-exit').innerText = w.exit || "TBD";
                 document.getElementById('m-entry').innerText = w.entry || "TBD";
 
-                // MAKE VISA REF A CLICKABLE PDF LINK
                 const visaBox = document.getElementById('m-visa');
                 if (w.visa !== "Pending" && w.visaLink !== "#") {
                     visaBox.innerHTML = `<a href="${w.visaLink}" target="_blank" class="underline hover:text-white cursor-pointer">${w.visa} 📄</a>`;
