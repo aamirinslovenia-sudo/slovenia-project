@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worker Management - MM Hidrotech</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        
+        .modal { transition: opacity 0.25s ease; }
+        body.modal-active { overflow: hidden; }
+        
+        .batch-card { 
+            background: rgba(30, 41, 59, 0.7); 
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-[#0f172a] p-6 font-sans text-slate-200">
+
+    <div class="max-w-7xl mx-auto">
+        <header class="mb-10 flex justify-between items-center bg-[#1e293b] p-8 rounded-2xl border border-slate-700 shadow-2xl">
+            <div>
+                <h1 class="text-3xl font-black text-white tracking-tight uppercase">Slovenia Project</h1>
+                <p class="text-blue-400 font-bold text-sm tracking-widest">MM HIDROTECH D.O.O. | MANPOWER DEPLOYMENT</p>
+            </div>
+            <div class="text-right border-l border-slate-700 pl-8">
+                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Active Database</span>
+                <p class="text-3xl font-black text-white">18 <span class="text-sm font-light text-slate-400">Workers</span></p>
+            </div>
+        </header>
+
+        <div id="batch-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+    </div>
+
+    <div id="workerModal" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-50">
+        <div class="modal-overlay absolute w-full h-full bg-black opacity-80" onclick="toggleModal()"></div>
+        
+        <div class="modal-container bg-[#1e293b] w-11/12 md:max-w-md mx-auto rounded-3xl shadow-2xl z-50 overflow-y-auto border border-slate-700">
+            <div class="modal-content py-8 text-left px-10">
+                <div class="flex justify-between items-start pb-6">
+                    <div>
+                        <p class="text-3xl font-black text-white" id="m-name"></p>
+                        <div class="flex items-center gap-2 mt-1">
+                             <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+                             <p class="text-xs font-bold text-blue-400 uppercase tracking-widest" id="m-batch"></p>
+                        </div>
+                    </div>
+                    <button onclick="toggleModal()" class="text-3xl text-slate-500 hover:text-white">&times;</button>
+                </div>
+                
+                <div class="space-y-4 text-sm bg-[#0f172a] p-6 rounded-2xl border border-slate-800">
+                    <div class="flex justify-between"><span class="text-slate-500 uppercase text-[10px] font-bold">Passport No</span> <span class="font-mono font-bold text-white text-base" id="m-passport"></span></div>
+                    <div class="flex justify-between border-t border-slate-800 pt-3"><span class="text-slate-500">Date of Birth</span> <span class="text-slate-300" id="m-dob"></span></div>
+                    
+                    <div class="flex justify-between border-t border-slate-800 pt-3">
+                        <span class="text-slate-500 uppercase text-[10px] font-bold">Iran Visa Ref</span> 
+                        <span id="m-visa" class="text-blue-400 font-bold"></span>
+                    </div>
+                    
+                    <div class="flex justify-between border-t border-slate-800 pt-3"><span class="text-slate-500 font-bold text-blue-300">Fingerprint Date</span> <span class="text-blue-200 font-bold" id="m-finger"></span></div>
+                    <div class="flex justify-between border-t border-slate-800 pt-3"><span class="text-slate-500">Interview Date</span> <span class="text-slate-300" id="m-interview"></span></div>
+                    <div class="flex justify-between border-t border-slate-800 pt-3"><span class="text-slate-500">Exit Date</span> <span class="text-slate-300" id="m-exit"></span></div>
+                    <div class="flex justify-between border-t border-slate-800 pt-3 items-center">
+                        <span class="text-slate-500 uppercase text-[10px] font-bold">Pakistan Entry</span> 
+                        <span class="text-emerald-400 font-black text-lg" id="m-entry"></span>
+                    </div>
+                </div>
+
+                <div class="flex justify-end pt-8">
+                    <button onclick="toggleModal()" class="w-full py-4 bg-blue-600 text-white rounded-2xl font-black uppercase tracking-widest shadow-lg shadow-blue-900/40 hover:bg-blue-500 transition-all active:scale-95">Return to Fleet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const workerData = [
+            // BATCH 1 - Add your PDF filenames in visaLink
+            { batch: "1st Batch", name: "Shahriyar Khan", passport: "KH4148432", dob: "19-02-1996", visa: "IR-10310080212", visaLink: "shahriyar.pdf", finger: "16-11-2025", interview: "N/A", exit: "13-11-2025", entry: "20-11-2025" },
+            { batch: "1st Batch", name: "Muhammad Ali Rashid", passport: "KC9847072", dob: "14-07-2002", visa: "IR-10310080211", visaLink: "ali_rashid.pdf", finger: "16-11-2025", interview: "N/A", exit: "13-11-2025", entry: "20-11-2025" },
+            { batch: "1st Batch", name: "Hamid Naeem", passport: "DK9959992", dob: "1991-01-05", visa: "IR-10310080213", visaLink: "hamid.pdf", finger: "16-11-2025", interview: "17-08-2026", exit: "13-11-2025", entry: "20-11-2025" },
+            { batch: "1st Batch", name: "Mhammad Faizan Ali Shah", passport: "YD5151181", dob: "15-01-1992", visa: "IR-10310080214", visaLink: "faizan.pdf", finger: "16-11-2025", interview: "N/A", exit: "13-11-2025", entry: "20-11-2025" },
+            { batch: "1st Batch", name: "Muhammad Uzair", passport: "AB2899693", dob: "17-10-1988", visa: "IR-10310080210", visaLink: "uzair.pdf", finger: "16-11-2025", interview: "N/A", exit: "13-11-2025", entry: "20-11-2025" },
+            
+            // BATCH 2
+            { batch: "2nd Batch", name: "Sajjad Khan", passport: "MC4100303", dob: "29-11-1987", visa: "IR-10310084591", visaLink: "sajjad_k.pdf", finger: "12-01-2026", interview: "N/A", exit: "01-08-2026", entry: "15-01-2026" },
+            { batch: "2nd Batch", name: "Asim Amin", passport: "BX1205984", dob: "1990-08-03", visa: "IR-10310084593", visaLink: "asim.pdf", finger: "12-01-2026", interview: "28-06-2026", exit: "01-08-2026", entry: "15-01-2026" },
+            { batch: "2nd Batch", name: "Muhammad Safeer", passport: "BH5529073", dob: "28-01-1993", visa: "IR-10310084592", visaLink: "safeer.pdf", finger: "12-01-2026", interview: "N/A", exit: "01-08-2026", entry: "15-01-2026" },
+            { batch: "2nd Batch", name: "Muhammad Sulaman", passport: "BB5756615", dob: "05-01-1984", visa: "Pending", visaLink: "#", finger: "TBD", interview: "04-05-2026", exit: "TBD", entry: "TBD" },
+            
+            // BATCH 3, 4, 5
+            { batch: "3rd Batch", name: "Muhammad Nasir Jamil", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", finger: "TBD", interview: "TBD", exit: "TBD", entry: "TBD" },
+            { batch: "3rd Batch", name: "Asad Sajjad", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", finger: "TBD", interview: "TBD", exit: "TBD", entry: "TBD" },
+            { batch: "3rd Batch", name: "Sajjad Ali", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", finger: "TBD", interview: "TBD", exit: "TBD", entry: "TBD" },
+            { batch: "3rd Batch", name: "Imran Akram", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", finger: "TBD", interview: "TBD", exit: "TBD", entry: "TBD" },
+            { batch: "3rd Batch", name: "Muhammad Zohaib", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", finger: "TBD", interview: "TBD", exit: "TBD", entry: "TBD" },
+            { batch: "4th Batch", name: "Muhammad Maaz", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", finger: "TBD", interview: "TBD", exit: "TBD", entry: "TBD" },
+            { batch: "4th Batch", name: "Muhammad Mansoor", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", finger: "TBD", interview: "TBD", exit: "TBD", entry: "TBD" },
+            { batch: "5th Batch", name: "Zaheer Ahmad", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", finger: "TBD", interview: "TBD", exit: "TBD", entry: "TBD" },
+            { batch: "5th Batch", name: "Muhammad Qaiser", passport: "TBD", dob: "TBD", visa: "Pending", visaLink: "#", finger: "TBD", interview: "TBD", exit: "TBD", entry: "TBD" }
+        ];
+
+        function toggleModal(workerIndex = null) {
+            const modal = document.getElementById('workerModal');
+            const body = document.querySelector('body');
+            
+            if (workerIndex !== null) {
+                const w = workerData[workerIndex];
+                document.getElementById('m-name').innerText = w.name;
+                document.getElementById('m-batch').innerText = w.batch;
+                document.getElementById('m-passport').innerText = w.passport || "TBD";
+                document.getElementById('m-dob').innerText = w.dob || "TBD";
+                document.getElementById('m-finger').innerText = w.finger || "TBD";
+                document.getElementById('m-interview').innerText = w.interview || "TBD";
+                document.getElementById('m-exit').innerText = w.exit || "TBD";
+                document.getElementById('m-entry').innerText = w.entry || "TBD";
+
+                // MAKE VISA REF A CLICKABLE PDF LINK
+                const visaBox = document.getElementById('m-visa');
+                if (w.visa !== "Pending" && w.visaLink !== "#") {
+                    visaBox.innerHTML = `<a href="${w.visaLink}" target="_blank" class="underline hover:text-white cursor-pointer">${w.visa} 📄</a>`;
+                } else {
+                    visaBox.innerText = w.visa;
+                }
+            }
+
+            modal.classList.toggle('opacity-0');
+            modal.classList.toggle('pointer-events-none');
+            body.classList.toggle('modal-active');
+        }
+
+        const batches = workerData.reduce((acc, worker) => {
+            acc[worker.batch] = acc[worker.batch] || [];
+            acc[worker.batch].push(worker);
+            return acc;
+        }, {});
+
+        const grid = document.getElementById('batch-grid');
+
+        Object.entries(batches).forEach(([batchName, members]) => {
+            const block = document.createElement('div');
+            block.className = "batch-card rounded-2xl overflow-hidden shadow-2xl";
+            
+            const listItems = members.map((m) => {
+                const idx = workerData.findIndex(w => w.name === m.name && w.batch === m.batch);
+                return `
+                <div onclick="toggleModal(${idx})" class="flex justify-between items-center p-5 border-b border-slate-700/50 last:border-0 hover:bg-slate-700/40 cursor-pointer group transition-all">
+                    <div>
+                        <span class="text-white font-bold group-hover:text-blue-400 transition-colors">${m.name}</span>
+                        <p class="text-[10px] text-slate-500 font-mono tracking-wider uppercase mt-1">${m.passport !== 'TBD' ? m.passport : 'Documentation Pending'}</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="px-2 py-1 text-[9px] font-black rounded border ${m.visa === 'Pending' ? 'border-amber-500/50 text-amber-500 bg-amber-500/10' : 'border-blue-500/50 text-blue-400 bg-blue-500/10'} uppercase tracking-tighter">
+                            ${m.visa === 'Pending' ? 'Process' : 'Fingerprint Done'}
+                        </span>
+                    </div>
+                </div>`;
+            }).join('');
+
+            block.innerHTML = `
+                <div class="bg-slate-800/80 px-5 py-4 flex justify-between items-center border-b border-slate-700">
+                    <h2 class="font-black text-blue-400 text-xs tracking-widest uppercase">${batchName}</h2>
+                    <span class="text-[10px] font-bold text-slate-500 bg-slate-900 px-3 py-1 rounded-full border border-slate-700">${members.length}</span>
+                </div>
+                <div>${listItems}</div>
+            `;
+            grid.appendChild(block);
+        });
+    </script>
+</body>
+</html>
