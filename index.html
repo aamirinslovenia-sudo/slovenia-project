@@ -3,108 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Worker Management - MM Hidrotech</title>
+    <title>MM Hidrotech | Pakistan Fleet Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        ::-webkit-scrollbar { width: 8px; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+        
+        body { font-family: 'Inter', sans-serif; background: radial-gradient(circle at top left, #1e293b, #0f172a); }
+        ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
-        .modal { transition: opacity 0.25s ease; }
-        body.modal-active { overflow: hidden; }
-        .glass {
-            background: rgba(30, 41, 59, 0.8);
-            backdrop-filter: blur(12px);
+        
+        .glass-card {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            transform: translateY(-2px);
+            background: rgba(30, 41, 59, 0.6);
+        }
+        .login-glass {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .batch-card { 
-            background: rgba(30, 41, 59, 0.7); 
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
+        .status-badge { font-size: 0.65rem; letter-spacing: 0.05em; font-weight: 800; }
     </style>
 </head>
-<body class="bg-[#0f172a] font-sans text-slate-200">
+<body class="min-h-screen text-slate-200 antialiased">
 
-    <div id="login-screen" class="fixed inset-0 flex items-center justify-center p-6 z-[9999] bg-[#0f172a]">
-        <div class="glass p-10 rounded-[40px] shadow-2xl w-full max-w-[340px] text-center">
-            <div class="w-16 h-16 bg-blue-600 rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg shadow-blue-900/40">
-                <span class="text-3xl text-white font-black">MM</span>
+    <div id="login-screen" class="fixed inset-0 flex items-center justify-center p-6 z-[9999] bg-[#020617]">
+        <div class="login-glass p-12 rounded-[50px] shadow-2xl w-full max-w-[360px] text-center">
+            <div class="w-20 h-20 bg-gradient-to-tr from-blue-700 to-blue-500 rounded-3xl mx-auto mb-8 flex items-center justify-center shadow-2xl shadow-blue-500/20">
+                <span class="text-3xl text-white font-extrabold tracking-tighter">MM</span>
             </div>
-            <h2 class="text-xl font-black text-white mb-1 uppercase tracking-tight">Fleet Portal</h2>
-            <p class="text-slate-400 text-[10px] font-bold uppercase tracking-[3px] mb-8">Manpower Pakistan</p>
+            <h2 class="text-2xl font-extrabold text-white mb-2 tracking-tight">Enterprise Access</h2>
+            <p class="text-slate-500 text-[10px] font-bold uppercase tracking-[4px] mb-10">Fleet Management System</p>
             
-            <input type="password" id="pass-input" class="w-full bg-[#0f172a]/50 border border-slate-700 p-4 rounded-2xl text-white text-center mb-4 focus:border-blue-500 outline-none transition-all placeholder:text-slate-600" placeholder="Enter Access Code">
+            <input type="password" id="pass-input" class="w-full bg-slate-900/50 border border-slate-800 p-4 rounded-2xl text-white text-center mb-4 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all placeholder:text-slate-700" placeholder="Enter Security Code">
             
-            <button onclick="checkPassword()" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-black uppercase tracking-widest hover:bg-blue-500 active:scale-95 transition-all shadow-lg shadow-blue-900/20">Sign In</button>
-            <p id="login-error" class="text-red-400 text-[10px] font-bold mt-4 hidden uppercase tracking-widest">Access Denied</p>
+            <button onclick="checkPassword()" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-2xl font-extrabold uppercase tracking-widest transition-all shadow-lg shadow-blue-600/20 active:scale-95">Verify & Enter</button>
+            <p id="login-error" class="text-red-500 text-[10px] font-bold mt-5 hidden uppercase tracking-widest animate-pulse">Invalid Authorization</p>
         </div>
     </div>
 
-    <div id="main-app" class="hidden max-w-7xl mx-auto p-6">
-        <header class="mb-6 flex flex-col md:flex-row justify-between items-center bg-[#1e293b] p-8 rounded-3xl border border-slate-700 shadow-2xl gap-6">
+    <div id="main-app" class="hidden max-w-7xl mx-auto p-4 md:p-8">
+        <header class="mb-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pb-10 border-b border-slate-800/50">
             <div>
-                <h1 class="text-3xl font-black text-white tracking-tight uppercase">Slovenia Project</h1>
-                <p class="text-blue-400 font-bold text-sm tracking-widest uppercase">MM HIDROTECH D.O.O. | MANPOWER DEPLOYMENT</p>
+                <div class="flex items-center gap-3 mb-2">
+                    <span class="bg-blue-600 text-white text-[10px] px-2 py-0.5 rounded font-black uppercase">Official</span>
+                    <h1 class="text-4xl font-extrabold text-white tracking-tight">Slovenia Project</h1>
+                </div>
+                <p class="text-slate-500 font-semibold text-xs tracking-[0.2em] uppercase">Pakistan Deployment Portal</p>
             </div>
             
-            <div class="relative w-full md:w-80">
-                <input type="text" id="searchInput" onkeyup="filterWorkers()" placeholder="Search worker name..." class="w-full bg-[#0f172a] border border-slate-700 p-4 pl-12 rounded-2xl text-sm focus:border-blue-500 outline-none transition-all">
-                <span class="absolute left-4 top-4 text-xl opacity-30">🔍</span>
+            <div class="relative w-full md:w-96 group">
+                <input type="text" id="searchInput" onkeyup="filterWorkers()" placeholder="Search employee database..." class="w-full bg-slate-900/40 border border-slate-800 p-4 pl-12 rounded-2xl text-sm focus:border-blue-500 focus:bg-slate-900/80 outline-none transition-all border-dashed group-hover:border-solid">
+                <span class="absolute left-4 top-4 text-xl opacity-20 group-hover:opacity-50 transition-opacity">🔍</span>
             </div>
         </header>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-            <div class="glass p-5 rounded-3xl border border-slate-700/50">
-                <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1">Total Fleet</p>
-                <h3 id="stat-total" class="text-2xl font-black text-white">0</h3>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            <div class="glass-card p-6 rounded-3xl">
+                <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-2">Total Personnel</p>
+                <div class="flex items-end gap-2">
+                    <h3 id="stat-total" class="text-3xl font-extrabold text-white">0</h3>
+                    <span class="text-[10px] text-slate-400 mb-1.5 font-bold uppercase">Active</span>
+                </div>
             </div>
-            <div class="glass p-5 rounded-3xl border border-slate-700/50">
-                <p class="text-emerald-500 text-[10px] font-bold uppercase tracking-widest mb-1">Ready/Done</p>
-                <h3 id="stat-ready" class="text-2xl font-black text-white">0</h3>
+            <div class="glass-card p-6 rounded-3xl border-l-2 border-l-emerald-500/50">
+                <p class="text-emerald-500 text-[10px] font-bold uppercase tracking-widest mb-2">Deployed / Ready</p>
+                <h3 id="stat-ready" class="text-3xl font-extrabold text-white">0</h3>
             </div>
-            <div class="glass p-5 rounded-3xl border border-slate-700/50">
-                <p class="text-blue-500 text-[10px] font-bold uppercase tracking-widest mb-1">In Process</p>
-                <h3 id="stat-process" class="text-2xl font-black text-white">0</h3>
+            <div class="glass-card p-6 rounded-3xl border-l-2 border-l-blue-500/50">
+                <p class="text-blue-500 text-[10px] font-bold uppercase tracking-widest mb-2">In Pipeline</p>
+                <h3 id="stat-process" class="text-3xl font-extrabold text-white">0</h3>
             </div>
-            <div class="glass p-5 rounded-3xl border border-slate-700/50 text-right">
-                <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1">Last Update</p>
-                <p id="stat-date" class="text-xs font-bold text-slate-300 mt-2">--/--/--</p>
+            <div class="glass-card p-6 rounded-3xl flex flex-col justify-center">
+                <p class="text-slate-600 text-[9px] font-bold uppercase tracking-widest mb-1">System Synchronized</p>
+                <p id="stat-date" class="text-sm font-black text-slate-400">--/--/--</p>
             </div>
         </div>
 
         <div id="batch-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
     </div>
 
-    <div id="workerModal" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-50">
-        <div class="modal-overlay absolute w-full h-full bg-black opacity-80" onclick="toggleModal()"></div>
-        <div class="modal-container bg-[#1e293b] w-11/12 md:max-w-md mx-auto rounded-3xl shadow-2xl z-50 border border-slate-700 max-h-[90vh] overflow-y-auto">
-            <div class="modal-content py-6 text-left px-8">
-                <div class="flex justify-between items-start mb-4">
-                    <div class="flex flex-col items-center flex-1 text-center">
-                        <img id="m-photo" src="" class="w-28 h-28 rounded-full object-cover border-4 border-blue-500 shadow-lg mb-3">
-                        <p class="text-2xl font-black text-white leading-tight" id="m-name"></p>
-                        <div class="flex items-center justify-center gap-2 mt-1">
-                             <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
-                             <p class="text-[10px] font-bold text-blue-400 uppercase tracking-widest" id="m-role-display"></p>
-                        </div>
+    <div id="workerModal" class="modal opacity-0 pointer-events-none fixed inset-0 flex items-center justify-center z-50 transition-opacity duration-300">
+        <div class="modal-overlay absolute inset-0 bg-[#020617]/90 backdrop-blur-sm" onclick="toggleModal()"></div>
+        <div class="modal-container glass-card w-full max-w-lg mx-auto rounded-[40px] shadow-2xl z-50 border border-slate-700/50 max-h-[90vh] overflow-y-auto overflow-x-hidden">
+            <div class="modal-content py-10 px-10">
+                <div class="flex flex-col items-center text-center mb-8">
+                    <div class="relative mb-6">
+                        <img id="m-photo" src="" class="w-32 h-32 rounded-full object-cover border-4 border-blue-600 shadow-2xl shadow-blue-500/30">
+                        <div class="absolute bottom-1 right-1 w-6 h-6 bg-emerald-500 border-4 border-[#1e293b] rounded-full animate-pulse"></div>
                     </div>
-                    <button onclick="toggleModal()" class="text-3xl text-slate-500 hover:text-white leading-none">&times;</button>
+                    <h2 class="text-3xl font-extrabold text-white tracking-tight" id="m-name"></h2>
+                    <p class="text-blue-400 text-xs font-bold uppercase tracking-[0.2em] mt-2" id="m-role-display"></p>
                 </div>
                 
-                <div class="space-y-3 text-sm bg-[#0f172a] p-5 rounded-2xl border border-slate-800">
-                    <div class="flex justify-between items-center"><span class="text-slate-500 uppercase text-[10px] font-bold">Passport No</span> <span class="font-mono font-bold text-white text-base" id="m-passport"></span></div>
-                    <div class="flex justify-between items-center border-t border-slate-800/50 pt-2">
-                        <span class="text-slate-500 uppercase text-[10px] font-bold">Iran Visa Ref</span> 
+                <div class="grid grid-cols-1 gap-4 mb-8">
+                    <div class="bg-slate-900/60 p-5 rounded-3xl border border-slate-800/50 flex justify-between items-center">
+                        <span class="text-slate-500 text-[10px] font-black uppercase">Passport</span>
+                        <span class="text-white font-mono font-bold" id="m-passport"></span>
+                    </div>
+                    <div class="bg-slate-900/60 p-5 rounded-3xl border border-slate-800/50 flex justify-between items-center">
+                        <span class="text-slate-500 text-[10px] font-black uppercase">Visa Reference</span>
                         <span id="m-visa-box" class="text-blue-400 font-bold"></span>
                     </div>
-                    <div class="flex justify-between items-center border-t border-slate-800/50 pt-2"><span class="text-slate-500 font-bold text-blue-300">Fingerprint Date</span> <span class="text-blue-200 font-bold" id="m-finger"></span></div>
-                    <div class="flex justify-between items-center border-t border-slate-800/50 pt-2"><span class="text-slate-500">Interview Date</span> <span class="text-slate-300" id="m-interview"></span></div>
-                    <div class="flex justify-between items-center border-t border-slate-800/50 pt-2"><span class="text-slate-500 uppercase text-[10px] font-bold text-emerald-400">Pakistan Entry</span> <span class="text-emerald-400 font-black text-lg" id="m-entry"></span></div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-slate-900/60 p-5 rounded-3xl border border-slate-800/50">
+                            <span class="text-slate-500 text-[9px] font-black uppercase block mb-1">Fingerprint</span>
+                            <span class="text-blue-200 font-bold text-sm" id="m-finger"></span>
+                        </div>
+                        <div class="bg-slate-900/60 p-5 rounded-3xl border border-slate-800/50">
+                            <span class="text-slate-500 text-[9px] font-black uppercase block mb-1">Interview</span>
+                            <span class="text-slate-300 font-bold text-sm" id="m-interview"></span>
+                        </div>
+                    </div>
+                    <div class="bg-emerald-500/5 p-5 rounded-3xl border border-emerald-500/20 flex justify-between items-center">
+                        <span class="text-emerald-500/70 text-[10px] font-black uppercase">Pakistan Entry Status</span>
+                        <span class="text-emerald-400 font-black text-lg" id="m-entry"></span>
+                    </div>
                 </div>
 
-                <div class="mt-6">
-                    <button onclick="toggleModal()" class="w-full bg-blue-600 text-white py-4 rounded-xl font-black text-xs uppercase tracking-widest shadow-lg shadow-blue-900/20 hover:bg-blue-500 transition-all">Close Profile</button>
-                </div>
+                <button onclick="toggleModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-white py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all">Close Personnel Profile</button>
             </div>
         </div>
     </div>
@@ -114,7 +138,7 @@
             if(document.getElementById('pass-input').value === "MM2026") {
                 document.getElementById('login-screen').classList.add('hidden');
                 document.getElementById('main-app').classList.remove('hidden');
-                updateStats(); // Run stats when logged in
+                updateStats();
             } else {
                 document.getElementById('login-error').classList.remove('hidden');
             }
@@ -143,15 +167,11 @@
 
         function updateStats() {
             const total = workerData.length;
-            const ready = workerData.filter(w => 
-                w.finger !== "TBD" && w.finger !== "N/A" && w.interview !== "TBD" && w.interview !== "N/A"
-            ).length;
-            const inProcess = total - ready;
-            
+            const ready = workerData.filter(w => w.finger !== "TBD" && w.finger !== "N/A" && w.interview !== "TBD" && w.interview !== "N/A").length;
             document.getElementById('stat-total').innerText = total;
             document.getElementById('stat-ready').innerText = ready;
-            document.getElementById('stat-process').innerText = inProcess;
-            document.getElementById('stat-date').innerText = new Date().toLocaleDateString('en-GB');
+            document.getElementById('stat-process').innerText = total - ready;
+            document.getElementById('stat-date').innerText = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
         }
 
         function toggleModal(workerIndex = null) {
@@ -165,16 +185,12 @@
                 document.getElementById('m-interview').innerText = w.interview || "TBD";
                 document.getElementById('m-entry').innerText = w.entry || "TBD";
                 document.getElementById('m-photo').src = w.photo ? (w.photo + "?t=" + new Date().getTime()) : ('https://ui-avatars.com/api/?name=' + encodeURIComponent(w.name) + '&background=334155&color=fff');
-                
                 const visaBox = document.getElementById('m-visa-box');
-                if (w.visa !== "Pending" && w.visaLink !== "#") {
-                    visaBox.innerHTML = `<a href="${w.visaLink}" target="_blank" class="underline hover:text-white cursor-pointer">${w.visa} 📄</a>`;
-                } else {
-                    visaBox.innerText = w.visa;
-                }
+                visaBox.innerHTML = (w.visa !== "Pending" && w.visaLink !== "#") ? `<a href="${w.visaLink}" target="_blank" class="underline decoration-blue-500/50 hover:text-white cursor-pointer">${w.visa}</a>` : w.visa;
             }
             modal.classList.toggle('opacity-0');
             modal.classList.toggle('pointer-events-none');
+            document.body.classList.toggle('modal-active');
         }
 
         function filterWorkers() {
@@ -190,29 +206,23 @@
 
         Object.entries(batches).forEach(([batchName, members]) => {
             const block = document.createElement('div');
-            block.className = "batch-card rounded-[32px] overflow-hidden mb-8";
+            block.className = "mb-10";
             const listItems = members.map((m) => {
                 const idx = workerData.findIndex(w => w.name === m.name);
-                let sText = "Process";
-                let sClass = "border-amber-500/50 text-amber-500 bg-amber-500/10";
-                
+                let sText = "Process", sClass = "border-amber-500/30 text-amber-500 bg-amber-500/5";
                 if (m.finger !== "TBD" && m.finger !== "N/A" && m.interview !== "TBD" && m.interview !== "N/A") {
-                    sText = "Finger Done / Int. Wait";
-                    sClass = "border-emerald-500/50 text-emerald-400 bg-emerald-500/10";
+                    sText = "Ready / Entry", sClass = "border-emerald-500/30 text-emerald-500 bg-emerald-500/5";
                 } else if (m.finger !== "TBD" && m.finger !== "N/A") {
-                    sText = "Fingerprint Done";
-                    sClass = "border-blue-500/50 text-blue-400 bg-blue-500/10";
+                    sText = "Finger Done", sClass = "border-blue-500/30 text-blue-400 bg-blue-500/5";
                 } else if (m.interview !== "TBD" && m.interview !== "N/A") {
-                    sText = "Interview Waiting";
-                    sClass = "border-purple-500/50 text-purple-400 bg-purple-500/10";
+                    sText = "Int. Waiting", sClass = "border-purple-500/30 text-purple-400 bg-purple-500/5";
                 }
-
-                return `<div onclick="toggleModal(${idx})" data-name="${m.name}" class="worker-item flex justify-between items-center p-5 border-b border-slate-700/50 last:border-0 hover:bg-slate-700/40 cursor-pointer transition-all">
-                    <div><span class="text-white font-bold">${m.name}</span><p class="text-[10px] text-blue-400 font-bold uppercase mt-1 tracking-widest">${m.role}</p></div>
-                    <span class="px-2 py-1 text-[8px] font-black rounded border ${sClass} uppercase tracking-tighter">${sText}</span>
+                return `<div onclick="toggleModal(${idx})" data-name="${m.name}" class="worker-item flex justify-between items-center p-6 bg-slate-900/30 border border-slate-800/50 rounded-2xl mb-3 hover:bg-slate-800/50 cursor-pointer transition-all group">
+                    <div><span class="text-white font-bold group-hover:text-blue-400 transition-colors">${m.name}</span><p class="text-[9px] text-slate-500 font-bold uppercase mt-1 tracking-widest">${m.role}</p></div>
+                    <span class="status-badge px-2 py-1 rounded border ${sClass} uppercase">${sText}</span>
                 </div>`;
             }).join('');
-            block.innerHTML = `<div class="bg-slate-800/80 px-6 py-4 border-b border-slate-700"><h2 class="font-black text-blue-400 text-xs uppercase tracking-widest">${batchName}</h2></div><div>${listItems}</div>`;
+            block.innerHTML = `<h2 class="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mb-4 ml-2">${batchName}</h2><div>${listItems}</div>`;
             grid.appendChild(block);
         });
     </script>
