@@ -179,8 +179,16 @@
                 const listItems = members.map((m) => {
                     const idx = workerData.findIndex(w => w.name === m.name);
                     let sText = "Process", sClass = "border-amber-500/30 text-amber-500 bg-amber-500/5";
-                    if (m.finger !== "TBD" && m.finger !== "N/A" && m.interview !== "TBD" && m.interview !== "N/A") { sText = "Ready / Entry", sClass = "border-emerald-500/30 text-emerald-400 bg-emerald-500/5"; }
-                    else if (m.finger !== "TBD" && m.finger !== "N/A") { sText = "Finger Done", sClass = "border-blue-500/30 text-blue-400 bg-blue-500/5"; }
+                    
+                    // IMPROVED LOGIC: If interview OR finger is done, show purple "Pipeline"
+                    if (m.finger !== "TBD" && m.finger !== "N/A" && m.interview !== "TBD" && m.interview !== "N/A") { 
+                        sText = "Ready / Entry"; sClass = "border-emerald-500/30 text-emerald-400 bg-emerald-500/5"; 
+                    } else if (m.finger !== "TBD" && m.finger !== "N/A") { 
+                        sText = "Finger Done"; sClass = "border-blue-500/30 text-blue-400 bg-blue-500/5"; 
+                    } else if (m.interview !== "TBD" && m.interview !== "N/A") { 
+                        sText = "In Pipeline"; sClass = "border-purple-500/30 text-purple-400 bg-purple-500/5"; 
+                    }
+
                     return `<div onclick="toggleModal(${idx})" data-name="${m.name}" class="worker-item flex justify-between items-center p-6 bg-slate-900/30 border border-slate-800/50 rounded-2xl mb-3 hover:bg-slate-800/50 cursor-pointer transition-all">
                         <div><span class="text-white font-bold">${m.name}</span><p class="text-[9px] text-slate-500 font-bold uppercase mt-1 tracking-widest">${m.role}</p></div>
                         <span class="px-2 py-1 rounded border ${sClass} uppercase text-[9px] font-bold">${sText}</span>
