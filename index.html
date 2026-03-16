@@ -81,8 +81,8 @@
     <script>
         const workerData = [
             // BATCH 1 - Add your PDF filenames in visaLink
-            { batch: "1st Batch", name: "Shahriyar Khan", passport: "KH4148432", dob: "19-02-1996", visa: "IR-10310080212", visaLink: "shahriyar.pdf", finger: "16-11-2025", interview: "N/A", exit: "13-11-2025", entry: "20-11-2025" },
-            { batch: "1st Batch", name: "Muhammad Ali Rashid", passport: "KC9847072", dob: "14-07-2002", visa: "IR-10310080211", visaLink: "ali_rashid.pdf", finger: "16-11-2025", interview: "N/A", exit: "13-11-2025", entry: "20-11-2025" },
+          { batch: "1st Batch", name: "Shahriyar Khan", passport: "KH4148432", dob: "19-02-1996", visa: "IR-10310080212", visaLink: "shahriyar.pdf", photo: "shahriyar.jpeg", finger: "16-11-2025", entry: "20-11-2025" },
+{ batch: "1st Batch", name: "Muhammad Ali Rashid", passport: "KC9847072", dob: "14-07-2002", visa: "IR-10310080211", visaLink: "ali_rashid.pdf", finger: "16-11-2025", interview: "N/A", exit: "13-11-2025", entry: "20-11-2025" },
             { batch: "1st Batch", name: "Hamid Naeem", passport: "DK9959992", dob: "1991-01-05", visa: "IR-10310080213", visaLink: "hamid.pdf", finger: "16-11-2025", interview: "17-08-2026", exit: "13-11-2025", entry: "20-11-2025" },
             { batch: "1st Batch", name: "Mhammad Faizan Ali Shah", passport: "YD5151181", dob: "15-01-1992", visa: "IR-10310080214", visaLink: "faizan.pdf", finger: "16-11-2025", interview: "N/A", exit: "13-11-2025", entry: "20-11-2025" },
             { batch: "1st Batch", name: "Muhammad Uzair", passport: "AB2899693", dob: "17-10-1988", visa: "IR-10310080210", visaLink: "uzair.pdf", finger: "16-11-2025", interview: "N/A", exit: "13-11-2025", entry: "20-11-2025" },
@@ -112,6 +112,13 @@
             if (workerIndex !== null) {
                 const w = workerData[workerIndex];
                 document.getElementById('m-name').innerText = w.name;
+
+// This is the only code you need to add to show the photo
+const photoEl = document.getElementById('m-photo');
+if (photoEl) {
+    photoEl.src = w.photo ? w.photo : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(w.name);
+}
+
                 document.getElementById('m-batch').innerText = w.batch;
                 document.getElementById('m-passport').innerText = w.passport || "TBD";
                 document.getElementById('m-dob').innerText = w.dob || "TBD";
