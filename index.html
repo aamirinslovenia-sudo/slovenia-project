@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+        // --- PASSWORD PROTECTION START ---
+        var password = prompt("Please enter the access password:");
+        if (password !== "MMH2026") { 
+            alert("Incorrect password. Access denied.");
+            document.documentElement.innerHTML = "<body style='background:#0f172a;color:white;display:flex;justify-content:center;align-items:center;height:100vh;font-family:sans-serif;'><h1>🚫 Unauthorized Access</h1></body>";
+            window.stop();
+        }
+        // --- PASSWORD PROTECTION END ---
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Worker Management - MM Hidrotech</title>
@@ -9,10 +19,8 @@
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
-        
         .modal { transition: opacity 0.25s ease; }
         body.modal-active { overflow: hidden; }
-        
         .batch-card { 
             background: rgba(30, 41, 59, 0.7); 
             backdrop-filter: blur(10px);
@@ -80,7 +88,7 @@
 
     <script>
         const workerData = [
-            // BATCH 1 - Add your PDF filenames in visaLink
+            // BATCH 1
             { batch: "1st Batch", name: "Shahriyar Khan", passport: "KH4148432", dob: "19-02-1996", visa: "IR-10310080212", visaLink: "shahriyar.pdf", finger: "16-11-2025", interview: "N/A", exit: "13-11-2025", entry: "20-11-2025" },
             { batch: "1st Batch", name: "Muhammad Ali Rashid", passport: "KC9847072", dob: "14-07-2002", visa: "IR-10310080211", visaLink: "ali_rashid.pdf", finger: "16-11-2025", interview: "N/A", exit: "13-11-2025", entry: "20-11-2025" },
             { batch: "1st Batch", name: "Hamid Naeem", passport: "DK9959992", dob: "1991-01-05", visa: "IR-10310080213", visaLink: "hamid.pdf", finger: "16-11-2025", interview: "17-08-2026", exit: "13-11-2025", entry: "20-11-2025" },
@@ -120,7 +128,6 @@
                 document.getElementById('m-exit').innerText = w.exit || "TBD";
                 document.getElementById('m-entry').innerText = w.entry || "TBD";
 
-                // MAKE VISA REF A CLICKABLE PDF LINK
                 const visaBox = document.getElementById('m-visa');
                 if (w.visa !== "Pending" && w.visaLink !== "#") {
                     visaBox.innerHTML = `<a href="${w.visaLink}" target="_blank" class="underline hover:text-white cursor-pointer">${w.visa} 📄</a>`;
