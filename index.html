@@ -7,29 +7,14 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
-        
         body { font-family: 'Inter', sans-serif; background: radial-gradient(circle at top left, #1e293b, #0f172a); }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
-        
-        .glass-card {
-            background: rgba(30, 41, 59, 0.4);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .glass-card:hover {
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            transform: translateY(-2px);
-            background: rgba(30, 41, 59, 0.6);
-        }
-        .login-glass {
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .status-badge { font-size: 0.65rem; letter-spacing: 0.05em; font-weight: 800; }
+        .glass-card { background: rgba(30, 41, 59, 0.4); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .glass-card:hover { border: 1px solid rgba(59, 130, 246, 0.3); transform: translateY(-2px); background: rgba(30, 41, 59, 0.6); }
+        .login-glass { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .progress-dot { width: 10px; height: 10px; border-radius: 50%; transition: all 0.5s ease; }
     </style>
 </head>
 <body class="min-h-screen text-slate-200 antialiased">
@@ -41,9 +26,7 @@
             </div>
             <h2 class="text-2xl font-extrabold text-white mb-2 tracking-tight">Enterprise Access</h2>
             <p class="text-slate-500 text-[10px] font-bold uppercase tracking-[4px] mb-10">Fleet Management System</p>
-            
-            <input type="password" id="pass-input" class="w-full bg-slate-900/50 border border-slate-800 p-4 rounded-2xl text-white text-center mb-4 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all placeholder:text-slate-700" placeholder="Enter Security Code">
-            
+            <input type="password" id="pass-input" class="w-full bg-slate-900/50 border border-slate-800 p-4 rounded-2xl text-white text-center mb-4 focus:border-blue-500 outline-none transition-all" placeholder="Enter Security Code">
             <button onclick="checkPassword()" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-2xl font-extrabold uppercase tracking-widest transition-all shadow-lg shadow-blue-600/20 active:scale-95">Verify & Enter</button>
             <p id="login-error" class="text-red-500 text-[10px] font-bold mt-5 hidden uppercase tracking-widest animate-pulse">Invalid Authorization</p>
         </div>
@@ -58,33 +41,17 @@
                 </div>
                 <p class="text-slate-500 font-semibold text-xs tracking-[0.2em] uppercase">Pakistan Deployment Portal</p>
             </div>
-            
             <div class="relative w-full md:w-96 group">
-                <input type="text" id="searchInput" onkeyup="filterWorkers()" placeholder="Search employee database..." class="w-full bg-slate-900/40 border border-slate-800 p-4 pl-12 rounded-2xl text-sm focus:border-blue-500 focus:bg-slate-900/80 outline-none transition-all border-dashed group-hover:border-solid">
+                <input type="text" id="searchInput" onkeyup="filterWorkers()" placeholder="Search employee database..." class="w-full bg-slate-900/40 border border-slate-800 p-4 pl-12 rounded-2xl text-sm focus:border-blue-500 outline-none transition-all border-dashed">
                 <span class="absolute left-4 top-4 text-xl opacity-20 group-hover:opacity-50 transition-opacity">🔍</span>
             </div>
         </header>
 
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            <div class="glass-card p-6 rounded-3xl">
-                <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-2">Total Personnel</p>
-                <div class="flex items-end gap-2">
-                    <h3 id="stat-total" class="text-3xl font-extrabold text-white">0</h3>
-                    <span class="text-[10px] text-slate-400 mb-1.5 font-bold uppercase">Active</span>
-                </div>
-            </div>
-            <div class="glass-card p-6 rounded-3xl border-l-2 border-l-emerald-500/50">
-                <p class="text-emerald-500 text-[10px] font-bold uppercase tracking-widest mb-2">Deployed / Ready</p>
-                <h3 id="stat-ready" class="text-3xl font-extrabold text-white">0</h3>
-            </div>
-            <div class="glass-card p-6 rounded-3xl border-l-2 border-l-blue-500/50">
-                <p class="text-blue-500 text-[10px] font-bold uppercase tracking-widest mb-2">In Pipeline</p>
-                <h3 id="stat-process" class="text-3xl font-extrabold text-white">0</h3>
-            </div>
-            <div class="glass-card p-6 rounded-3xl flex flex-col justify-center">
-                <p class="text-slate-600 text-[9px] font-bold uppercase tracking-widest mb-1">System Synchronized</p>
-                <p id="stat-date" class="text-sm font-black text-slate-400">--/--/--</p>
-            </div>
+            <div class="glass-card p-6 rounded-3xl"><p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-2">Total Personnel</p><h3 id="stat-total" class="text-3xl font-extrabold text-white">0</h3></div>
+            <div class="glass-card p-6 rounded-3xl border-l-2 border-l-emerald-500/50"><p class="text-emerald-500 text-[10px] font-bold uppercase tracking-widest mb-2">Deployed / Ready</p><h3 id="stat-ready" class="text-3xl font-extrabold text-white">0</h3></div>
+            <div class="glass-card p-6 rounded-3xl border-l-2 border-l-blue-500/50"><p class="text-blue-500 text-[10px] font-bold uppercase tracking-widest mb-2">In Pipeline</p><h3 id="stat-process" class="text-3xl font-extrabold text-white">0</h3></div>
+            <div class="glass-card p-6 rounded-3xl flex flex-col justify-center"><p class="text-slate-600 text-[9px] font-bold uppercase tracking-widest mb-1">System Synchronized</p><p id="stat-date" class="text-sm font-black text-slate-400">--/--/--</p></div>
         </div>
 
         <div id="batch-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
@@ -92,42 +59,38 @@
 
     <div id="workerModal" class="modal opacity-0 pointer-events-none fixed inset-0 flex items-center justify-center z-50 transition-opacity duration-300">
         <div class="modal-overlay absolute inset-0 bg-[#020617]/90 backdrop-blur-sm" onclick="toggleModal()"></div>
-        <div class="modal-container glass-card w-full max-w-lg mx-auto rounded-[40px] shadow-2xl z-50 border border-slate-700/50 max-h-[90vh] overflow-y-auto overflow-x-hidden">
+        <div class="modal-container glass-card w-full max-w-lg mx-auto rounded-[40px] shadow-2xl z-50 border border-slate-700/50 max-h-[90vh] overflow-y-auto">
             <div class="modal-content py-10 px-10">
-                <div class="flex flex-col items-center text-center mb-8">
-                    <div class="relative mb-6">
-                        <img id="m-photo" src="" class="w-32 h-32 rounded-full object-cover border-4 border-blue-600 shadow-2xl shadow-blue-500/30">
-                        <div class="absolute bottom-1 right-1 w-6 h-6 bg-emerald-500 border-4 border-[#1e293b] rounded-full animate-pulse"></div>
-                    </div>
+                <div class="flex flex-col items-center text-center mb-6">
+                    <img id="m-photo" src="" class="w-32 h-32 rounded-full object-cover border-4 border-blue-600 shadow-2xl mb-4">
                     <h2 class="text-3xl font-extrabold text-white tracking-tight" id="m-name"></h2>
-                    <p class="text-blue-400 text-xs font-bold uppercase tracking-[0.2em] mt-2" id="m-role-display"></p>
+                    <p class="text-blue-400 text-xs font-bold uppercase tracking-[0.2em] mt-1" id="m-role-display"></p>
+                </div>
+
+                <div class="mb-10 px-4">
+                    <div class="flex justify-between mb-2">
+                        <span class="text-[9px] font-bold uppercase tracking-widest text-slate-500">Deployment Progress</span>
+                        <span id="m-percent" class="text-[9px] font-bold text-blue-400 uppercase tracking-widest">0%</span>
+                    </div>
+                    <div class="h-2 w-full bg-slate-800 rounded-full overflow-hidden flex">
+                        <div id="m-progress-bar" class="h-full bg-blue-600 transition-all duration-1000 ease-out" style="width: 0%"></div>
+                    </div>
+                    <div class="flex justify-between mt-3">
+                        <div class="flex flex-col items-center gap-1"><div id="dot-1" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-600 uppercase">Doc</span></div>
+                        <div class="flex flex-col items-center gap-1"><div id="dot-2" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-600 uppercase">Visa</span></div>
+                        <div class="flex flex-col items-center gap-1"><div id="dot-3" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-600 uppercase">Int.</span></div>
+                        <div class="flex flex-col items-center gap-1"><div id="dot-4" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-600 uppercase">Finger</span></div>
+                    </div>
                 </div>
                 
                 <div class="grid grid-cols-1 gap-4 mb-8">
-                    <div class="bg-slate-900/60 p-5 rounded-3xl border border-slate-800/50 flex justify-between items-center">
-                        <span class="text-slate-500 text-[10px] font-black uppercase">Passport</span>
-                        <span class="text-white font-mono font-bold" id="m-passport"></span>
-                    </div>
-                    <div class="bg-slate-900/60 p-5 rounded-3xl border border-slate-800/50 flex justify-between items-center">
-                        <span class="text-slate-500 text-[10px] font-black uppercase">Visa Reference</span>
-                        <span id="m-visa-box" class="text-blue-400 font-bold"></span>
-                    </div>
+                    <div class="bg-slate-900/60 p-5 rounded-3xl border border-slate-800/50 flex justify-between items-center"><span class="text-slate-500 text-[10px] font-black uppercase">Passport</span><span class="text-white font-mono font-bold" id="m-passport"></span></div>
+                    <div class="bg-slate-900/60 p-5 rounded-3xl border border-slate-800/50 flex justify-between items-center"><span class="text-slate-500 text-[10px] font-black uppercase">Visa Reference</span><span id="m-visa-box" class="text-blue-400 font-bold"></span></div>
                     <div class="grid grid-cols-2 gap-4">
-                        <div class="bg-slate-900/60 p-5 rounded-3xl border border-slate-800/50">
-                            <span class="text-slate-500 text-[9px] font-black uppercase block mb-1">Fingerprint</span>
-                            <span class="text-blue-200 font-bold text-sm" id="m-finger"></span>
-                        </div>
-                        <div class="bg-slate-900/60 p-5 rounded-3xl border border-slate-800/50">
-                            <span class="text-slate-500 text-[9px] font-black uppercase block mb-1">Interview</span>
-                            <span class="text-slate-300 font-bold text-sm" id="m-interview"></span>
-                        </div>
-                    </div>
-                    <div class="bg-emerald-500/5 p-5 rounded-3xl border border-emerald-500/20 flex justify-between items-center">
-                        <span class="text-emerald-500/70 text-[10px] font-black uppercase">Pakistan Entry Status</span>
-                        <span class="text-emerald-400 font-black text-lg" id="m-entry"></span>
+                        <div class="bg-slate-900/60 p-5 rounded-3xl border border-slate-800/50"><span class="text-slate-500 text-[9px] font-black uppercase block mb-1">Fingerprint</span><span class="text-blue-200 font-bold text-sm" id="m-finger"></span></div>
+                        <div class="bg-slate-900/60 p-5 rounded-3xl border border-slate-800/50"><span class="text-slate-500 text-[9px] font-black uppercase block mb-1">Interview</span><span class="text-slate-300 font-bold text-sm" id="m-interview"></span></div>
                     </div>
                 </div>
-
                 <button onclick="toggleModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-white py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all">Close Personnel Profile</button>
             </div>
         </div>
@@ -139,9 +102,7 @@
                 document.getElementById('login-screen').classList.add('hidden');
                 document.getElementById('main-app').classList.remove('hidden');
                 updateStats();
-            } else {
-                document.getElementById('login-error').classList.remove('hidden');
-            }
+            } else { document.getElementById('login-error').classList.remove('hidden'); }
         }
 
         const workerData = [
@@ -183,8 +144,27 @@
                 document.getElementById('m-passport').innerText = w.passport || "TBD";
                 document.getElementById('m-finger').innerText = w.finger || "TBD";
                 document.getElementById('m-interview').innerText = w.interview || "TBD";
-                document.getElementById('m-entry').innerText = w.entry || "TBD";
                 document.getElementById('m-photo').src = w.photo ? (w.photo + "?t=" + new Date().getTime()) : ('https://ui-avatars.com/api/?name=' + encodeURIComponent(w.name) + '&background=334155&color=fff');
+                
+                // PROGRESS CALCULATION
+                let score = 25; // Base (Documentation)
+                document.getElementById('dot-1').className = "progress-dot bg-blue-500";
+                
+                if(w.visa !== "Pending") { score += 25; document.getElementById('dot-2').className = "progress-dot bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"; }
+                else { document.getElementById('dot-2').className = "progress-dot bg-slate-700"; }
+                
+                if(w.interview !== "TBD" && w.interview !== "N/A") { score += 25; document.getElementById('dot-3').className = "progress-dot bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"; }
+                else { document.getElementById('dot-3').className = "progress-dot bg-slate-700"; }
+                
+                if(w.finger !== "TBD" && w.finger !== "N/A") { score += 25; document.getElementById('dot-4').className = "progress-dot bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"; }
+                else { document.getElementById('dot-4').className = "progress-dot bg-slate-700"; }
+
+                const bar = document.getElementById('m-progress-bar');
+                bar.style.width = score + "%";
+                bar.className = score === 100 ? "h-full bg-emerald-500 transition-all duration-1000 ease-out" : "h-full bg-blue-600 transition-all duration-1000 ease-out";
+                document.getElementById('m-percent').innerText = score + "%";
+                document.getElementById('m-percent').className = score === 100 ? "text-[9px] font-bold text-emerald-400 uppercase tracking-widest" : "text-[9px] font-bold text-blue-400 uppercase tracking-widest";
+
                 const visaBox = document.getElementById('m-visa-box');
                 visaBox.innerHTML = (w.visa !== "Pending" && w.visaLink !== "#") ? `<a href="${w.visaLink}" target="_blank" class="underline decoration-blue-500/50 hover:text-white cursor-pointer">${w.visa}</a>` : w.visa;
             }
@@ -210,16 +190,12 @@
             const listItems = members.map((m) => {
                 const idx = workerData.findIndex(w => w.name === m.name);
                 let sText = "Process", sClass = "border-amber-500/30 text-amber-500 bg-amber-500/5";
-                if (m.finger !== "TBD" && m.finger !== "N/A" && m.interview !== "TBD" && m.interview !== "N/A") {
-                    sText = "Ready / Entry", sClass = "border-emerald-500/30 text-emerald-500 bg-emerald-500/5";
-                } else if (m.finger !== "TBD" && m.finger !== "N/A") {
-                    sText = "Finger Done", sClass = "border-blue-500/30 text-blue-400 bg-blue-500/5";
-                } else if (m.interview !== "TBD" && m.interview !== "N/A") {
-                    sText = "Int. Waiting", sClass = "border-purple-500/30 text-purple-400 bg-purple-500/5";
-                }
+                if (m.finger !== "TBD" && m.finger !== "N/A" && m.interview !== "TBD" && m.interview !== "N/A") { sText = "Ready / Entry", sClass = "border-emerald-500/30 text-emerald-500 bg-emerald-500/5"; }
+                else if (m.finger !== "TBD" && m.finger !== "N/A") { sText = "Finger Done", sClass = "border-blue-500/30 text-blue-400 bg-blue-500/5"; }
+                else if (m.interview !== "TBD" && m.interview !== "N/A") { sText = "Int. Waiting", sClass = "border-purple-500/30 text-purple-400 bg-purple-500/5"; }
                 return `<div onclick="toggleModal(${idx})" data-name="${m.name}" class="worker-item flex justify-between items-center p-6 bg-slate-900/30 border border-slate-800/50 rounded-2xl mb-3 hover:bg-slate-800/50 cursor-pointer transition-all group">
                     <div><span class="text-white font-bold group-hover:text-blue-400 transition-colors">${m.name}</span><p class="text-[9px] text-slate-500 font-bold uppercase mt-1 tracking-widest">${m.role}</p></div>
-                    <span class="status-badge px-2 py-1 rounded border ${sClass} uppercase">${sText}</span>
+                    <span class="px-2 py-1 rounded border ${sClass} uppercase text-[9px] font-bold">${sText}</span>
                 </div>`;
             }).join('');
             block.innerHTML = `<h2 class="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mb-4 ml-2">${batchName}</h2><div>${listItems}</div>`;
