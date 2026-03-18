@@ -118,8 +118,8 @@
                     <div class="flex justify-between px-1">
                         <div class="flex flex-col items-center gap-1"><div id="dot-1" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase">Docs</span></div>
                         <div class="flex flex-col items-center gap-1"><div id="dot-2" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase">Visa</span></div>
-                        <div class="flex flex-col items-center gap-1"><div id="dot-3" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase">Int.</span></div>
-                        <div class="flex flex-col items-center gap-1"><div id="dot-4" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase">Finger</span></div>
+                        <div class="flex flex-col items-center gap-1"><div id="dot-3" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase">Finger</span></div>
+                        <div class="flex flex-col items-center gap-1"><div id="dot-4" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase">Int.</span></div>
                     </div>
                 </div>
 
@@ -190,12 +190,27 @@
                 document.getElementById('m-interview').innerText = w.interview || "TBD";
                 document.getElementById('m-photo').src = w.photo ? (w.photo + "?t=" + new Date().getTime()) : ('https://ui-avatars.com/api/?name=' + encodeURIComponent(w.name) + '&background=334155&color=fff');
                 
-                let score = 25; 
+                // Logic for the NEW Flow: Docs -> Visa -> Finger -> Int
+                let score = 25; // Docs are done
                 document.getElementById('dot-1').className = "progress-dot bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]";
                 
-                if(w.visa !== "Pending") { score += 25; document.getElementById('dot-2').className = "progress-dot bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"; } else { document.getElementById('dot-2').className = "progress-dot bg-slate-700"; }
-                if(w.interview !== "TBD" && w.interview !== "N/A") { score += 25; document.getElementById('dot-3').className = "progress-dot bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"; } else { document.getElementById('dot-3').className = "progress-dot bg-slate-700"; }
-                if(w.finger !== "TBD" && w.finger !== "N/A") { score += 25; document.getElementById('dot-4').className = "progress-dot bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"; } else { document.getElementById('dot-4').className = "progress-dot bg-slate-700"; }
+                // Visa check
+                if(w.visa !== "Pending") { 
+                    score += 25; 
+                    document.getElementById('dot-2').className = "progress-dot bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"; 
+                } else { document.getElementById('dot-2').className = "progress-dot bg-slate-700"; }
+                
+                // Fingerprint check
+                if(w.finger !== "TBD" && w.finger !== "N/A") { 
+                    score += 25; 
+                    document.getElementById('dot-3').className = "progress-dot bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"; 
+                } else { document.getElementById('dot-3').className = "progress-dot bg-slate-700"; }
+
+                // Interview check
+                if(w.interview !== "TBD" && w.interview !== "N/A") { 
+                    score += 25; 
+                    document.getElementById('dot-4').className = "progress-dot bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"; 
+                } else { document.getElementById('dot-4').className = "progress-dot bg-slate-700"; }
                 
                 document.getElementById('m-progress-bar').style.width = score + "%";
                 document.getElementById('m-percent').innerText = score + "%";
