@@ -68,7 +68,7 @@
             
             <div class="flex justify-center gap-4 mb-8">
                 <button onclick="switchView('grid')" id="btn-grid" class="px-6 py-2 rounded-full bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest transition-all">Database View</button>
-                <button onclick="switchView('map')" id="btn-map" class="px-6 py-2 rounded-full bg-slate-800 text-slate-400 text-[10px] font-black uppercase tracking-widest transition-all">Live Pipeline Map</button>
+                <button onclick="switchView('map')" id="btn-map" class="px-6 py-2 rounded-full bg-slate-800 text-slate-400 text-[10px] font-black uppercase tracking-widest transition-all">Manpower Route</button>
             </div>
 
             <div class="relative max-w-md mx-auto" id="search-bar-container">
@@ -79,7 +79,7 @@
 
         <div id="map-view" class="hidden mb-12">
             <div class="glass-card rounded-[40px] p-8 overflow-hidden relative min-h-[500px] flex flex-col items-center justify-center">
-                <h3 class="absolute top-8 left-8 text-blue-500 text-[10px] font-black uppercase tracking-[0.3em]">Global Logistics Route</h3>
+                <h3 class="absolute top-8 left-8 text-blue-500 text-[10px] font-black uppercase tracking-[0.3em]">MANPOWER ROUTE</h3>
                 
                 <svg viewBox="0 0 800 400" class="w-full max-w-4xl opacity-80">
                     <path d="M100,150 Q400,50 700,150" fill="none" stroke="rgba(59, 130, 246, 0.2)" stroke-width="2" />
@@ -98,7 +98,7 @@
 
                 <div class="grid grid-cols-3 gap-8 mt-8 w-full max-w-2xl">
                     <div class="text-center"><p class="text-slate-500 text-[9px] font-bold uppercase mb-1">Documentation</p><p class="text-white font-black text-xl">100%</p></div>
-                    <div class="text-center"><p class="text-blue-500 text-[9px] font-bold uppercase mb-1">Transit / Finger</p><p class="text-white font-black text-xl" id="transit-count">8</p></div>
+                    <div class="text-center"><p class="text-blue-500 text-[9px] font-bold uppercase mb-1">Transit / Finger</p><p class="text-white font-black text-xl" id="transit-count">13</p></div>
                     <div class="text-center"><p class="text-emerald-500 text-[9px] font-bold uppercase mb-1">Deployment Ready</p><p class="text-white font-black text-xl" id="ready-count">5</p></div>
                 </div>
             </div>
@@ -106,9 +106,9 @@
 
         <div id="grid-view">
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-                <div class="glass-card p-6 rounded-3xl"><p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-2">Total Staff</p><h3 id="stat-total" class="text-2xl font-black text-white">0</h3></div>
-                <div class="glass-card p-6 rounded-3xl border-l-2 border-l-emerald-500/50"><p class="text-emerald-500 text-[10px] font-bold uppercase tracking-widest mb-2">Ready</p><h3 id="stat-ready" class="text-2xl font-black text-white">0</h3></div>
-                <div class="glass-card p-6 rounded-3xl border-l-2 border-l-blue-500/50"><p class="text-blue-500 text-[10px] font-bold uppercase tracking-widest mb-2">In Pipeline</p><h3 id="stat-process" class="text-2xl font-black text-white">0</h3></div>
+                <div class="glass-card p-6 rounded-3xl"><p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-2">Total Staff</p><h3 id="stat-total" class="text-2xl font-black text-white">18</h3></div>
+                <div class="glass-card p-6 rounded-3xl border-l-2 border-l-emerald-500/50"><p class="text-emerald-500 text-[10px] font-bold uppercase tracking-widest mb-2">Ready</p><h3 id="stat-ready" class="text-2xl font-black text-white">5</h3></div>
+                <div class="glass-card p-6 rounded-3xl border-l-2 border-l-blue-500/50"><p class="text-blue-500 text-[10px] font-bold uppercase tracking-widest mb-2">In Pipeline</p><h3 id="stat-process" class="text-2xl font-black text-white">13</h3></div>
                 <div class="glass-card p-6 rounded-3xl text-right flex flex-col justify-center"><p class="text-slate-600 text-[9px] font-bold uppercase mb-1">Live Sync</p><p id="stat-date" class="text-sm font-black text-slate-400">--/--/--</p></div>
             </div>
             <div id="batch-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
@@ -226,7 +226,8 @@
                 document.getElementById('m-interview').innerText = w.interview || "TBD";
                 document.getElementById('m-photo').src = w.photo ? w.photo : ('https://ui-avatars.com/api/?name=' + encodeURIComponent(w.name) + '&background=334155&color=fff');
                 
-                let score = 25; 
+                // STATUS FLOW: Docs -> Visa -> Finger -> Int
+                let score = 25; // Docs
                 document.getElementById('dot-1').className = "progress-dot bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]";
                 if(w.visa !== "Pending") { score += 25; document.getElementById('dot-2').className = "progress-dot bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"; } else { document.getElementById('dot-2').className = "progress-dot bg-slate-700"; }
                 if(w.finger !== "TBD" && w.finger !== "N/A") { score += 25; document.getElementById('dot-3').className = "progress-dot bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"; } else { document.getElementById('dot-3').className = "progress-dot bg-slate-700"; }
