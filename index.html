@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MM Hidrotech | Manpower Management System</title>
+    <title>MM HIDROTECH</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
@@ -39,7 +39,7 @@
 
         @media print {
             body { background: white !important; color: black !important; }
-            #login-screen, #main-app, .modal-overlay, button, #view-toggle-container { display: none !important; }
+            #login-screen, #main-app, .modal-overlay, button, #view-toggle-container, .map-container { display: none !important; }
             #workerModal { position: absolute; left: 0; top: 0; width: 100%; display: block !important; opacity: 1 !important; pointer-events: auto !important; background: white !important; }
             .modal-container { border: none !important; box-shadow: none !important; max-height: none !important; width: 100% !important; max-width: none !important; background: white !important; }
             .bg-slate-900\/60 { background: #f8fafc !important; border: 1px solid #e2e8f0 !important; }
@@ -52,7 +52,7 @@
     <div id="login-screen" class="fixed inset-0 flex items-center justify-center p-6 z-[9999] bg-[#020617]">
         <div class="login-glass p-10 rounded-[50px] w-full max-w-[420px] text-center relative border border-slate-800">
             <div class="logo-box-wide w-full h-32 rounded-3xl mx-auto mb-10 flex items-center justify-center p-6">
-                <img src="logo.png" alt="MM Hidrotech" class="w-full h-full object-contain">
+                <img src="logo.png" alt="MM HIDROTECH" class="w-full h-full object-contain">
             </div>
             <p class="text-slate-500 text-[10px] font-bold uppercase tracking-[0.5em] mb-8">Manpower Management System</p>
             <div class="space-y-4">
@@ -65,8 +65,8 @@
 
     <div id="main-app" class="hidden max-w-7xl mx-auto p-4 md:p-10">
         <header class="mb-12 text-center border-b border-slate-800/50 pb-10">
-            <h1 class="text-3xl font-extrabold text-white tracking-tight mb-2">Strategic Manpower Bridge</h1>
-            <p class="text-slate-500 font-medium text-xs tracking-widest uppercase mb-8">Pakistan to Slovenia | MM Hidrotech d.o.o.</p>
+            <h1 class="text-3xl font-extrabold text-white tracking-tight mb-2 uppercase">Strategic Manpower Bridge</h1>
+            <p class="text-slate-500 font-medium text-xs tracking-widest uppercase mb-8">Pakistan to Slovenia | MM HIDROTECH d.o.o.</p>
             
             <div id="view-toggle-container" class="flex justify-center gap-4 mb-8">
                 <button onclick="switchView('grid')" id="btn-grid" class="px-6 py-2 rounded-full bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest transition-all">Database View</button>
@@ -102,9 +102,9 @@
 
         <div id="grid-view">
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-                <div class="glass-card p-6 rounded-3xl border-l-2 border-l-slate-500/50"><p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-2">Total Staff</p><h3 id="stat-total" class="text-2xl font-black text-white">0</h3></div>
-                <div class="glass-card p-6 rounded-3xl border-l-2 border-l-emerald-500/50"><p class="text-emerald-500 text-[10px] font-bold uppercase tracking-widest mb-2">Ready</p><h3 id="stat-ready" class="text-2xl font-black text-white">0</h3></div>
-                <div class="glass-card p-6 rounded-3xl border-l-2 border-l-blue-500/50"><p class="text-blue-500 text-[10px] font-bold uppercase tracking-widest mb-2">In Pipeline</p><h3 id="stat-process" class="text-2xl font-black text-white">0</h3></div>
+                <div class="glass-card p-6 rounded-3xl border-l-2 border-l-slate-500/50"><p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-2">Total Staff</p><h3 id="stat-total" class="text-2xl font-black text-white">18</h3></div>
+                <div class="glass-card p-6 rounded-3xl border-l-2 border-l-emerald-500/50"><p class="text-emerald-500 text-[10px] font-bold uppercase tracking-widest mb-2">Ready</p><h3 id="stat-ready" class="text-2xl font-black text-white">5</h3></div>
+                <div class="glass-card p-6 rounded-3xl border-l-2 border-l-blue-500/50"><p class="text-blue-500 text-[10px] font-bold uppercase tracking-widest mb-2">In Pipeline</p><h3 id="stat-process" class="text-2xl font-black text-white">13</h3></div>
                 <div class="glass-card p-6 rounded-3xl text-right flex flex-col justify-center"><p class="text-slate-600 text-[9px] font-bold uppercase mb-1">Live Sync</p><p id="stat-date" class="text-sm font-black text-slate-400">--/--/--</p></div>
             </div>
             <div id="batch-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
@@ -133,7 +133,7 @@
                 </div>
 
                 <div class="space-y-3 mb-8 text-left">
-                    <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50 flex justify-between items-center"><span class="text-slate-500 text-[9px] font-black uppercase">Full Name</span><span class="text-white font-bold text-xs" id="m-full-name"></span></div>
+                    <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50 flex justify-between items-center"><span class="text-slate-500 text-[9px] font-black uppercase">Full Name</span><span class="text-white font-bold text-xs uppercase" id="m-full-name"></span></div>
                     <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50 flex justify-between items-center"><span class="text-slate-500 text-[9px] font-black uppercase">Date of Birth</span><span class="text-white font-bold text-xs" id="m-dob"></span></div>
                     <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50 flex justify-between items-center"><span class="text-slate-500 text-[9px] font-black uppercase">Passport No</span><span class="text-white font-mono font-bold text-xs" id="m-passport"></span></div>
                     <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50 flex justify-between items-center"><span class="text-slate-500 text-[9px] font-black uppercase">Visa Ref</span><span id="m-visa-box" class="text-blue-400 font-bold text-xs"></span></div>
@@ -222,7 +222,7 @@
                 document.getElementById('m-interview').innerText = w.interview || "TBD";
                 document.getElementById('m-photo').src = w.photo ? w.photo : ('https://ui-avatars.com/api/?name=' + encodeURIComponent(w.name) + '&background=334155&color=fff');
                 
-                let score = 25; // Docs
+                let score = 25;
                 document.getElementById('dot-1').className = "progress-dot bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]";
                 if(w.visa !== "Pending") { score += 25; document.getElementById('dot-2').className = "progress-dot bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"; } else { document.getElementById('dot-2').className = "progress-dot bg-slate-700"; }
                 if(w.finger !== "TBD" && w.finger !== "N/A") { score += 25; document.getElementById('dot-3').className = "progress-dot bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"; } else { document.getElementById('dot-3').className = "progress-dot bg-slate-700"; }
