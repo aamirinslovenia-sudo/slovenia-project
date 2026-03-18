@@ -31,15 +31,18 @@
 
         .progress-dot { width: 10px; height: 10px; border-radius: 50%; transition: all 0.5s ease; }
         
-        /* Map Animations */
+        /* Map & Analytics Animations */
         .map-line { stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: drawLine 4s ease-out forwards infinite; }
         @keyframes drawLine { to { stroke-dashoffset: 0; } }
         .pulse-marker { animation: markerPulse 2s infinite; }
         @keyframes markerPulse { 0% { r: 4; opacity: 1; } 100% { r: 12; opacity: 0; } }
+        
+        .velocity-bar { animation: growWidth 2s ease-in-out infinite alternate; }
+        @keyframes growWidth { from { width: 40%; } to { width: 85%; } }
 
         @media print {
             body { background: white !important; color: black !important; }
-            #login-screen, #main-app, .modal-overlay, button, #view-toggle-container, .map-container { display: none !important; }
+            #login-screen, #main-app, .modal-overlay, button, #view-toggle-container, .map-container, #analytics-row { display: none !important; }
             #workerModal { position: absolute; left: 0; top: 0; width: 100%; display: block !important; opacity: 1 !important; pointer-events: auto !important; background: white !important; }
             .modal-container { border: none !important; box-shadow: none !important; max-height: none !important; width: 100% !important; max-width: none !important; background: white !important; }
             .bg-slate-900\/60 { background: #f8fafc !important; border: 1px solid #e2e8f0 !important; }
@@ -79,7 +82,7 @@
             </div>
         </header>
 
-        <div id="map-view" class="hidden mb-12">
+        <div id="map-view" class="hidden mb-12 space-y-6">
             <div class="glass-card rounded-[40px] p-8 overflow-hidden relative min-h-[500px] flex flex-col items-center justify-center">
                 <h3 class="absolute top-8 left-8 text-blue-500 text-[10px] font-black uppercase tracking-[0.3em]">MANPOWER ROUTE</h3>
                 <svg viewBox="0 0 800 400" class="w-full max-w-4xl opacity-80">
@@ -96,6 +99,21 @@
                     <div class="text-center"><p class="text-slate-500 text-[9px] font-bold uppercase mb-1">Documentation</p><p class="text-white font-black text-xl">100%</p></div>
                     <div class="text-center"><p class="text-blue-500 text-[9px] font-bold uppercase mb-1">Transit / Finger</p><p class="text-white font-black text-xl" id="transit-count">13</p></div>
                     <div class="text-center"><p class="text-emerald-500 text-[9px] font-bold uppercase mb-1">Deployment Ready</p><p class="text-white font-black text-xl" id="ready-count">5</p></div>
+                </div>
+            </div>
+
+            <div id="analytics-row" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass-card p-6 rounded-3xl flex items-center gap-4">
+                    <div class="p-3 bg-blue-500/10 rounded-2xl"><span class="text-xl">⏱️</span></div>
+                    <div><p class="text-slate-500 text-[9px] font-bold uppercase tracking-widest">Avg. Processing</p><p class="text-white font-black text-lg">42 Days</p></div>
+                </div>
+                <div class="glass-card p-6 rounded-3xl flex items-center gap-4">
+                    <div class="p-3 bg-emerald-500/10 rounded-2xl"><span class="text-xl">📅</span></div>
+                    <div><p class="text-slate-500 text-[9px] font-bold uppercase tracking-widest">Next Batch ETA</p><p class="text-white font-black text-lg">14-18 Days</p></div>
+                </div>
+                <div class="glass-card p-6 rounded-3xl">
+                    <p class="text-slate-500 text-[9px] font-bold uppercase tracking-widest mb-2">Pipeline Velocity</p>
+                    <div class="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden"><div class="velocity-bar h-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]"></div></div>
                 </div>
             </div>
         </div>
