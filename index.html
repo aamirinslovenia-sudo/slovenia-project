@@ -3,44 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MM Hidrotech | Personnel Portal</title>
+    <title>MM Hidrotech | Enterprise Personnel Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
-        body { font-family: 'Inter', sans-serif; background: radial-gradient(circle at top left, #1e293b, #0f172a); }
+        
+        /* Base Styling */
+        body { font-family: 'Inter', sans-serif; background: radial-gradient(circle at top left, #1e293b, #0f172a); min-height: 100vh; }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        
+        /* Glassmorphism Effects */
         .glass-card { background: rgba(30, 41, 59, 0.4); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .glass-card:hover { border: 1px solid rgba(59, 130, 246, 0.3); transform: translateY(-2px); background: rgba(30, 41, 59, 0.6); }
-        .login-glass { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        
+        /* Premium Login Styling */
+        .login-glass { background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
+        .logo-container { background: linear-gradient(135deg, #2563eb, #1d4ed8); box-shadow: 0 0 20px rgba(39, 93, 224, 0.4); animation: glow 3s infinite alternate; }
+        
+        @keyframes glow {
+            from { box-shadow: 0 0 15px rgba(39, 93, 224, 0.3); }
+            to { box-shadow: 0 0 30px rgba(39, 93, 224, 0.6); }
+        }
+
         .progress-dot { width: 10px; height: 10px; border-radius: 50%; transition: all 0.5s ease; }
         body.modal-active { overflow: hidden; }
 
+        /* ADVANCED PRINT ENGINE FOR PDF DOWNLOAD */
         @media print {
             body { background: white !important; color: black !important; }
             #login-screen, #main-app, .modal-overlay, button { display: none !important; }
             #workerModal { position: absolute; left: 0; top: 0; width: 100%; display: block !important; opacity: 1 !important; pointer-events: auto !important; background: white !important; }
             .modal-container { border: none !important; box-shadow: none !important; max-height: none !important; width: 100% !important; max-width: none !important; background: white !important; }
-            span, p, h2 { color: black !important; opacity: 1 !important; }
+            span, p, h2 { color: black !important; opacity: 1 !important; font-weight: bold !important; }
+            .text-slate-500, .text-blue-400 { color: #333 !important; }
             .bg-slate-900\/60 { background: #f8fafc !important; border: 1px solid #e2e8f0 !important; }
             .progress-dot { border: 1px solid #000 !important; }
             .bg-blue-500 { background-color: #2563eb !important; -webkit-print-color-adjust: exact; }
         }
     </style>
 </head>
-<body class="min-h-screen text-slate-200 antialiased">
+<body class="text-slate-200 antialiased">
 
     <div id="login-screen" class="fixed inset-0 flex items-center justify-center p-6 z-[9999] bg-[#020617]">
-        <div class="login-glass p-12 rounded-[50px] shadow-2xl w-full max-w-[360px] text-center border border-slate-800">
-            <div class="w-16 h-16 bg-blue-600 rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg">
-                <span class="text-2xl text-white font-black">MM</span>
+        <div class="login-glass p-12 rounded-[50px] w-full max-w-[400px] text-center relative overflow-hidden">
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-blue-600/10 rounded-full blur-3xl"></div>
+            
+            <div class="logo-container w-24 h-24 rounded-3xl mx-auto mb-8 flex items-center justify-center relative z-10">
+                <span class="text-3xl text-white font-black tracking-tighter">MM</span>
             </div>
-            <h2 class="text-xl font-extrabold text-white mb-1 tracking-tight">Enterprise Access</h2>
-            <p class="text-slate-500 text-[10px] font-bold uppercase tracking-[4px] mb-8">Fleet Management System</p>
-            <input type="password" id="pass-input" class="w-full bg-slate-900/50 border border-slate-800 p-4 rounded-2xl text-white text-center mb-4 focus:border-blue-500 outline-none" placeholder="Access Code">
-            <button onclick="checkPassword()" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-2xl font-bold uppercase tracking-widest transition-all">Verify & Enter</button>
-            <p id="login-error" class="text-red-500 text-[10px] font-bold mt-4 hidden uppercase tracking-widest">Invalid Code</p>
+
+            <div class="relative z-10">
+                <h2 class="text-2xl font-extrabold text-white mb-2 tracking-tight uppercase">MM Hidrotech</h2>
+                <p class="text-slate-500 text-[10px] font-bold uppercase tracking-[0.5em] mb-10">Manpower Management Portal</p>
+                
+                <div class="space-y-4">
+                    <input type="password" id="pass-input" 
+                        class="w-full bg-slate-900/80 border border-slate-800 p-5 rounded-2xl text-white text-center focus:border-blue-500 outline-none transition-all placeholder:text-slate-700 font-mono" 
+                        placeholder="••••••••">
+                    
+                    <button onclick="checkPassword()" 
+                        class="w-full bg-blue-600 hover:bg-blue-500 text-white py-5 rounded-2xl font-black uppercase tracking-widest transition-all transform active:scale-95 shadow-lg shadow-blue-900/20">
+                        Verify Identity
+                    </button>
+                </div>
+                
+                <p id="login-error" class="text-red-500 text-[10px] font-bold mt-6 hidden uppercase tracking-widest animate-bounce">
+                    Access Denied - Invalid Code
+                </p>
+            </div>
         </div>
     </div>
 
@@ -59,10 +91,10 @@
         </header>
 
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            <div class="glass-card p-6 rounded-3xl"><p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-2">Total Personnel</p><h3 id="stat-total" class="text-2xl font-black text-white">0</h3></div>
-            <div class="glass-card p-6 rounded-3xl border-l-2 border-l-emerald-500/50"><p class="text-emerald-500 text-[10px] font-bold uppercase tracking-widest mb-2">Ready</p><h3 id="stat-ready" class="text-2xl font-black text-white">0</h3></div>
-            <div class="glass-card p-6 rounded-3xl border-l-2 border-l-blue-500/50"><p class="text-blue-500 text-[10px] font-bold uppercase tracking-widest mb-2">In Pipeline</p><h3 id="stat-process" class="text-2xl font-black text-white">0</h3></div>
-            <div class="glass-card p-6 rounded-3xl text-right"><p class="text-slate-600 text-[9px] font-bold uppercase mb-1">Last Sync</p><p id="stat-date" class="text-sm font-black text-slate-400">--/--/--</p></div>
+            <div class="glass-card p-6 rounded-3xl"><p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-2">Total Staff</p><h3 id="stat-total" class="text-2xl font-black text-white">0</h3></div>
+            <div class="glass-card p-6 rounded-3xl border-l-2 border-l-emerald-500/50"><p class="text-emerald-500 text-[10px] font-bold uppercase tracking-widest mb-2">Ready for Duty</p><h3 id="stat-ready" class="text-2xl font-black text-white">0</h3></div>
+            <div class="glass-card p-6 rounded-3xl border-l-2 border-l-blue-500/50"><p class="text-blue-500 text-[10px] font-bold uppercase tracking-widest mb-2">In Process</p><h3 id="stat-process" class="text-2xl font-black text-white">0</h3></div>
+            <div class="glass-card p-6 rounded-3xl text-right flex flex-col justify-center"><p class="text-slate-600 text-[9px] font-bold uppercase mb-1">Live Sync</p><p id="stat-date" class="text-sm font-black text-slate-400">--/--/--</p></div>
         </div>
 
         <div id="batch-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
@@ -77,18 +109,18 @@
                     <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all">📄 Download Dossier</button>
                 </div>
 
-                <img id="m-photo" src="" class="w-32 h-32 rounded-full object-cover border-4 border-blue-600 mx-auto mb-4">
+                <img id="m-photo" src="" class="w-32 h-32 rounded-full object-cover border-4 border-blue-600 mx-auto mb-4 shadow-xl shadow-blue-900/20">
                 <h2 class="text-2xl font-extrabold text-white" id="m-name"></h2>
                 <p class="text-blue-400 text-[10px] font-bold uppercase tracking-widest mb-6" id="m-role-display"></p>
 
                 <div class="mb-8 px-4 text-left">
-                    <div class="flex justify-between mb-2 text-[9px] font-bold uppercase text-slate-500 tracking-widest"><span>Progress Status</span><span id="m-percent">0%</span></div>
+                    <div class="flex justify-between mb-2 text-[9px] font-bold uppercase text-slate-500 tracking-widest"><span>Pipeline Status</span><span id="m-percent">0%</span></div>
                     <div class="h-1.5 w-full bg-slate-800 rounded-full flex mb-4"><div id="m-progress-bar" class="h-full bg-blue-600 rounded-full transition-all duration-1000"></div></div>
                     <div class="flex justify-between">
-                        <div class="flex flex-col items-center gap-1"><div id="dot-1" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase">Docs</span></div>
-                        <div class="flex flex-col items-center gap-1"><div id="dot-2" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase">Visa</span></div>
-                        <div class="flex flex-col items-center gap-1"><div id="dot-3" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase">Int.</span></div>
-                        <div class="flex flex-col items-center gap-1"><div id="dot-4" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase">Finger</span></div>
+                        <div class="flex flex-col items-center gap-1"><div id="dot-1" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase tracking-tighter">Docs</span></div>
+                        <div class="flex flex-col items-center gap-1"><div id="dot-2" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase tracking-tighter">Visa</span></div>
+                        <div class="flex flex-col items-center gap-1"><div id="dot-3" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase tracking-tighter">Int.</span></div>
+                        <div class="flex flex-col items-center gap-1"><div id="dot-4" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase tracking-tighter">Finger</span></div>
                     </div>
                 </div>
 
@@ -102,7 +134,7 @@
                         <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50"><span class="text-slate-500 text-[9px] font-black uppercase block mb-1">Fingerprint</span><span class="text-blue-200 font-bold text-xs" id="m-finger"></span></div>
                     </div>
                 </div>
-                <button onclick="toggleModal()" class="w-full bg-slate-800 text-white py-4 rounded-2xl font-bold text-xs uppercase tracking-widest">Back to Dashboard</button>
+                <button onclick="toggleModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-white py-4 rounded-2xl font-bold text-xs uppercase tracking-widest transition-all">Return to Dashboard</button>
             </div>
         </div>
     </div>
