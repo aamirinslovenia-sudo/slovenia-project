@@ -29,7 +29,8 @@
             to { box-shadow: 0 0 25px rgba(59, 130, 246, 0.3); }
         }
 
-        .progress-dot { width: 10px; height: height: 10px; border-radius: 50%; transition: all 0.5s ease; }
+        .progress-dot { width: 10px; height: 10px; border-radius: 50%; transition: all 0.5s ease; position: relative; }
+        .progress-dot::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 1px dashed rgba(255,255,255,0.1); }
         
         .map-line { stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: drawLine 4s ease-out forwards infinite; }
         @keyframes drawLine { to { stroke-dashoffset: 0; } }
@@ -138,19 +139,22 @@
         <div class="modal-container glass-card w-full max-w-lg mx-auto rounded-[40px] shadow-2xl z-[10000] border border-slate-700/50 max-h-[90vh] overflow-y-auto">
             <div class="modal-content py-10 px-10 text-center">
                 <div class="flex justify-end mb-4"><button onclick="window.print()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest lang-key" data-key="btn_print">📄 Download Dossier</button></div>
+                
                 <img id="m-photo" src="" class="w-32 h-32 rounded-full object-cover border-4 border-blue-600 mx-auto mb-4 shadow-xl">
                 <h2 class="text-2xl font-extrabold text-white" id="m-name"></h2>
                 <p class="text-blue-400 text-[10px] font-bold uppercase tracking-widest mb-6" id="m-role-display"></p>
+
                 <div class="mb-8 px-4 text-left">
-                    <div class="flex justify-between mb-2 text-[9px] font-bold uppercase text-slate-500 tracking-widest"><span class="lang-key" data-key="mod_status">Pipeline Status</span><span id="m-percent">0%</span></div>
-                    <div class="h-1.5 w-full bg-slate-800 rounded-full flex mb-4"><div id="m-progress-bar" class="h-full bg-blue-600 rounded-full transition-all duration-1000"></div></div>
+                    <div class="flex justify-between mb-2 text-[9px] font-bold uppercase text-slate-500 tracking-widest"><span class="lang-key" data-key="mod_status">Progress Status</span><span id="m-percent">0%</span></div>
+                    <div class="h-1.5 w-full bg-slate-800 rounded-full flex mb-6"><div id="m-progress-bar" class="h-full bg-blue-600 rounded-full transition-all duration-1000"></div></div>
                     <div class="flex justify-between px-1">
-                        <div class="flex flex-col items-center gap-1"><div id="dot-1" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase lang-key" data-key="mod_step_docs">Docs</span></div>
-                        <div class="flex flex-col items-center gap-1"><div id="dot-2" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase lang-key" data-key="mod_step_visa">Visa</span></div>
-                        <div class="flex flex-col items-center gap-1"><div id="dot-3" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase lang-key" data-key="mod_step_finger">Finger</span></div>
-                        <div class="flex flex-col items-center gap-1"><div id="dot-4" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase lang-key" data-key="mod_step_int">Int.</span></div>
+                        <div class="flex flex-col items-center gap-2"><div id="dot-1" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase lang-key" data-key="mod_step_docs">Docs</span></div>
+                        <div class="flex flex-col items-center gap-2"><div id="dot-2" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase lang-key" data-key="mod_step_visa">Visa</span></div>
+                        <div class="flex flex-col items-center gap-2"><div id="dot-3" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase lang-key" data-key="mod_step_finger">Finger</span></div>
+                        <div class="flex flex-col items-center gap-2"><div id="dot-4" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase lang-key" data-key="mod_step_int">Int.</span></div>
                     </div>
                 </div>
+
                 <div class="space-y-3 mb-8 text-left">
                     <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50 flex justify-between items-center"><span class="text-slate-500 text-[9px] font-black uppercase lang-key" data-key="mod_full_name">Full Name</span><span class="text-white font-bold text-xs uppercase" id="m-full-name"></span></div>
                     <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50 flex justify-between items-center"><span class="text-slate-500 text-[9px] font-black uppercase lang-key" data-key="mod_dob">Date of Birth</span><span class="text-white font-bold text-xs" id="m-dob"></span></div>
@@ -188,7 +192,7 @@
                 grid_pipeline: "In Pipeline",
                 grid_sync: "Live Sync",
                 btn_print: "📄 Download Dossier",
-                mod_status: "Pipeline Status",
+                mod_status: "Progress Status",
                 mod_step_docs: "Docs",
                 mod_step_visa: "Visa",
                 mod_step_finger: "Finger",
@@ -202,8 +206,7 @@
                 btn_back: "Back to Dashboard",
                 st_pipeline: "In Pipeline",
                 st_finger: "Finger Done",
-                st_ready: "Ready / Entry",
-                batch_text: "Batch"
+                st_ready: "Ready / Entry"
             },
             sl: {
                 login_sub: "Sistem za upravljanje delovne sile",
@@ -225,7 +228,7 @@
                 grid_pipeline: "V obdelavi",
                 grid_sync: "Sinhronizacija",
                 btn_print: "📄 Prenesi dosje",
-                mod_status: "Status postopka",
+                mod_status: "Status napredka",
                 mod_step_docs: "Dok.",
                 mod_step_visa: "Viza",
                 mod_step_finger: "Prstni o.",
@@ -239,8 +242,7 @@
                 btn_back: "Nazaj na nadzorno ploščo",
                 st_pipeline: "V obdelavi",
                 st_finger: "Prstni odtisi opravljeni",
-                st_ready: "Pripravljeno / Vstop",
-                batch_text: "Skupina"
+                st_ready: "Pripravljeno / Vstop"
             }
         };
 
@@ -252,11 +254,9 @@
                 const key = el.getAttribute('data-key');
                 if (translations[lang][key]) el.innerText = translations[lang][key];
             });
-            
             document.getElementById('en-btn').className = lang === 'en' ? "px-3 py-1 text-[10px] font-black rounded-full bg-blue-600 text-white" : "px-3 py-1 text-[10px] font-black rounded-full text-slate-400";
             document.getElementById('sl-btn').className = lang === 'sl' ? "px-3 py-1 text-[10px] font-black rounded-full bg-blue-600 text-white" : "px-3 py-1 text-[10px] font-black rounded-full text-slate-400";
-            
-            renderBatches(); // Refresh labels in grid
+            renderBatches();
         }
 
         const workerData = [
@@ -358,36 +358,28 @@
         function renderBatches() {
             const grid = document.getElementById('batch-grid'); grid.innerHTML = "";
             const batches = workerData.reduce((acc, w) => { (acc[w.batch] = acc[w.batch] || []).push(w); return acc; }, {});
-            
             Object.entries(batches).forEach(([batchName, members]) => {
                 const block = document.createElement('div'); block.className = "mb-10";
-                
-                // Translate Batch Name header (e.g., 1st Batch -> 1. Skupina)
                 let displayBatch = batchName;
                 if(currentLang === 'sl') {
                     displayBatch = batchName.replace('1st', '1.').replace('2nd', '2.').replace('3rd', '3.').replace('4th', '4.').replace('5th', '5.').replace('Batch', 'Skupina');
                 }
-
                 const listItems = members.map((m) => {
                     const idx = workerData.findIndex(w => w.name === m.name);
                     let sText = translations[currentLang].st_pipeline;
                     let sClass = "border-amber-500/30 text-amber-500 bg-amber-500/5";
-                    
                     if (m.finger !== "TBD" && m.finger !== "N/A" && m.interview !== "TBD" && m.interview !== "N/A") { 
                         sText = translations[currentLang].st_ready; 
                         sClass = "border-emerald-500/30 text-emerald-400 bg-emerald-500/5"; 
-                    }
-                    else if (m.finger !== "TBD" && m.finger !== "N/A") { 
+                    } else if (m.finger !== "TBD" && m.finger !== "N/A") { 
                         sText = translations[currentLang].st_finger; 
                         sClass = "border-blue-500/30 text-blue-400 bg-blue-500/5"; 
                     }
-                    
                     return `<div onclick="toggleModal(${idx})" data-name="${m.name}" class="worker-item flex justify-between items-center p-6 bg-slate-900/30 border border-slate-800/50 rounded-2xl mb-3 hover:bg-slate-800/50 cursor-pointer transition-all">
                         <div><span class="text-white font-bold">${m.name}</span><p class="text-[9px] text-slate-500 font-bold uppercase mt-1 tracking-widest">${m.role}</p></div>
                         <span class="px-2 py-1 rounded border ${sClass} uppercase text-[8px] font-bold">${sText}</span>
                     </div>`;
                 }).join('');
-                
                 block.innerHTML = `<h2 class="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mb-4 ml-2">${displayBatch}</h2><div>${listItems}</div>`;
                 grid.appendChild(block);
             });
