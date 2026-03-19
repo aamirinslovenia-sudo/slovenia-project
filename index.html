@@ -29,7 +29,7 @@
             to { box-shadow: 0 0 25px rgba(59, 130, 246, 0.3); }
         }
 
-        .progress-dot { width: 10px; height: 10px; border-radius: 50%; transition: all 0.5s ease; }
+        .progress-dot { width: 10px; height: height: 10px; border-radius: 50%; transition: all 0.5s ease; }
         
         .map-line { stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: drawLine 4s ease-out forwards infinite; }
         @keyframes drawLine { to { stroke-dashoffset: 0; } }
@@ -41,7 +41,7 @@
 
         @media print {
             body { background: white !important; color: black !important; }
-            #login-screen, #main-app, .modal-overlay, button, #view-toggle-container, .map-container, #analytics-row { display: none !important; }
+            #login-screen, #main-app, .modal-overlay, button, #view-toggle-container, .map-container, #analytics-row, #lang-switch { display: none !important; }
             #workerModal { position: absolute; left: 0; top: 0; width: 100%; display: block !important; opacity: 1 !important; pointer-events: auto !important; background: white !important; }
             .modal-container { border: none !important; box-shadow: none !important; max-height: none !important; width: 100% !important; max-width: none !important; background: white !important; }
             .bg-slate-900\/60 { background: #f8fafc !important; border: 1px solid #e2e8f0 !important; }
@@ -51,28 +51,33 @@
 </head>
 <body class="text-slate-200 antialiased">
 
+    <div id="lang-switch" class="fixed top-6 right-6 z-[1000] flex bg-slate-900/80 backdrop-blur rounded-full p-1 border border-slate-700">
+        <button onclick="setLanguage('en')" id="en-btn" class="px-3 py-1 text-[10px] font-black rounded-full transition-all bg-blue-600 text-white">ENG</button>
+        <button onclick="setLanguage('sl')" id="sl-btn" class="px-3 py-1 text-[10px] font-black rounded-full transition-all text-slate-400">SLO</button>
+    </div>
+
     <div id="login-screen" class="fixed inset-0 flex items-center justify-center p-6 z-[9999] bg-[#020617]">
         <div class="login-glass p-10 rounded-[50px] w-full max-w-[420px] text-center relative border border-slate-800">
             <div class="logo-box-wide w-full h-32 rounded-3xl mx-auto mb-10 flex items-center justify-center p-6">
                 <img src="logo.png" alt="MM HIDROTEH" class="w-full h-full object-contain">
             </div>
-            <p class="text-slate-500 text-[10px] font-bold uppercase tracking-[0.5em] mb-8">Manpower Management System</p>
+            <p class="text-slate-500 text-[10px] font-bold uppercase tracking-[0.5em] mb-8 lang-key" data-key="login_sub">Manpower Management System</p>
             <div class="space-y-4">
                 <input type="password" id="pass-input" class="w-full bg-slate-900/80 border border-slate-800 p-5 rounded-2xl text-white text-center focus:border-blue-500 outline-none transition-all font-mono" placeholder="••••••••">
-                <button onclick="checkPassword()" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-5 rounded-2xl font-black uppercase tracking-widest transition-all">Enter Portal</button>
+                <button onclick="checkPassword()" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-5 rounded-2xl font-black uppercase tracking-widest transition-all lang-key" data-key="btn_enter">Enter Portal</button>
             </div>
-            <p id="login-error" class="text-red-500 text-[10px] font-bold mt-6 hidden uppercase tracking-widest">Invalid Security Code</p>
+            <p id="login-error" class="text-red-500 text-[10px] font-bold mt-6 hidden uppercase tracking-widest lang-key" data-key="login_err">Invalid Security Code</p>
         </div>
     </div>
 
     <div id="main-app" class="hidden max-w-7xl mx-auto p-4 md:p-10">
         <header class="mb-12 text-center border-b border-slate-800/50 pb-10">
-            <h1 class="text-3xl font-extrabold text-white tracking-tight mb-2 uppercase">Strategic Manpower Bridge</h1>
-            <p class="text-slate-500 font-medium text-xs tracking-widest uppercase mb-8">Pakistan to Slovenia | MM HIDROTEH d.o.o.</p>
+            <h1 class="text-3xl font-extrabold text-white tracking-tight mb-2 uppercase lang-key" data-key="title">Strategic Manpower Bridge</h1>
+            <p class="text-slate-500 font-medium text-xs tracking-widest uppercase mb-8 lang-key" data-key="subtitle">Pakistan to Slovenia | MM HIDROTEH d.o.o.</p>
             
             <div id="view-toggle-container" class="flex justify-center gap-4 mb-8">
-                <button onclick="switchView('grid')" id="btn-grid" class="px-6 py-2 rounded-full bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest transition-all">Database View</button>
-                <button onclick="switchView('map')" id="btn-map" class="px-6 py-2 rounded-full bg-slate-800 text-slate-400 text-[10px] font-black uppercase tracking-widest transition-all">Manpower Route</button>
+                <button onclick="switchView('grid')" id="btn-grid" class="px-6 py-2 rounded-full bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest transition-all lang-key" data-key="btn_grid">Database View</button>
+                <button onclick="switchView('map')" id="btn-map" class="px-6 py-2 rounded-full bg-slate-800 text-slate-400 text-[10px] font-black uppercase tracking-widest transition-all lang-key" data-key="btn_map">Manpower Route</button>
             </div>
 
             <div class="relative max-w-md mx-auto" id="search-bar-container">
@@ -83,7 +88,7 @@
 
         <div id="map-view" class="hidden mb-12 space-y-6">
             <div class="glass-card rounded-[40px] p-8 overflow-hidden relative min-h-[500px] flex flex-col items-center justify-center">
-                <h3 class="absolute top-8 left-8 text-blue-500 text-[10px] font-black uppercase tracking-[0.3em]">MANPOWER ROUTE</h3>
+                <h3 class="absolute top-8 left-8 text-blue-500 text-[10px] font-black uppercase tracking-[0.3em] lang-key" data-key="map_title">MANPOWER ROUTE</h3>
                 <svg viewBox="0 0 800 400" class="w-full max-w-4xl opacity-80">
                     <path d="M100,150 Q400,50 700,150" fill="none" stroke="rgba(59, 130, 246, 0.2)" stroke-width="2" />
                     <path class="map-line" d="M100,150 Q400,50 700,150" fill="none" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" />
@@ -95,23 +100,23 @@
                     <text x="670" y="200" fill="#3b82f6" font-size="10" font-weight="bold" id="map-slo-count">5 Ready</text>
                 </svg>
                 <div class="grid grid-cols-3 gap-8 mt-8 w-full max-w-2xl">
-                    <div class="text-center"><p class="text-slate-500 text-[9px] font-bold uppercase mb-1">Documentation</p><p class="text-white font-black text-xl">100%</p></div>
-                    <div class="text-center"><p class="text-blue-500 text-[9px] font-bold uppercase mb-1">Transit / Finger</p><p class="text-white font-black text-xl" id="transit-count">13</p></div>
-                    <div class="text-center"><p class="text-emerald-500 text-[9px] font-bold uppercase mb-1">Deployment Ready</p><p class="text-white font-black text-xl" id="ready-count">5</p></div>
+                    <div class="text-center"><p class="text-slate-500 text-[9px] font-bold uppercase mb-1 lang-key" data-key="stat_docs">Documentation</p><p class="text-white font-black text-xl">100%</p></div>
+                    <div class="text-center"><p class="text-blue-500 text-[9px] font-bold uppercase mb-1 lang-key" data-key="stat_transit">Transit / Finger</p><p class="text-white font-black text-xl" id="transit-count">13</p></div>
+                    <div class="text-center"><p class="text-emerald-500 text-[9px] font-bold uppercase mb-1 lang-key" data-key="stat_deployment">Deployment Ready</p><p class="text-white font-black text-xl" id="ready-count">5</p></div>
                 </div>
             </div>
 
             <div id="analytics-row" class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="glass-card p-6 rounded-3xl flex items-center gap-4">
                     <div class="p-3 bg-blue-500/10 rounded-2xl"><span class="text-xl">⏱️</span></div>
-                    <div><p class="text-slate-500 text-[9px] font-bold uppercase tracking-widest">Avg. Processing</p><p class="text-white font-black text-lg">42 Days</p></div>
+                    <div><p class="text-slate-500 text-[9px] font-bold uppercase tracking-widest lang-key" data-key="ana_avg">Avg. Processing</p><p class="text-white font-black text-lg">42 Days</p></div>
                 </div>
                 <div class="glass-card p-6 rounded-3xl flex items-center gap-4">
                     <div class="p-3 bg-emerald-500/10 rounded-2xl"><span class="text-xl">📅</span></div>
-                    <div><p class="text-slate-500 text-[9px] font-bold uppercase tracking-widest">Next Batch ETA</p><p class="text-white font-black text-lg">14-18 Days</p></div>
+                    <div><p class="text-slate-500 text-[9px] font-bold uppercase tracking-widest lang-key" data-key="ana_eta">Next Batch ETA</p><p class="text-white font-black text-lg">14-18 Days</p></div>
                 </div>
                 <div class="glass-card p-6 rounded-3xl">
-                    <p class="text-slate-500 text-[9px] font-bold uppercase tracking-widest mb-2">Pipeline Velocity</p>
+                    <p class="text-slate-500 text-[9px] font-bold uppercase tracking-widest mb-2 lang-key" data-key="ana_vel">Pipeline Velocity</p>
                     <div class="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden"><div class="velocity-bar h-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]"></div></div>
                 </div>
             </div>
@@ -119,10 +124,10 @@
 
         <div id="grid-view">
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-                <div class="glass-card p-6 rounded-3xl border-l-2 border-l-slate-500/50"><p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-2">Total Staff</p><h3 id="stat-total" class="text-2xl font-black text-white">0</h3></div>
-                <div class="glass-card p-6 rounded-3xl border-l-2 border-l-emerald-500/50"><p class="text-emerald-500 text-[10px] font-bold uppercase tracking-widest mb-2">Ready</p><h3 id="stat-ready" class="text-2xl font-black text-white">0</h3></div>
-                <div class="glass-card p-6 rounded-3xl border-l-2 border-l-blue-500/50"><p class="text-blue-500 text-[10px] font-bold uppercase tracking-widest mb-2">In Pipeline</p><h3 id="stat-process" class="text-2xl font-black text-white">0</h3></div>
-                <div class="glass-card p-6 rounded-3xl text-right flex flex-col justify-center"><p class="text-slate-600 text-[9px] font-bold uppercase mb-1">Live Sync</p><p id="stat-date" class="text-sm font-black text-slate-400">--/--/--</p></div>
+                <div class="glass-card p-6 rounded-3xl border-l-2 border-l-slate-500/50"><p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-2 lang-key" data-key="grid_total">Total Staff</p><h3 id="stat-total" class="text-2xl font-black text-white">0</h3></div>
+                <div class="glass-card p-6 rounded-3xl border-l-2 border-l-emerald-500/50"><p class="text-emerald-500 text-[10px] font-bold uppercase tracking-widest mb-2 lang-key" data-key="grid_ready">Ready</p><h3 id="stat-ready" class="text-2xl font-black text-white">0</h3></div>
+                <div class="glass-card p-6 rounded-3xl border-l-2 border-l-blue-500/50"><p class="text-blue-500 text-[10px] font-bold uppercase tracking-widest mb-2 lang-key" data-key="grid_pipeline">In Pipeline</p><h3 id="stat-process" class="text-2xl font-black text-white">0</h3></div>
+                <div class="glass-card p-6 rounded-3xl text-right flex flex-col justify-center"><p class="text-slate-600 text-[9px] font-bold uppercase mb-1 lang-key" data-key="grid_sync">Live Sync</p><p id="stat-date" class="text-sm font-black text-slate-400">--/--/--</p></div>
             </div>
             <div id="batch-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
         </div>
@@ -132,39 +137,128 @@
         <div class="modal-overlay absolute inset-0 bg-[#020617]/95 backdrop-blur-md" onclick="toggleModal()"></div>
         <div class="modal-container glass-card w-full max-w-lg mx-auto rounded-[40px] shadow-2xl z-[10000] border border-slate-700/50 max-h-[90vh] overflow-y-auto">
             <div class="modal-content py-10 px-10 text-center">
-                <div class="flex justify-end mb-4"><button onclick="window.print()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest">📄 Download Dossier</button></div>
-                
+                <div class="flex justify-end mb-4"><button onclick="window.print()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest lang-key" data-key="btn_print">📄 Download Dossier</button></div>
                 <img id="m-photo" src="" class="w-32 h-32 rounded-full object-cover border-4 border-blue-600 mx-auto mb-4 shadow-xl">
                 <h2 class="text-2xl font-extrabold text-white" id="m-name"></h2>
                 <p class="text-blue-400 text-[10px] font-bold uppercase tracking-widest mb-6" id="m-role-display"></p>
-
                 <div class="mb-8 px-4 text-left">
-                    <div class="flex justify-between mb-2 text-[9px] font-bold uppercase text-slate-500 tracking-widest"><span>Pipeline Status</span><span id="m-percent">0%</span></div>
+                    <div class="flex justify-between mb-2 text-[9px] font-bold uppercase text-slate-500 tracking-widest"><span class="lang-key" data-key="mod_status">Pipeline Status</span><span id="m-percent">0%</span></div>
                     <div class="h-1.5 w-full bg-slate-800 rounded-full flex mb-4"><div id="m-progress-bar" class="h-full bg-blue-600 rounded-full transition-all duration-1000"></div></div>
                     <div class="flex justify-between px-1">
-                        <div class="flex flex-col items-center gap-1"><div id="dot-1" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase">Docs</span></div>
-                        <div class="flex flex-col items-center gap-1"><div id="dot-2" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase">Visa</span></div>
-                        <div class="flex flex-col items-center gap-1"><div id="dot-3" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase">Finger</span></div>
-                        <div class="flex flex-col items-center gap-1"><div id="dot-4" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase">Int.</span></div>
+                        <div class="flex flex-col items-center gap-1"><div id="dot-1" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase lang-key" data-key="mod_step_docs">Docs</span></div>
+                        <div class="flex flex-col items-center gap-1"><div id="dot-2" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase lang-key" data-key="mod_step_visa">Visa</span></div>
+                        <div class="flex flex-col items-center gap-1"><div id="dot-3" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase lang-key" data-key="mod_step_finger">Finger</span></div>
+                        <div class="flex flex-col items-center gap-1"><div id="dot-4" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase lang-key" data-key="mod_step_int">Int.</span></div>
                     </div>
                 </div>
-
                 <div class="space-y-3 mb-8 text-left">
-                    <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50 flex justify-between items-center"><span class="text-slate-500 text-[9px] font-black uppercase">Full Name</span><span class="text-white font-bold text-xs uppercase" id="m-full-name"></span></div>
-                    <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50 flex justify-between items-center"><span class="text-slate-500 text-[9px] font-black uppercase">Date of Birth</span><span class="text-white font-bold text-xs" id="m-dob"></span></div>
-                    <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50 flex justify-between items-center"><span class="text-slate-500 text-[9px] font-black uppercase">Passport No</span><span class="text-white font-mono font-bold text-xs" id="m-passport"></span></div>
-                    <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50 flex justify-between items-center"><span class="text-slate-500 text-[9px] font-black uppercase">Visa Ref</span><span id="m-visa-box" class="text-blue-400 font-bold text-xs"></span></div>
+                    <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50 flex justify-between items-center"><span class="text-slate-500 text-[9px] font-black uppercase lang-key" data-key="mod_full_name">Full Name</span><span class="text-white font-bold text-xs uppercase" id="m-full-name"></span></div>
+                    <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50 flex justify-between items-center"><span class="text-slate-500 text-[9px] font-black uppercase lang-key" data-key="mod_dob">Date of Birth</span><span class="text-white font-bold text-xs" id="m-dob"></span></div>
+                    <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50 flex justify-between items-center"><span class="text-slate-500 text-[9px] font-black uppercase lang-key" data-key="mod_passport">Passport No</span><span class="text-white font-mono font-bold text-xs" id="m-passport"></span></div>
+                    <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50 flex justify-between items-center"><span class="text-slate-500 text-[9px] font-black uppercase lang-key" data-key="mod_visa">Visa Ref</span><span id="m-visa-box" class="text-blue-400 font-bold text-xs"></span></div>
                     <div class="grid grid-cols-2 gap-4">
-                        <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50"><span class="text-slate-500 text-[9px] font-black uppercase block mb-1">Interview</span><span class="text-white font-bold text-xs" id="m-interview"></span></div>
-                        <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50"><span class="text-slate-500 text-[9px] font-black uppercase block mb-1">Fingerprint</span><span class="text-blue-200 font-bold text-xs" id="m-finger"></span></div>
+                        <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50"><span class="text-slate-500 text-[9px] font-black uppercase block mb-1 lang-key" data-key="mod_interview">Interview</span><span class="text-white font-bold text-xs" id="m-interview"></span></div>
+                        <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50"><span class="text-slate-500 text-[9px] font-black uppercase block mb-1 lang-key" data-key="mod_finger">Fingerprint</span><span class="text-blue-200 font-bold text-xs" id="m-finger"></span></div>
                     </div>
                 </div>
-                <button onclick="toggleModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-white py-4 rounded-2xl font-bold text-xs uppercase tracking-widest transition-all">Back to Dashboard</button>
+                <button onclick="toggleModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-white py-4 rounded-2xl font-bold text-xs uppercase tracking-widest transition-all lang-key" data-key="btn_back">Back to Dashboard</button>
             </div>
         </div>
     </div>
 
     <script>
+        const translations = {
+            en: {
+                login_sub: "Manpower Management System",
+                btn_enter: "Enter Portal",
+                login_err: "Invalid Security Code",
+                title: "Strategic Manpower Bridge",
+                subtitle: "Pakistan to Slovenia | MM HIDROTEH d.o.o.",
+                btn_grid: "Database View",
+                btn_map: "Manpower Route",
+                map_title: "MANPOWER ROUTE",
+                stat_docs: "Documentation",
+                stat_transit: "Transit / Finger",
+                stat_deployment: "Deployment Ready",
+                ana_avg: "Avg. Processing",
+                ana_eta: "Next Batch ETA",
+                ana_vel: "Pipeline Velocity",
+                grid_total: "Total Staff",
+                grid_ready: "Ready",
+                grid_pipeline: "In Pipeline",
+                grid_sync: "Live Sync",
+                btn_print: "📄 Download Dossier",
+                mod_status: "Pipeline Status",
+                mod_step_docs: "Docs",
+                mod_step_visa: "Visa",
+                mod_step_finger: "Finger",
+                mod_step_int: "Int.",
+                mod_full_name: "Full Name",
+                mod_dob: "Date of Birth",
+                mod_passport: "Passport No",
+                mod_visa: "Visa Ref",
+                mod_interview: "Interview",
+                mod_finger: "Fingerprint",
+                btn_back: "Back to Dashboard",
+                st_pipeline: "In Pipeline",
+                st_finger: "Finger Done",
+                st_ready: "Ready / Entry",
+                batch_text: "Batch"
+            },
+            sl: {
+                login_sub: "Sistem za upravljanje delovne sile",
+                btn_enter: "Vstop v portal",
+                login_err: "Neveljavna varnostna koda",
+                title: "Strateški most delovne sile",
+                subtitle: "Pakistan v Slovenijo | MM HIDROTEH d.o.o.",
+                btn_grid: "Pogled baze podatkov",
+                btn_map: "Pot delovne sile",
+                map_title: "POT DELOVNE SILE",
+                stat_docs: "Dokumentacija",
+                stat_transit: "Tranzit / Prstni odtisi",
+                stat_deployment: "Pripravljeno na napotitev",
+                ana_avg: "Povprečni čas",
+                ana_eta: "Naslednja skupina",
+                ana_vel: "Hitrost cevovoda",
+                grid_total: "Skupaj osebje",
+                grid_ready: "Pripravljeno",
+                grid_pipeline: "V obdelavi",
+                grid_sync: "Sinhronizacija",
+                btn_print: "📄 Prenesi dosje",
+                mod_status: "Status postopka",
+                mod_step_docs: "Dok.",
+                mod_step_visa: "Viza",
+                mod_step_finger: "Prstni o.",
+                mod_step_int: "Inter.",
+                mod_full_name: "Polno ime",
+                mod_dob: "Datum rojstva",
+                mod_passport: "Št. potnega lista",
+                mod_visa: "Ref. vize",
+                mod_interview: "Intervju",
+                mod_finger: "Prstni odtisi",
+                btn_back: "Nazaj na nadzorno ploščo",
+                st_pipeline: "V obdelavi",
+                st_finger: "Prstni odtisi opravljeni",
+                st_ready: "Pripravljeno / Vstop",
+                batch_text: "Skupina"
+            }
+        };
+
+        let currentLang = 'en';
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-key').forEach(el => {
+                const key = el.getAttribute('data-key');
+                if (translations[lang][key]) el.innerText = translations[lang][key];
+            });
+            
+            document.getElementById('en-btn').className = lang === 'en' ? "px-3 py-1 text-[10px] font-black rounded-full bg-blue-600 text-white" : "px-3 py-1 text-[10px] font-black rounded-full text-slate-400";
+            document.getElementById('sl-btn').className = lang === 'sl' ? "px-3 py-1 text-[10px] font-black rounded-full bg-blue-600 text-white" : "px-3 py-1 text-[10px] font-black rounded-full text-slate-400";
+            
+            renderBatches(); // Refresh labels in grid
+        }
+
         const workerData = [
             { batch: "1st Batch", name: "Shahriyar Khan", dob: "12-05-1992", role: "Multi Welder", passport: "KH4148432", visa: "IR-10310080212", visaLink: "shahriyar.pdf", photo: "shahriyar.jpeg", finger: "16-11-2025", interview: "N/A" },
             { batch: "1st Batch", name: "Muhammad Ali Rashid", dob: "04-09-1994", role: "Multi Welder", passport: "KC9847072", visa: "IR-10310080211", visaLink: "ali_rashid.pdf", photo: "ali_rashid.jpeg", finger: "16-11-2025", interview: "N/A" },
@@ -264,19 +358,37 @@
         function renderBatches() {
             const grid = document.getElementById('batch-grid'); grid.innerHTML = "";
             const batches = workerData.reduce((acc, w) => { (acc[w.batch] = acc[w.batch] || []).push(w); return acc; }, {});
+            
             Object.entries(batches).forEach(([batchName, members]) => {
                 const block = document.createElement('div'); block.className = "mb-10";
+                
+                // Translate Batch Name header (e.g., 1st Batch -> 1. Skupina)
+                let displayBatch = batchName;
+                if(currentLang === 'sl') {
+                    displayBatch = batchName.replace('1st', '1.').replace('2nd', '2.').replace('3rd', '3.').replace('4th', '4.').replace('5th', '5.').replace('Batch', 'Skupina');
+                }
+
                 const listItems = members.map((m) => {
                     const idx = workerData.findIndex(w => w.name === m.name);
-                    let sText = "In Pipeline", sClass = "border-amber-500/30 text-amber-500 bg-amber-500/5";
-                    if (m.finger !== "TBD" && m.finger !== "N/A" && m.interview !== "TBD" && m.interview !== "N/A") { sText = "Ready / Entry"; sClass = "border-emerald-500/30 text-emerald-400 bg-emerald-500/5"; }
-                    else if (m.finger !== "TBD" && m.finger !== "N/A") { sText = "Finger Done"; sClass = "border-blue-500/30 text-blue-400 bg-blue-500/5"; }
+                    let sText = translations[currentLang].st_pipeline;
+                    let sClass = "border-amber-500/30 text-amber-500 bg-amber-500/5";
+                    
+                    if (m.finger !== "TBD" && m.finger !== "N/A" && m.interview !== "TBD" && m.interview !== "N/A") { 
+                        sText = translations[currentLang].st_ready; 
+                        sClass = "border-emerald-500/30 text-emerald-400 bg-emerald-500/5"; 
+                    }
+                    else if (m.finger !== "TBD" && m.finger !== "N/A") { 
+                        sText = translations[currentLang].st_finger; 
+                        sClass = "border-blue-500/30 text-blue-400 bg-blue-500/5"; 
+                    }
+                    
                     return `<div onclick="toggleModal(${idx})" data-name="${m.name}" class="worker-item flex justify-between items-center p-6 bg-slate-900/30 border border-slate-800/50 rounded-2xl mb-3 hover:bg-slate-800/50 cursor-pointer transition-all">
                         <div><span class="text-white font-bold">${m.name}</span><p class="text-[9px] text-slate-500 font-bold uppercase mt-1 tracking-widest">${m.role}</p></div>
-                        <span class="px-2 py-1 rounded border ${sClass} uppercase text-[9px] font-bold">${sText}</span>
+                        <span class="px-2 py-1 rounded border ${sClass} uppercase text-[8px] font-bold">${sText}</span>
                     </div>`;
                 }).join('');
-                block.innerHTML = `<h2 class="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mb-4 ml-2">${batchName}</h2><div>${listItems}</div>`;
+                
+                block.innerHTML = `<h2 class="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mb-4 ml-2">${displayBatch}</h2><div>${listItems}</div>`;
                 grid.appendChild(block);
             });
         }
