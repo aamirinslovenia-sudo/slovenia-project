@@ -13,6 +13,8 @@
     <link rel="apple-touch-icon" href="favicon.ico">
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
         
@@ -47,6 +49,8 @@
         
         .velocity-bar { animation: growWidth 2s ease-in-out infinite alternate; }
         @keyframes growWidth { from { width: 40%; } to { width: 85%; } }
+
+        #qrcode img { margin: 0 auto; border: 8px solid white; border-radius: 12px; }
 
         @media print {
             body { background: white !important; color: black !important; }
@@ -146,33 +150,45 @@
         <div class="modal-overlay absolute inset-0 bg-[#020617]/95 backdrop-blur-md" onclick="toggleModal()"></div>
         <div class="modal-container glass-card w-full max-w-lg mx-auto rounded-[40px] shadow-2xl z-[10000] border border-slate-700/50 max-h-[90vh] overflow-y-auto">
             <div class="modal-content py-10 px-10 text-center">
-                <div class="flex justify-end mb-4"><button onclick="window.print()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest lang-key" data-key="btn_print">📄 Download Dossier</button></div>
+                <div class="flex justify-between mb-4">
+                    <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest lang-key" data-key="btn_print">📄 Dossier</button>
+                    <button id="qr-toggle-btn" onclick="toggleQRView()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest">Show QR Link</button>
+                </div>
                 
-                <img id="m-photo" src="" class="w-32 h-32 rounded-full object-cover border-4 border-blue-600 mx-auto mb-4 shadow-xl">
-                <h2 class="text-2xl font-extrabold text-white" id="m-name"></h2>
-                <p class="text-blue-400 text-[10px] font-bold uppercase tracking-widest mb-6" id="m-role-display"></p>
+                <div id="worker-main-info">
+                    <img id="m-photo" src="" class="w-32 h-32 rounded-full object-cover border-4 border-blue-600 mx-auto mb-4 shadow-xl">
+                    <h2 class="text-2xl font-extrabold text-white" id="m-name"></h2>
+                    <p class="text-blue-400 text-[10px] font-bold uppercase tracking-widest mb-6" id="m-role-display"></p>
 
-                <div class="mb-8 px-4 text-left">
-                    <div class="flex justify-between mb-2 text-[9px] font-bold uppercase text-slate-500 tracking-widest"><span class="lang-key" data-key="mod_status">Progress Status</span><span id="m-percent">0%</span></div>
-                    <div class="h-1.5 w-full bg-slate-800 rounded-full flex mb-6"><div id="m-progress-bar" class="h-full bg-blue-600 rounded-full transition-all duration-1000"></div></div>
-                    <div class="flex justify-between px-1">
-                        <div class="flex flex-col items-center gap-2"><div id="dot-1" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase lang-key" data-key="mod_step_docs">Docs</span></div>
-                        <div class="flex flex-col items-center gap-2"><div id="dot-2" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase lang-key" data-key="mod_step_visa">Visa</span></div>
-                        <div class="flex flex-col items-center gap-2"><div id="dot-3" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase lang-key" data-key="mod_step_finger">Finger</span></div>
-                        <div class="flex flex-col items-center gap-2"><div id="dot-4" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase lang-key" data-key="mod_step_int">Int.</span></div>
+                    <div class="mb-8 px-4 text-left">
+                        <div class="flex justify-between mb-2 text-[9px] font-bold uppercase text-slate-500 tracking-widest"><span class="lang-key" data-key="mod_status">Progress Status</span><span id="m-percent">0%</span></div>
+                        <div class="h-1.5 w-full bg-slate-800 rounded-full flex mb-6"><div id="m-progress-bar" class="h-full bg-blue-600 rounded-full transition-all duration-1000"></div></div>
+                        <div class="flex justify-between px-1">
+                            <div class="flex flex-col items-center gap-2"><div id="dot-1" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase lang-key" data-key="mod_step_docs">Docs</span></div>
+                            <div class="flex flex-col items-center gap-2"><div id="dot-2" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase lang-key" data-key="mod_step_visa">Visa</span></div>
+                            <div class="flex flex-col items-center gap-2"><div id="dot-3" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase lang-key" data-key="mod_step_finger">Finger</span></div>
+                            <div class="flex flex-col items-center gap-2"><div id="dot-4" class="progress-dot bg-slate-700"></div><span class="text-[7px] font-bold text-slate-500 uppercase lang-key" data-key="mod_step_int">Int.</span></div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 mb-8 text-left">
+                        <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50 flex justify-between items-center"><span class="text-slate-500 text-[9px] font-black uppercase lang-key" data-key="mod_full_name">Full Name</span><span class="text-white font-bold text-xs uppercase" id="m-full-name"></span></div>
+                        <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50 flex justify-between items-center"><span class="text-slate-500 text-[9px] font-black uppercase lang-key" data-key="mod_dob">Date of Birth</span><span class="text-white font-bold text-xs" id="m-dob"></span></div>
+                        <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50 flex justify-between items-center"><span class="text-slate-500 text-[9px] font-black uppercase lang-key" data-key="mod_passport">Passport No</span><span class="text-white font-mono font-bold text-xs" id="m-passport"></span></div>
+                        <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50 flex justify-between items-center"><span class="text-slate-500 text-[9px] font-black uppercase lang-key" data-key="mod_visa">Visa Ref</span><span id="m-visa-box" class="text-blue-400 font-bold text-xs"></span></div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50"><span class="text-slate-500 text-[9px] font-black uppercase block mb-1 lang-key" data-key="mod_interview">Interview</span><span class="text-white font-bold text-xs" id="m-interview"></span></div>
+                            <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50"><span class="text-slate-500 text-[9px] font-black uppercase block mb-1 lang-key" data-key="mod_finger">Fingerprint</span><span class="text-blue-200 font-bold text-xs" id="m-finger"></span></div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="space-y-3 mb-8 text-left">
-                    <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50 flex justify-between items-center"><span class="text-slate-500 text-[9px] font-black uppercase lang-key" data-key="mod_full_name">Full Name</span><span class="text-white font-bold text-xs uppercase" id="m-full-name"></span></div>
-                    <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50 flex justify-between items-center"><span class="text-slate-500 text-[9px] font-black uppercase lang-key" data-key="mod_dob">Date of Birth</span><span class="text-white font-bold text-xs" id="m-dob"></span></div>
-                    <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50 flex justify-between items-center"><span class="text-slate-500 text-[9px] font-black uppercase lang-key" data-key="mod_passport">Passport No</span><span class="text-white font-mono font-bold text-xs" id="m-passport"></span></div>
-                    <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50 flex justify-between items-center"><span class="text-slate-500 text-[9px] font-black uppercase lang-key" data-key="mod_visa">Visa Ref</span><span id="m-visa-box" class="text-blue-400 font-bold text-xs"></span></div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50"><span class="text-slate-500 text-[9px] font-black uppercase block mb-1 lang-key" data-key="mod_interview">Interview</span><span class="text-white font-bold text-xs" id="m-interview"></span></div>
-                        <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800/50"><span class="text-slate-500 text-[9px] font-black uppercase block mb-1 lang-key" data-key="mod_finger">Fingerprint</span><span class="text-blue-200 font-bold text-xs" id="m-finger"></span></div>
-                    </div>
+                <div id="worker-qr-view" class="hidden py-10">
+                    <p class="text-slate-400 text-[10px] font-bold uppercase mb-6">Scan for Digital ID</p>
+                    <div id="qrcode" class="mb-6"></div>
+                    <p class="text-blue-400 font-mono text-[10px]" id="qr-url-text"></p>
                 </div>
+
                 <button onclick="toggleModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-white py-4 rounded-2xl font-bold text-xs uppercase tracking-widest transition-all lang-key" data-key="btn_back">Back to Dashboard</button>
             </div>
         </div>
@@ -181,80 +197,33 @@
     <script>
         const translations = {
             en: {
-                login_sub: "Manpower Management System",
-                btn_enter: "Enter Portal",
-                login_err: "Invalid Security Code",
-                title: "Strategic Manpower Bridge",
-                subtitle: "Pakistan to Slovenia | MM HIDROTEH d.o.o.",
-                btn_grid: "Database View",
-                btn_map: "Manpower Route",
-                map_title: "MANPOWER ROUTE",
-                stat_docs: "Documentation",
-                stat_transit: "Transit / Finger",
-                stat_deployment: "Deployment Ready",
-                ana_avg: "Avg. Processing",
-                ana_eta: "Next Batch ETA",
-                ana_vel: "Pipeline Velocity",
-                grid_total: "Total Staff",
-                grid_ready: "Ready",
-                grid_pipeline: "In Pipeline",
-                grid_sync: "Live Sync",
-                btn_print: "📄 Download Dossier",
-                mod_status: "Progress Status",
-                mod_step_docs: "Docs",
-                mod_step_visa: "Visa",
-                mod_step_finger: "Finger",
-                mod_step_int: "Int.",
-                mod_full_name: "Full Name",
-                mod_dob: "Date of Birth",
-                mod_passport: "Passport No",
-                mod_visa: "Visa Ref",
-                mod_interview: "Interview",
-                mod_finger: "Fingerprint",
-                btn_back: "Back to Dashboard",
-                st_pipeline: "In Pipeline",
-                st_finger: "Finger Done",
-                st_ready: "Ready / Entry"
+                login_sub: "Manpower Management System", btn_enter: "Enter Portal", login_err: "Invalid Security Code",
+                title: "Strategic Manpower Bridge", subtitle: "Pakistan to Slovenia | MM HIDROTEH d.o.o.",
+                btn_grid: "Database View", btn_map: "Manpower Route", map_title: "MANPOWER ROUTE",
+                stat_docs: "Documentation", stat_transit: "Transit / Finger", stat_deployment: "Deployment Ready",
+                ana_avg: "Avg. Processing", ana_eta: "Next Batch ETA", ana_vel: "Pipeline Velocity",
+                grid_total: "Total Staff", grid_ready: "Ready", grid_pipeline: "In Pipeline", grid_sync: "Live Sync",
+                btn_print: "📄 Dossier", mod_status: "Progress Status", mod_step_docs: "Docs", mod_step_visa: "Visa",
+                mod_step_finger: "Finger", mod_step_int: "Int.", mod_full_name: "Full Name", mod_dob: "Date of Birth",
+                mod_passport: "Passport No", mod_visa: "Visa Ref", mod_interview: "Interview", mod_finger: "Fingerprint",
+                btn_back: "Back to Dashboard", st_pipeline: "In Pipeline", st_finger: "Finger Done", st_ready: "Ready / Entry"
             },
             sl: {
-                login_sub: "Sistem za upravljanje delovne sile",
-                btn_enter: "Vstop v portal",
-                login_err: "Neveljavna varnostna koda",
-                title: "Strateški most delovne sile",
-                subtitle: "Pakistan v Slovenijo | MM HIDROTEH d.o.o.",
-                btn_grid: "Pogled baze podatkov",
-                btn_map: "Pot delovne sile",
-                map_title: "POT DELOVNE SILE",
-                stat_docs: "Dokumentacija",
-                stat_transit: "Tranzit / Prstni odtisi",
-                stat_deployment: "Pripravljeno na napotitev",
-                ana_avg: "Povprečni čas",
-                ana_eta: "Naslednja skupina",
-                ana_vel: "Hitrost cevovoda",
-                grid_total: "Skupaj osebje",
-                grid_ready: "Pripravljeno",
-                grid_pipeline: "V obdelavi",
-                grid_sync: "Sinhronizacija",
-                btn_print: "📄 Prenesi dosje",
-                mod_status: "Status napredka",
-                mod_step_docs: "Dok.",
-                mod_step_visa: "Viza",
-                mod_step_finger: "Prstni o.",
-                mod_step_int: "Inter.",
-                mod_full_name: "Polno ime",
-                mod_dob: "Datum rojstva",
-                mod_passport: "Št. potnega lista",
-                mod_visa: "Ref. vize",
-                mod_interview: "Intervju",
-                mod_finger: "Prstni odtisi",
-                btn_back: "Nazaj na nadzorno ploščo",
-                st_pipeline: "V obdelavi",
-                st_finger: "Prstni odtisi opravljeni",
-                st_ready: "Pripravljeno / Vstop"
+                login_sub: "Sistem za upravljanje delovne sile", btn_enter: "Vstop v portal", login_err: "Neveljavna varnostna koda",
+                title: "Strateški most delovne sile", subtitle: "Pakistan v Slovenijo | MM HIDROTEH d.o.o.",
+                btn_grid: "Pogled baze podatkov", btn_map: "Pot delovne sile", map_title: "POT DELOVNE SILE",
+                stat_docs: "Dokumentacija", stat_transit: "Tranzit / Prstni odtisi", stat_deployment: "Pripravljeno na napotitev",
+                ana_avg: "Povprečni čas", ana_eta: "Naslednja skupina", ana_vel: "Hitrost cevovoda",
+                grid_total: "Skupaj osebje", grid_ready: "Pripravljeno", grid_pipeline: "V obdelavi", grid_sync: "Sinhronizacija",
+                btn_print: "📄 Dosje", mod_status: "Status napredka", mod_step_docs: "Dok.", mod_step_visa: "Viza",
+                mod_step_finger: "Prstni o.", mod_step_int: "Inter.", mod_full_name: "Polno ime", mod_dob: "Datum rojstva",
+                mod_passport: "Št. potnega lista", mod_visa: "Ref. vize", mod_interview: "Intervju", mod_finger: "Prstni odtisi",
+                btn_back: "Nazaj na nadzorno ploščo", st_pipeline: "V obdelavi", st_finger: "Prstni odtisi opravljeni", st_ready: "Pripravljeno / Vstop"
             }
         };
 
         let currentLang = 'en';
+        let qrcodeInstance = null;
 
         function setLanguage(lang) {
             currentLang = lang;
@@ -292,44 +261,38 @@
             if(document.getElementById('pass-input').value === "MM2026") {
                 document.getElementById('login-screen').classList.add('hidden');
                 document.getElementById('main-app').classList.remove('hidden');
-                updateStats(); renderBatches();
+                checkUrlForWorker(); updateStats(); renderBatches();
             } else { document.getElementById('login-error').classList.remove('hidden'); }
         }
 
-        function switchView(view) {
-            const gridView = document.getElementById('grid-view');
-            const mapView = document.getElementById('map-view');
-            const searchBar = document.getElementById('search-bar-container');
-            const btnGrid = document.getElementById('btn-grid');
-            const btnMap = document.getElementById('btn-map');
-
-            if(view === 'map') {
-                gridView.classList.add('hidden'); searchBar.classList.add('hidden'); mapView.classList.remove('hidden');
-                btnMap.className = "px-6 py-2 rounded-full bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest transition-all";
-                btnGrid.className = "px-6 py-2 rounded-full bg-slate-800 text-slate-400 text-[10px] font-black uppercase tracking-widest transition-all";
-            } else {
-                mapView.classList.add('hidden'); gridView.classList.remove('hidden'); searchBar.classList.remove('hidden');
-                btnGrid.className = "px-6 py-2 rounded-full bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest transition-all";
-                btnMap.className = "px-6 py-2 rounded-full bg-slate-800 text-slate-400 text-[10px] font-black uppercase tracking-widest transition-all";
+        function checkUrlForWorker() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const workerName = urlParams.get('worker');
+            if(workerName) {
+                const idx = workerData.findIndex(w => w.name === workerName);
+                if(idx !== -1) toggleModal(idx);
             }
         }
 
-        function updateStats() {
-            const total = workerData.length;
-            const ready = workerData.filter(w => w.finger !== "TBD" && w.finger !== "N/A" && w.interview !== "TBD" && w.interview !== "N/A").length;
-            const inTransit = total - ready;
-            document.getElementById('stat-total').innerText = total;
-            document.getElementById('stat-ready').innerText = ready;
-            document.getElementById('stat-process').innerText = inTransit;
-            document.getElementById('stat-date').innerText = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-            document.getElementById('map-pak-count').innerText = total + " Staff";
-            document.getElementById('map-slo-count').innerText = ready + " Ready";
-            document.getElementById('transit-count').innerText = inTransit;
-            document.getElementById('ready-count').innerText = ready;
+        function toggleQRView() {
+            const mainInfo = document.getElementById('worker-main-info');
+            const qrView = document.getElementById('worker-qr-view');
+            const btn = document.getElementById('qr-toggle-btn');
+            if(qrView.classList.contains('hidden')) {
+                mainInfo.classList.add('hidden'); qrView.classList.remove('hidden');
+                btn.innerText = "Show Details"; btn.className = "bg-slate-800 text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase";
+            } else {
+                qrView.classList.add('hidden'); mainInfo.classList.remove('hidden');
+                btn.innerText = "Show QR Link"; btn.className = "bg-blue-600 text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase";
+            }
         }
 
         function toggleModal(workerIndex = null) {
             const modal = document.getElementById('workerModal');
+            document.getElementById('worker-main-info').classList.remove('hidden');
+            document.getElementById('worker-qr-view').classList.add('hidden');
+            document.getElementById('qr-toggle-btn').innerText = "Show QR Link";
+
             if (workerIndex !== null) {
                 const w = workerData[workerIndex];
                 document.getElementById('m-name').innerText = w.name;
@@ -350,9 +313,40 @@
                 document.getElementById('m-progress-bar').style.width = score + "%";
                 document.getElementById('m-percent').innerText = score + "%";
                 document.getElementById('m-visa-box').innerHTML = (w.visa !== "Pending") ? `<a href="${w.visaLink}" target="_blank" class="underline text-blue-400 font-bold">${w.visa}</a>` : "Pending";
+
+                // Generate QR Code
+                const baseUrl = window.location.href.split('?')[0];
+                const qrUrl = `${baseUrl}?worker=${encodeURIComponent(w.name)}`;
+                document.getElementById('qr-url-text').innerText = qrUrl;
+                document.getElementById('qrcode').innerHTML = "";
+                new QRCode(document.getElementById("qrcode"), { text: qrUrl, width: 180, height: 180, colorDark : "#000000", colorLight : "#ffffff" });
             }
             modal.classList.toggle('opacity-0');
             modal.classList.toggle('pointer-events-none');
+        }
+
+        function switchView(view) {
+            const gridView = document.getElementById('grid-view'), mapView = document.getElementById('map-view');
+            const searchBar = document.getElementById('search-bar-container'), btnGrid = document.getElementById('btn-grid'), btnMap = document.getElementById('btn-map');
+            if(view === 'map') {
+                gridView.classList.add('hidden'); searchBar.classList.add('hidden'); mapView.classList.remove('hidden');
+                btnMap.className = "px-6 py-2 rounded-full bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest";
+                btnGrid.className = "px-6 py-2 rounded-full bg-slate-800 text-slate-400 text-[10px] font-black uppercase tracking-widest";
+            } else {
+                mapView.classList.add('hidden'); gridView.classList.remove('hidden'); searchBar.classList.remove('hidden');
+                btnGrid.className = "px-6 py-2 rounded-full bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest";
+                btnMap.className = "px-6 py-2 rounded-full bg-slate-800 text-slate-400 text-[10px] font-black uppercase tracking-widest";
+            }
+        }
+
+        function updateStats() {
+            const total = workerData.length;
+            const ready = workerData.filter(w => w.finger !== "TBD" && w.finger !== "N/A" && w.interview !== "TBD" && w.interview !== "N/A").length;
+            const inTransit = total - ready;
+            document.getElementById('stat-total').innerText = total; document.getElementById('stat-ready').innerText = ready; document.getElementById('stat-process').innerText = inTransit;
+            document.getElementById('stat-date').innerText = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+            document.getElementById('map-pak-count').innerText = total + " Staff"; document.getElementById('map-slo-count').innerText = ready + " Ready";
+            document.getElementById('transit-count').innerText = inTransit; document.getElementById('ready-count').innerText = ready;
         }
 
         function filterWorkers() {
@@ -368,21 +362,12 @@
             const batches = workerData.reduce((acc, w) => { (acc[w.batch] = acc[w.batch] || []).push(w); return acc; }, {});
             Object.entries(batches).forEach(([batchName, members]) => {
                 const block = document.createElement('div'); block.className = "mb-10";
-                let displayBatch = batchName;
-                if(currentLang === 'sl') {
-                    displayBatch = batchName.replace('1st', '1.').replace('2nd', '2.').replace('3rd', '3.').replace('4th', '4.').replace('5th', '5.').replace('Batch', 'Skupina');
-                }
+                let displayBatch = (currentLang === 'sl') ? batchName.replace('1st', '1.').replace('2nd', '2.').replace('3rd', '3.').replace('4th', '4.').replace('5th', '5.').replace('Batch', 'Skupina') : batchName;
                 const listItems = members.map((m) => {
                     const idx = workerData.findIndex(w => w.name === m.name);
-                    let sText = translations[currentLang].st_pipeline;
-                    let sClass = "border-amber-500/30 text-amber-500 bg-amber-500/5";
-                    if (m.finger !== "TBD" && m.finger !== "N/A" && m.interview !== "TBD" && m.interview !== "N/A") { 
-                        sText = translations[currentLang].st_ready; 
-                        sClass = "border-emerald-500/30 text-emerald-400 bg-emerald-500/5"; 
-                    } else if (m.finger !== "TBD" && m.finger !== "N/A") { 
-                        sText = translations[currentLang].st_finger; 
-                        sClass = "border-blue-500/30 text-blue-400 bg-blue-500/5"; 
-                    }
+                    let sText = translations[currentLang].st_pipeline, sClass = "border-amber-500/30 text-amber-500 bg-amber-500/5";
+                    if (m.finger !== "TBD" && m.finger !== "N/A" && m.interview !== "TBD" && m.interview !== "N/A") { sText = translations[currentLang].st_ready; sClass = "border-emerald-500/30 text-emerald-400 bg-emerald-500/5"; }
+                    else if (m.finger !== "TBD" && m.finger !== "N/A") { sText = translations[currentLang].st_finger; sClass = "border-blue-500/30 text-blue-400 bg-blue-500/5"; }
                     return `<div onclick="toggleModal(${idx})" data-name="${m.name}" class="worker-item flex justify-between items-center p-6 bg-slate-900/30 border border-slate-800/50 rounded-2xl mb-3 hover:bg-slate-800/50 cursor-pointer transition-all">
                         <div><span class="text-white font-bold">${m.name}</span><p class="text-[9px] text-slate-500 font-bold uppercase mt-1 tracking-widest">${m.role}</p></div>
                         <span class="px-2 py-1 rounded border ${sClass} uppercase text-[8px] font-bold">${sText}</span>
