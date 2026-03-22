@@ -14,9 +14,9 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body class="pb-20">
+<body class="pb-24">
 
-    <div id="special-banner" class="hidden bg-gradient-to-r from-orange-600 to-amber-500 p-4 text-center">
+    <div id="special-banner" class="hidden bg-gradient-to-r from-orange-600 to-amber-500 p-4 text-center sticky top-0 z-[60]">
         <p class="text-[10px] font-black uppercase tracking-[0.2em] text-orange-100 mb-1 italic">Special Offer</p>
         <h2 id="special-display-text" class="serif text-xl font-bold italic">Special Item Name</h2>
     </div>
@@ -72,15 +72,28 @@
 
     </div>
 
-    <div class="fixed bottom-6 left-0 right-0 px-6">
-        <button onclick="alert('Waiter has been notified to Table 4!')" class="w-full bg-blue-600 py-4 rounded-2xl font-bold shadow-2xl shadow-blue-500/40 active:scale-95 transition-all flex justify-center items-center gap-2 uppercase tracking-widest text-xs">
-            <span>🛎️</span> CALL WAITER
+    <div class="fixed bottom-6 left-0 right-0 px-6 z-[100]">
+        <button onclick="callWaiter()" class="w-full bg-blue-600 py-4 rounded-2xl font-bold shadow-2xl shadow-blue-500/40 active:scale-95 transition-all flex justify-center items-center gap-3 uppercase tracking-widest text-xs">
+            <span class="text-lg">🛎️</span> CALL WAITER (TABLE 4)
         </button>
     </div>
 
     <script>
+        // CONFIGURATION
+        const WAITER_PHONE = "386XXXXXXXX"; // <-- Replace with the owner's WhatsApp number
+        const TABLE_NUMBER = "4";
+
         function scrollToSection(id) {
             document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // The WhatsApp Integration
+        function callWaiter() {
+            const message = encodeURIComponent(`🛎️ Hello! Table ${TABLE_NUMBER} needs assistance, please.`);
+            const whatsappUrl = `https://wa.me/${WAITER_PHONE}?text=${message}`;
+            
+            // Open WhatsApp
+            window.open(whatsappUrl, '_blank');
         }
 
         function loadData() {
@@ -106,7 +119,6 @@
             }
         }
 
-        // Run when page loads
         window.onload = loadData;
     </script>
 </body>
