@@ -2,52 +2,81 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu Admin Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Secure Admin | Menu Control</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background: #0f172a; color: white; font-family: sans-serif; }
-        .input-field { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 12px; width: 100%; margin-top: 8px; color: white; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; background: #020617; color: #f8fafc; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); }
+        .input-dark { background: #0f172a; border: 1px solid #1e293b; color: white; border-radius: 12px; padding: 14px; width: 100%; margin-top: 8px; }
+        .btn-blue { background: #2563eb; color: white; font-weight: 700; border-radius: 12px; padding: 16px; width: 100%; transition: all 0.2s; }
+        .btn-blue:active { transform: scale(0.98); background: #1d4ed8; }
     </style>
 </head>
-<body class="p-6">
+<body class="flex items-center justify-center min-h-screen p-6">
 
-    <div class="max-w-md mx-auto">
-        <header class="mb-8">
-            <h1 class="text-2xl font-bold text-blue-500">Menu Controller</h1>
-            <p class="text-xs text-slate-400 uppercase tracking-widest">Update Prices & Items</p>
+    <div id="login-screen" class="glass p-8 rounded-[32px] w-full max-w-sm text-center">
+        <div class="text-4xl mb-4">🔐</div>
+        <h1 class="text-xl font-black tracking-tight mb-2">Admin Access</h1>
+        <p class="text-slate-500 text-xs uppercase tracking-widest mb-6 font-bold">Encrypted Connection</p>
+        
+        <input type="password" id="pass-input" placeholder="Enter Access Code" class="input-dark text-center mb-4 tracking-[0.5em]">
+        <button onclick="checkPass()" class="btn-blue">UNLOCK SYSTEM</button>
+        <p id="err" class="text-red-500 text-[10px] mt-4 font-bold hidden uppercase">Invalid Access Code</p>
+    </div>
+
+    <div id="admin-panel" class="hidden w-full max-w-sm">
+        <header class="mb-8 text-center">
+            <h2 class="text-blue-500 text-[10px] font-black tracking-[0.3em] uppercase mb-1">Live Controller</h2>
+            <h1 class="text-2xl font-bold">Cafe Management</h1>
         </header>
 
-        <div class="bg-slate-900 p-6 rounded-3xl border border-white/5 mb-6">
-            <label class="text-xs font-bold text-slate-500 uppercase">Select Item</label>
-            <select id="item-select" class="input-field mb-4">
-                <option value="espresso">Double Espresso</option>
-                <option value="cappuccino">Cappuccino Royale</option>
-                <option value="avocado">Avocado Toast</option>
-            </select>
+        <div class="glass p-6 rounded-[32px] space-y-6">
+            <div>
+                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-1">Select Item</label>
+                <select id="item-select" class="input-dark">
+                    <option value="espresso">Double Espresso</option>
+                    <option value="cappuccino">Cappuccino Royale</option>
+                    <option value="avocado">Avocado Toast</option>
+                </select>
+            </div>
 
-            <label class="text-xs font-bold text-slate-500 uppercase">New Price (€)</label>
-            <input type="number" id="new-price" step="0.10" placeholder="e.g. 3.00" class="input-field mb-6">
+            <div>
+                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-1">New Price (€)</label>
+                <input type="number" id="new-price" step="0.10" placeholder="0.00" class="input-dark">
+            </div>
 
-            <button onclick="updatePrice()" class="w-full bg-blue-600 py-4 rounded-xl font-bold active:scale-95 transition-all">
-                UPDATE LIVE MENU
-            </button>
+            <button onclick="updatePrice()" class="btn-blue">PUSH UPDATE LIVE</button>
+            <p id="status" class="text-center text-green-400 font-bold text-xs hidden">✓ UPDATED SUCCESSFULLY</p>
+            
+            <button onclick="window.location.reload()" class="w-full text-[10px] text-slate-600 font-bold uppercase tracking-widest mt-4">Lock System</button>
         </div>
-
-        <p id="status" class="text-center text-green-500 font-bold text-sm hidden">✓ Menu Updated Successfully!</p>
     </div>
 
     <script>
+        const PIN = "1234"; // <--- YOUR PASSWORD
+
+        function checkPass() {
+            const input = document.getElementById('pass-input').value;
+            if(input === PIN) {
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('admin-panel').classList.remove('hidden');
+            } else {
+                const err = document.getElementById('err');
+                err.classList.remove('hidden');
+                setTimeout(() => err.classList.add('hidden'), 2000);
+            }
+        }
+
         function updatePrice() {
             const item = document.getElementById('item-select').value;
             const price = document.getElementById('new-price').value;
 
-            if(!price) { alert("Please enter a price"); return; }
+            if(!price) { alert("Enter a valid price"); return; }
 
-            // Save to LocalStorage
             localStorage.setItem(item, price);
 
-            // Show Success
             const status = document.getElementById('status');
             status.classList.remove('hidden');
             setTimeout(() => status.classList.add('hidden'), 3000);
