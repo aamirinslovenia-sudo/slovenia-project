@@ -16,6 +16,11 @@
 </head>
 <body class="pb-20">
 
+    <div id="special-banner" class="hidden bg-gradient-to-r from-orange-600 to-amber-500 p-4 text-center">
+        <p class="text-[10px] font-black uppercase tracking-[0.2em] text-orange-100 mb-1 italic">Special Offer</p>
+        <h2 id="special-display-text" class="serif text-xl font-bold italic">Special Item Name</h2>
+    </div>
+
     <div class="h-64 bg-[url('https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80&w=1000')] bg-cover bg-center relative">
         <div class="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-transparent to-black/40"></div>
         <div class="absolute bottom-6 left-6">
@@ -78,29 +83,31 @@
             document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
         }
 
-        // LIVE DATA SYNC LOGIC
-        function loadPrices() {
-            // Check for Espresso
-            const savedEspresso = localStorage.getItem('espresso');
-            if(savedEspresso) {
-                document.getElementById('price-espresso').innerText = '€' + parseFloat(savedEspresso).toFixed(2);
-            }
+        function loadData() {
+            // Load Prices
+            const items = ['espresso', 'cappuccino', 'avocado'];
+            items.forEach(item => {
+                const savedPrice = localStorage.getItem(item);
+                if(savedPrice) {
+                    document.getElementById('price-' + item).innerText = '€' + parseFloat(savedPrice).toFixed(2);
+                }
+            });
 
-            // Check for Cappuccino
-            const savedCap = localStorage.getItem('cappuccino');
-            if(savedCap) {
-                document.getElementById('price-cappuccino').innerText = '€' + parseFloat(savedCap).toFixed(2);
-            }
-
-            // Check for Avocado
-            const savedAvo = localStorage.getItem('avocado');
-            if(savedAvo) {
-                document.getElementById('price-avocado').innerText = '€' + parseFloat(savedAvo).toFixed(2);
+            // Load Special Offer Banner
+            const isSpecialActive = localStorage.getItem('special_active') === 'true';
+            const specialText = localStorage.getItem('special_text');
+            const banner = document.getElementById('special-banner');
+            
+            if(isSpecialActive && specialText) {
+                banner.classList.remove('hidden');
+                document.getElementById('special-display-text').innerText = specialText;
+            } else {
+                banner.classList.add('hidden');
             }
         }
 
-        // Run this function every time the page is opened
-        window.onload = loadPrices;
+        // Run when page loads
+        window.onload = loadData;
     </script>
 </body>
 </html>
