@@ -1,34 +1,88 @@
-// Add this inside a <script> tag before </body>
-let rooms = [
-    { id: 101, type: 'Deluxe Suite', status: 'occupied', guest: 'Janez Novak' },
-    { id: 102, type: 'Standard King', status: 'available', guest: '-' },
-    { id: 103, type: 'Single Room', status: 'cleaning', guest: '-' }
-];
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>LuxeStay OS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;600;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #000; color: #fff; -webkit-tap-highlight-color: transparent; }
+        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .status-occupied { color: #ff4d4d; border-left: 3px solid #ff4d4d; }
+        .status-available { color: #00ff88; border-left: 3px solid #00ff88; }
+        .status-cleaning { color: #ffcc00; border-left: 3px solid #ffcc00; }
+    </style>
+</head>
+<body class="p-6">
 
-function renderRooms() {
-    const grid = document.getElementById('room-grid');
-    grid.innerHTML = rooms.map(room => `
-        <div onclick="manageRoom(${room.id})" class="glass p-5 rounded-[30px] cursor-pointer hover:border-blue-500/50 transition-all">
-            <p class="text-2xl font-black mb-1">${room.id}</p>
-            <p class="text-[10px] text-slate-500 font-bold uppercase mb-4">${room.type}</p>
-            <span class="status-${room.status} px-3 py-1 rounded-full text-[9px] font-black uppercase">${room.status}</span>
-            <div class="mt-6 border-t border-white/5 pt-4">
-                <p class="text-[9px] text-slate-500 uppercase font-bold text-left">Guest</p>
-                <p class="text-xs font-semibold text-left">${room.guest}</p>
-            </div>
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-xl font-black tracking-tighter text-white">LuxeStay<span class="text-blue-500">OS</span></h1>
+            <p class="text-[8px] uppercase tracking-[0.3em] text-slate-500 font-bold">Property Management</p>
         </div>
-    `).join('');
-}
+        <a href="index.html" class="text-[9px] bg-slate-800 px-3 py-1 rounded-full border border-white/10 text-slate-400 font-bold">Back to MM ERP</a>
+    </div>
 
-function manageRoom(roomId) {
-    const room = rooms.find(r => r.id === roomId);
-    const newGuest = prompt(`Check-in Guest for Room ${roomId}:`, room.guest);
-    if (newGuest !== null) {
-        room.guest = newGuest;
-        room.status = (newGuest.trim() === '-' || newGuest.trim() === '') ? 'available' : 'occupied';
-        renderRooms();
-    }
-}
+    <div class="grid grid-cols-2 gap-4 mb-10 text-left">
+        <div class="glass p-5 rounded-[28px]">
+            <p class="text-[9px] text-slate-500 uppercase font-black mb-1">Occupancy</p>
+            <p class="text-2xl font-black text-white" id="occ-rate">0%</p>
+        </div>
+        <div class="glass p-5 rounded-[28px]">
+            <p class="text-[9px] text-slate-500 uppercase font-black mb-1">Total Rev.</p>
+            <p class="text-2xl font-black text-white" id="total-rev">€0</p>
+        </div>
+    </div>
 
-// Call this when the page loads
-renderRooms();
+    <div id="room-grid" class="space-y-4 mb-20">
+        </div>
+
+    <script>
+        const roomPrice = 120; 
+        let rooms = [
+            { id: 101, type: 'Deluxe Suite', status: 'occupied', guest: 'Shahriyar K.' },
+            { id: 102, type: 'King Room', status: 'available', guest: '-' },
+            { id: 103, type: 'Single Loft', status: 'cleaning', guest: '-' },
+            { id: 104, type: 'Standard', status: 'available', guest: '-' }
+        ];
+
+        function render() {
+            const grid = document.getElementById('room-grid');
+            let occupiedCount = 0;
+            
+            grid.innerHTML = rooms.map(room => {
+                if(room.status === 'occupied') occupiedCount++;
+                return `
+                <div onclick="manageRoom(${room.id})" class="glass p-5 rounded-[24px] flex justify-between items-center active:scale-95 transition-all text-left">
+                    <div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-lg font-black text-white">${room.id}</span>
+                            <span class="text-[10px] font-bold text-slate-500 uppercase">${room.type}</span>
+                        </div>
+                        <p class="text-xs font-semibold mt-1 ${room.status === 'occupied' ? 'text-blue-400' : 'text-slate-600'}">${room.guest}</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-[9px] font-black uppercase status-${room.status}">${room.status}</p>
+                    </div>
+                </div>`;
+            }).join('');
+
+            document.getElementById('occ-rate').innerText = Math.round((occupiedCount / rooms.length) * 100) + "%";
+            document.getElementById('total-rev').innerText = "€" + (occupiedCount * roomPrice);
+        }
+
+        function manageRoom(id) {
+            const room = rooms.find(r => r.id === id);
+            const newGuest = prompt(`Check-in for Room ${id} (Enter '-' to empty room):`, room.guest);
+            if(newGuest !== null) {
+                room.guest = newGuest;
+                room.status = (newGuest === '-' || newGuest === '') ? 'available' : 'occupied';
+                render();
+            }
+        }
+
+        render();
+    </script>
+</body>
+</html>
